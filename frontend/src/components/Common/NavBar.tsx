@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -77,3 +78,11 @@ const NavBar = () => {
 };
 
 export default NavBar;
+=======
+
+const NavBar = () => {
+
+}
+
+export default NavBar;
+>>>>>>> 151d930a092ccb6bb0d38d5747b39dc7c95d044c
