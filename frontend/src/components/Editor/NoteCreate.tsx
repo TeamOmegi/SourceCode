@@ -18,6 +18,7 @@ interface NoteProprs {
 }
 
 const NoteCreate = ({ content }: NoteProprs) => {
+  const [submitContent, setSubmitContent] = useState<string | undefined>("");
   const lowlight = createLowlight(common);
 
   const editor = useEditor({
@@ -38,7 +39,16 @@ const NoteCreate = ({ content }: NoteProprs) => {
     }
   }, [content]);
 
-  const handleNoteCreate = () => {};
+  useEffect(() => {
+    if (submitContent) {
+      console.log("적용완료");
+      editor?.commands.setContent(submitContent);
+    }
+  }, [submitContent]);
+
+  const handleNoteCreate = () => {
+    setSubmitContent(editor?.getHTML());
+  };
 
   return (
     <div className="box-border flex h-full w-full flex-col items-center pb-4 pt-8">
