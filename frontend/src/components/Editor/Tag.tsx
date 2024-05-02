@@ -19,10 +19,12 @@ const Tag = () => {
       const inputTag = tagRef.current?.querySelector("input");
       const newTag = document.createElement("div");
       const className =
-        "mr-3 font-light text-orange-500 bg-orange-50 rounded-3xl py-2 px-4";
+        "mr-3 font-light text-orange-500 bg-orange-50 rounded-3xl py-2 px-4 hover:cursor-pointer";
       newTag.textContent = `# ${hashTag}`;
       newTag.className = className;
-      //newTag.addEventListener("click", handleTagDelete(newTag));
+      newTag.addEventListener("click", () => {
+        handleTagDelete(newTag);
+      });
 
       if (inputTag) {
         tagRef.current?.insertBefore(newTag, inputTag);
@@ -40,7 +42,13 @@ const Tag = () => {
     }
   };
 
-  //const handleTagDelete = (newTag: HTMLDivElement) => {};
+  const handleTagDelete = (tagDiv: HTMLDivElement) => {
+    tagRef.current?.removeChild(tagDiv);
+    const len = tagRef.current?.querySelectorAll("div").length || 0;
+    setHashTag("");
+    setTagLen(len);
+  };
+
   return (
     <div className="w-[90%] overflow-x-scroll  scrollbar-webkit ">
       <div
