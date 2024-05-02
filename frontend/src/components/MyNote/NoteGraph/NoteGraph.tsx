@@ -127,7 +127,7 @@ const NoteGraph = () => {
 
   useEffect(() => {
     const width = 1212;
-    const height = 700;
+    const height = 830;
 
     const graph: Graph = { nodes, links };
 
@@ -140,10 +140,10 @@ const NoteGraph = () => {
         d3
           .forceLink<Link>(graph.links)
           .id((d) => d.idx)
-          .distance(125), // 링크의 길이를 200으로 설정
+          .distance(50), // 링크의 길이
       )
-      .force("charge", d3.forceManyBody().strength(-700))
-      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 3, height / 3))
 
       .force("x", d3.forceX(width).strength(0.1)) // x축 위치 제한
       .force("y", d3.forceY(height).strength(0.1)); // y축 위치 제한
@@ -160,7 +160,7 @@ const NoteGraph = () => {
       .attr("class", "link")
       .attr("stroke", "#999")
       .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", (d) => Math.sqrt(15)) // 링크의 두께
+      .attr("stroke-width", (d) => Math.sqrt(10)) // 링크의 두께
       .on("click", (event, d: Link) =>
         handleLinkClick(event, d, { nodes, links }),
       );
