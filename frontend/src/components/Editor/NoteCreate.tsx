@@ -31,6 +31,12 @@ const NoteCreate = ({ content }: NoteProprs) => {
       }),
     ],
     content: content,
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl w-full h-full focus:outline-none",
+      },
+    },
   });
 
   useEffect(() => {
