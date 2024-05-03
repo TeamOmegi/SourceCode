@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useEditorStore from "../store/useEditorStore";
 import NavBar from "../components/Common/NavBar";
@@ -7,10 +7,19 @@ import NoteEdit from "../components/Editor/NoteEdit";
 
 const MainPage = () => {
   const [content, setContent] = useState<string>();
-  const { showNote, noteType } = useEditorStore();
+  const { showNote, noteType, setShowNote } = useEditorStore();
+  const location = useLocation();
+
   useEffect(() => {
     console.log(showNote);
   }, []);
+
+  useEffect(() => {
+    console.log(location.pathname);
+    if (["/omegi", "/omegi/setting"].includes(location.pathname)) {
+      if (showNote) setShowNote();
+    }
+  }, [location.pathname]);
 
   // useEffect(() => {
   //   if (noteType === "edit") {
@@ -20,7 +29,7 @@ const MainPage = () => {
   // }, [showNote, noteType]);
 
   return (
-    <div className="flex h-svh w-screen overflow-hidden bg-main-100">
+    <div className="bg-main-100 flex h-svh w-screen overflow-hidden">
       <div className="h-full w-[15%] flex-shrink-0 text-white">
         <NavBar />
       </div>
