@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useEditorStore from "../../store/useEditorStore";
 
 const NavBar = () => {
   const [isClick, setIsClick] = useState<string>("대시보드");
   const navigate = useNavigate();
+  const location = useLocation();
   const { setShowNote } = useEditorStore();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -138,16 +139,14 @@ const NavBar = () => {
           </div>
         </div>
         <div className="h-1/6 w-full">
-          <div
-            className="flex h-1/3 w-full justify-end hover:cursor-pointer"
-            onClick={hadleNoteClick}
-          >
+          <div className="flex h-1/3 w-full justify-end ">
             <img
-              className="mr-2 h-7 w-7 "
-              alt="Setting_Icon"
+              className={`mr-2 h-7 w-7 hover:cursor-pointer ${location.pathname === "/omegi" || location.pathname === "/omegi/setting" ? "hidden" : ""}`}
+              alt="Pencil_Icon"
               src={
                 isHovered ? "/icons/PencilHover.png" : "/icons/PencilIcon.png"
               }
+              onClick={hadleNoteClick}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             />
