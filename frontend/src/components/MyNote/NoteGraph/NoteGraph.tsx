@@ -196,9 +196,9 @@ const NoteGraph = () => {
       .attr("r", 10)
       .attr("fill", (d) => {
         if (d.type === "MYNOTE") {
-          return "aqua";
-        } else if (d.type === "TAG") {
-          return "yellow";
+          return "#A9DFD8";
+        } else if (d.type === "OTHERNOTE") {
+          return "#B6B1EC";
         } else {
           return "orange";
         }
@@ -207,7 +207,7 @@ const NoteGraph = () => {
     node
       .append("text")
       .attr("text-anchor", "middle")
-      .attr("dy", 10)
+      .attr("dy", 21)
       .style("font-size", "12px") // 글자 크기 설정
       .text((d) => d.title);
 
