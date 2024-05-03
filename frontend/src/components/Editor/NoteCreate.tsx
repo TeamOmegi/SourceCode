@@ -53,21 +53,26 @@ const NoteCreate = ({ content }: NoteProprs) => {
   //   }
   // }, [submitContent]);
 
-  const handleNoteCreate = () => {
-    useQuestion({
+  const handleNoteCreate = async () => {
+    const result = await useQuestion({
       title: "Note Create",
       fireText: "Note를 생성하시겠습니까?",
       resultText: "Note가 생성되었습니다.",
     });
-    setSubmitContent(editor?.getHTML());
+
+    if (result) console.log(editor?.getHTML());
+    else console.log("취소");
   };
 
-  const handleNoteDelete = () => {
-    useWarnning({
+  const handleNoteDelete = async () => {
+    const result = await useWarnning({
       title: "Note Initialization",
       fireText: "Note를 초기화하시겠습니까?",
       resultText: "Note가 초기화되었습니다.",
     });
+
+    if (result) console.log("성공");
+    else console.log("취소");
   };
 
   return (
@@ -76,14 +81,14 @@ const NoteCreate = ({ content }: NoteProprs) => {
       <Tag />
       <Toolbar editor={editor} />
       <EditorContent
-        className="box-border w-full flex-1 overflow-y-scroll px-4 py-4 scrollbar-webkit"
+        className="box-border w-full flex-1 overflow-y-scroll px-8 py-4 scrollbar-webkit"
         editor={editor}
       />
 
       <div className="flex h-12 w-full items-center justify-end pr-4">
         <div className="flex h-12 w-24 items-center justify-center">
           <div
-            className="bg-main-200 hover:text-main-200 flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#F2527D] text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#F2527D] hover:text-base hover:duration-200"
+            className="flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#F2527D] bg-main-200 text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#F2527D] hover:text-base hover:text-main-200 hover:duration-200"
             onClick={handleNoteDelete}
           >
             <div>초기화</div>
@@ -91,7 +96,7 @@ const NoteCreate = ({ content }: NoteProprs) => {
         </div>
         <div className="flex h-12 w-24 items-center justify-center">
           <div
-            className="bg-main-200 hover:text-main-200 flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#77af9c] text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#77af9c] hover:text-base hover:duration-200"
+            className="flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#77af9c] bg-main-200 text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#77af9c] hover:text-base hover:text-main-200 hover:duration-200"
             onClick={handleNoteCreate}
           >
             <div>노트 작성</div>
