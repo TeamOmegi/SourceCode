@@ -1,4 +1,4 @@
-package io.omegi.core.config;
+package io.omegi.core.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
