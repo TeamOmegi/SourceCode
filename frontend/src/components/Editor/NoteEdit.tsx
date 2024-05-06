@@ -13,7 +13,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 import { useQuestion } from "../../hooks/useComfirm";
 import { useError } from "../../hooks/useAlert";
-import { getNoteData, noteCreate } from "../../api/editorAxios";
+import { getMyNoteData, noteCreate } from "../../api/myNoteAxios";
 import { useParams } from "react-router-dom";
 
 export interface NoteData {
@@ -55,7 +55,7 @@ const NoteEdit = () => {
     console.log("노트 렌더링");
 
     const getData = async () => {
-      const iniNoteData = await getNoteData(0);
+      const iniNoteData = await getMyNoteData(0);
       setNoteDate({ ...iniNoteData });
     };
 
