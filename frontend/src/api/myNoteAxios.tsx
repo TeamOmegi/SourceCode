@@ -20,7 +20,7 @@ export const getAllMyNoteData = async (keyword: string): Promise<any> => {
 };
 
 // 노트 상세조회
-export const getMyNoteData = async (noteId: number): Promise<any> => {
+export const getNoteData = async (noteId: number): Promise<any> => {
   console.log("전달완료: ", noteId);
   try {
     const response = await axios.get(`${BASE_URL}/notes/${noteId}`);
