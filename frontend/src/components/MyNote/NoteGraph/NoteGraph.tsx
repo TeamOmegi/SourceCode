@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { useQuestion } from "../../../hooks/useComfirm";
 
 interface Node {
   id: number;
@@ -69,60 +70,73 @@ const NoteGraph = () => {
         alert("다른 노트끼리는 연결할 수 없습니다.");
         setSelectedNodes([]);
       } else {
-        const confirmation = window.confirm("노드를 연결하시겠습니까?");
-        if (confirmation) {
-          setLinks([...links, { source: firstNodeIdx, target: nodeIdx }]);
-          console.log("links:", links);
-          setSelectedNodes([]);
-        } else {
-          setSelectedNodes([]);
-        }
+        handleConnectConfirmation(firstNodeIdx, nodeIdx);
       }
     } else {
       setSelectedNodes([]);
     }
   };
 
+  const handleConnectConfirmation = (firstNodeIdx: number, nodeIdx: number) => {
+    useQuestion({
+      title: "Connect Note",
+      fireText: "노트를 연결하시겠습니까?",
+      resultText: "노트가 연결되었습니다.",
+      onConfirm: () => {
+        setLinks([...links, { source: firstNodeIdx, target: nodeIdx }]);
+        setSelectedNodes([]);
+      },
+    });
+  };
+
+  const handleDisconnectConfirmation = (sourceNode, targetNode, d, graph) => {
+    // 연결 끊기 작업 수행
+    console.log("링크 클릭:", d.source, "->", d.target);
+
+    const otherLinks = graph.links.filter(
+      (link) => !(link.source === d.source && link.target === d.target),
+    );
+
+    const shouldRemoveSourceNode =
+      !otherLinks.some(
+        (link) => link.source === sourceNode || link.target === sourceNode,
+      ) && nodes[sourceNode]?.type !== "MYNOTE";
+
+    const shouldRemoveTargetNode =
+      !otherLinks.some(
+        (link) => link.source === targetNode || link.target === targetNode,
+      ) && nodes[targetNode]?.type !== "MYNOTE";
+
+    const updatedNodes = graph.nodes.filter(
+      (node) =>
+        (node.id !== sourceNode || !shouldRemoveSourceNode) &&
+        (node.id !== targetNode || !shouldRemoveTargetNode),
+    );
+    setNodes(updatedNodes);
+    console.log("updatedNodes:", updatedNodes);
+
+    const updatedLinks = graph.links.filter(
+      (link) => !(link.source === d.source && link.target === d.target),
+    );
+    setLinks(updatedLinks);
+    console.log("updatedLinks:", updatedLinks);
+  };
+
   const handleLinkClick = (event: MouseEvent, d: Link, graph: Graph) => {
-    // 사용자에게 확인 요청 알림 창 띄우기
-    const confirmation = window.confirm("연결을 끊으시겠습니까?");
-    // 사용자가 확인을 선택한 경우에만 삭제 진행
-    if (confirmation) {
-      console.log("링크 클릭:", d.source, "->", d.target);
-      const sourceNode = d.source;
-      const targetNode = d.target;
+    const handleDisconnectAlert = () => {
+      useQuestion({
+        title: "Disconnect Link",
+        fireText: "연결을 끊으시겠습니까?",
+        resultText: "연결이 끊겼습니다.",
+        onConfirm: () => {
+          const sourceNode = d.source;
+          const targetNode = d.target;
+          handleDisconnectConfirmation(sourceNode, targetNode, d, graph);
+        },
+      });
+    };
 
-      const otherLinks = graph.links.filter(
-        (link) => !(link.source === d.source && link.target === d.target),
-      );
-
-      const shouldRemoveSourceNode =
-        !otherLinks.some(
-          (link) => link.source === sourceNode || link.target === sourceNode,
-        ) && nodes[sourceNode]?.type !== "MYNOTE";
-
-      const shouldRemoveTargetNode =
-        !otherLinks.some(
-          (link) => link.source === targetNode || link.target === targetNode,
-        ) && nodes[targetNode]?.type !== "MYNOTE";
-
-      const updatedNodes = graph.nodes.filter(
-        (node) =>
-          (node.id !== sourceNode || !shouldRemoveSourceNode) &&
-          (node.id !== targetNode || !shouldRemoveTargetNode),
-      );
-      setNodes(updatedNodes);
-      console.log("updatedNodes:", updatedNodes);
-
-      const updatedLinks = graph.links.filter(
-        (link) => !(link.source === d.source && link.target === d.target),
-      );
-      setLinks(updatedLinks);
-      console.log("updatedLinks:", updatedLinks);
-
-      // 링크와 노드를 삭제하고 시뮬레이션을 다시 시작합니다.
-      // simulation.alphaTarget(0.1).restart();
-    }
+    handleDisconnectAlert();
   };
 
   useEffect(() => {
