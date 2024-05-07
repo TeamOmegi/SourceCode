@@ -1,15 +1,18 @@
 package io.omegi.core.project.domain;
 
 import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import io.omegi.core.note.domain.Note;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -21,12 +24,13 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "error")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public class Error {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = IDENTITY)
 	private Integer errorId;
 
 	@OneToOne(fetch = LAZY)

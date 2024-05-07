@@ -3,7 +3,10 @@ package io.omegi.core.note.presentation.model.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record DrawNoteDetailViewResponse(
+import lombok.Builder;
+
+@Builder
+public record DrawAllNoteDetailViewResponse(
 	Integer noteId,
 	String title,
 	String content,
@@ -14,11 +17,12 @@ public record DrawNoteDetailViewResponse(
 	LocalDateTime createdAt,
 	RelatedErrorResponse error
 ) {
-	private record RelatedErrorResponse(
+	@Builder
+	public record RelatedErrorResponse(
 		Integer errorId,
 		String errorType,
 		String summary,
 		boolean solved
-		) {
+	) {
 	}
 }

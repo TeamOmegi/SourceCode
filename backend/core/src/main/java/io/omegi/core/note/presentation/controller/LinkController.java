@@ -1,5 +1,6 @@
 package io.omegi.core.note.presentation.controller;
 
+import static io.omegi.core.common.presentation.response.WrappedResponseStatus.*;
 import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.omegi.core.common.annotation.Login;
+import io.omegi.core.common.annotation.ResponseWrapping;
 import io.omegi.core.note.application.LinkCommandService;
 import io.omegi.core.note.application.dto.request.LinkNotesRequestDto;
 import io.omegi.core.note.application.dto.request.UnlinkNotesRequestDto;
@@ -25,17 +28,19 @@ public class LinkController {
 
 	private final LinkCommandService linkCommandService;
 
-	@PostMapping("/")
+	@PostMapping
 	@ResponseStatus(CREATED)
-	public void linkNote(@RequestBody LinkNoteRequest request) { // todo : userId, noteId 검증
-		LinkNotesRequestDto requestDto = new LinkNotesRequestDto(request.noteId(), List.of(request.targetNoteId()));
+	@ResponseWrapping(status = LINK_NOTE_SUCCESS)
+	public void linkNote(@Login Integer userId, @RequestBody LinkNoteRequest request) {
+		LinkNotesRequestDto requestDto = new LinkNotesRequestDto(userId, request.noteId(), List.of(request.targetNoteId()));
 		linkCommandService.linkNotes(requestDto);
 	}
 
-	@DeleteMapping("/")
+	@DeleteMapping
 	@ResponseStatus(NO_CONTENT)
-	public void unlinkNote(@RequestBody UnlinkNoteRequest request) {
-		UnlinkNotesRequestDto requestDto = new UnlinkNotesRequestDto(request.noteId(), List.of(request.targetNoteId()));
+	@ResponseWrapping(status = UNLINK_NOTE_SUCCESS)
+	public void unlinkNote(@Login Integer userId, @RequestBody UnlinkNoteRequest request) {
+		UnlinkNotesRequestDto requestDto = new UnlinkNotesRequestDto(userId, request.noteId(), List.of(request.targetNoteId()));
 		linkCommandService.unlinkNote(requestDto);
 	}
 }
