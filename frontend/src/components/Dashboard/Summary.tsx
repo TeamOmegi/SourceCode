@@ -4,7 +4,7 @@ const Summary = () => {
   return (
     <div className="m-1 mr-3 flex h-full w-2/5 flex-col rounded-xl">
       {/* 나의 에러 한눈에 보기 */}
-      <div className=" mb-2 mt-1 flex h-1/2 w-full flex-col rounded-xl bg-white p-1  shadow-md">
+      <div className="mb-2 mt-1 flex h-1/2 w-full flex-col rounded-xl bg-white p-1  shadow-md">
         <div className="ml-2 mt-2 box-border flex h-2/6 w-full p-2 text-base font-bold">
           나의 에러 한눈에 보기
         </div>

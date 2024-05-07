@@ -19,8 +19,8 @@ const LogTree = () => {
     setSelectedProject(projectId);
   };
   return (
-    <div className="mb-2 flex h-full w-3/5 flex-col rounded-xl bg-white shadow-md">
-      <div className="ml-2 mt-2 flex h-[15%]  w-full justify-between ">
+    <div className="mb-1 mr-1 mt-2 flex h-auto w-3/5 flex-col rounded-xl bg-white p-1 shadow-md">
+      <div className="flex h-[15%] w-full justify-between">
         <div className="ml-3 box-border flex h-full w-1/2 pt-3 text-base font-bold">
           로그 트리
         </div>
