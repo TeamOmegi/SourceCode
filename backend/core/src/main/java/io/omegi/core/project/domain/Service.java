@@ -5,15 +5,10 @@ import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +30,10 @@ public class Service {
 	@JoinColumn(name = "service_type_id")
 	private ServiceType serviceType;
 
+	@OneToOne(fetch = LAZY)
+	@JoinColumn(name = "service_token_id")
+	private ServiceToken serviceToken;
+
 	private String name;
 
 	@CreatedDate
@@ -42,4 +41,8 @@ public class Service {
 
 	@LastModifiedDate
 	private LocalDateTime updatedAt;
+
+	public void registerServiceToken(ServiceToken serviceToken) {
+		this.serviceToken = serviceToken;
+	}
 }
