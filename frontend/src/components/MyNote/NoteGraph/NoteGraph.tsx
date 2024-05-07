@@ -70,26 +70,32 @@ const NoteGraph = () => {
         alert("다른 노트끼리는 연결할 수 없습니다.");
         setSelectedNodes([]);
       } else {
-        handleConnectConfirmation(firstNodeIdx, nodeIdx);
+        handleConnect(firstNodeIdx, nodeIdx);
       }
     } else {
       setSelectedNodes([]);
     }
   };
 
-  const handleConnectConfirmation = (firstNodeIdx: number, nodeIdx: number) => {
-    useQuestion({
+  const handleConnect = async (firstNodeIdx: number, nodeIdx: number) => {
+    const result = await useQuestion({
       title: "Connect Note",
       fireText: "노트를 연결하시겠습니까?",
       resultText: "노트가 연결되었습니다.",
-      onConfirm: () => {
-        setLinks([...links, { source: firstNodeIdx, target: nodeIdx }]);
-        setSelectedNodes([]);
-      },
     });
+
+    if (result) {
+      setLinks([...links, { source: firstNodeIdx, target: nodeIdx }]);
+      setSelectedNodes([]);
+    }
   };
 
-  const handleDisconnectConfirmation = (sourceNode, targetNode, d, graph) => {
+  const handleDisconnect = (
+    sourceNode: number,
+    targetNode: number,
+    d: Link,
+    graph: Graph,
+  ) => {
     // 연결 끊기 작업 수행
     console.log("링크 클릭:", d.source, "->", d.target);
 
@@ -123,17 +129,19 @@ const NoteGraph = () => {
   };
 
   const handleLinkClick = (event: MouseEvent, d: Link, graph: Graph) => {
-    const handleDisconnectAlert = () => {
-      useQuestion({
+    const handleDisconnectAlert = async () => {
+      const result = await useQuestion({
         title: "Disconnect Link",
         fireText: "연결을 끊으시겠습니까?",
         resultText: "연결이 끊겼습니다.",
-        onConfirm: () => {
-          const sourceNode = d.source;
-          const targetNode = d.target;
-          handleDisconnectConfirmation(sourceNode, targetNode, d, graph);
-        },
       });
+
+      if (result) {
+        const sourceNode = d.source;
+        const targetNode = d.target;
+        handleDisconnect(sourceNode, targetNode, d, graph);
+        console.log("성공");
+      } else console.log("취소");
     };
 
     handleDisconnectAlert();
