@@ -5,8 +5,8 @@ interface Pram {
   resultText: string;
 }
 
-export const useQuestion = (comfirm: Pram) => {
-  Swal.fire({
+export const useQuestion = async (comfirm: Pram): Promise<boolean> => {
+  const result = await Swal.fire({
     title: `${comfirm.title}`,
     text: `${comfirm.fireText}`,
     icon: "question",
@@ -16,6 +16,7 @@ export const useQuestion = (comfirm: Pram) => {
     confirmButtonText: "Yes",
     cancelButtonText: "No",
     buttonsStyling: false,
+    reverseButtons: true,
     customClass: {
       popup: "w-72 h-56 pb-1 rounded-3xl text-xs grid-rows-12",
       icon: "my-3 row-start-2 row-end-6",
@@ -44,12 +45,14 @@ export const useQuestion = (comfirm: Pram) => {
             "bg-main-200 hover:text-main-200 flex h-8 w-16 mx-2 select-none items-center justify-center rounded-xl border-[2px] border-[#77af9c] text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:cursor-pointer hover:bg-[#77af9c] hover:duration-300",
         },
       });
-    }
+      return true;
+    } else return false;
   });
+  return result;
 };
 
-export const useWarnning = (comfirm: Pram) => {
-  Swal.fire({
+export const useWarnning = async (comfirm: Pram): Promise<boolean> => {
+  const result = await Swal.fire({
     title: `${comfirm.title}`,
     text: `${comfirm.fireText}`,
     icon: "warning",
@@ -59,6 +62,7 @@ export const useWarnning = (comfirm: Pram) => {
     confirmButtonText: "Yes",
     cancelButtonText: "No",
     buttonsStyling: false,
+    reverseButtons: true,
     customClass: {
       popup: "w-72 h-56 pb-1 rounded-3xl text-xs grid-rows-12",
       icon: "my-3 row-start-2 row-end-6",
@@ -87,6 +91,8 @@ export const useWarnning = (comfirm: Pram) => {
             "bg-main-200 hover:text-main-200 flex h-8 w-16 mx-2 select-none items-center justify-center rounded-xl border-[2px] border-[#77af9c] text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:cursor-pointer hover:bg-[#77af9c] hover:duration-300",
         },
       });
-    }
+      return true;
+    } else return false;
   });
+  return result;
 };
