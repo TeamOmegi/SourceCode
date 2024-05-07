@@ -59,7 +59,7 @@ const Summary = () => {
               src="/icons/TempIcon.png"
               alt="TempIcon"
             />
-            <div className="mt-2 text-sm">기본 노트</div>
+            <div className="mt-2 text-sm">내가 연결한 노트</div>
             <div className="text-base">10</div>
           </div>
           <div className="mr-3 box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
@@ -68,7 +68,7 @@ const Summary = () => {
               src="/icons/TempIcon.png"
               alt="TempIcon"
             />
-            <div className="mt-2 text-sm">에러 노트</div>
+            <div className="mt-2 text-sm">나에게 연결된 노트</div>
             <div className="text-base">10</div>
           </div>
         </div>

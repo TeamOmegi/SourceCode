@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ErrorList from "../components/Error/ErrorList/ErrorList";
+import ErrorList from "../components/Dashboard/ErrorList";
 import Summary from "../components/Dashboard/Summary";
 import LogTree from "../components/Dashboard/LogTree";
 
