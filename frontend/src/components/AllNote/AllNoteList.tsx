@@ -70,7 +70,7 @@ const AllNoteList = () => {
             className="ml-2 h-full w-full bg-transparent text-sm text-gray-700 outline-none"
           />
           <img
-            src="../public/icons/SearchIcon.png"
+            src="/icons/SearchIcon.png"
             alt="검색"
             className="mr-3 mt-2 h-5 w-5 cursor-pointer"
             onClick={handleSearch}
