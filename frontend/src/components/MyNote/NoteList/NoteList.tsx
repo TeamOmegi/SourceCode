@@ -16,7 +16,7 @@ const noteDummy: MyNote[] = [
   {
     noteId: 1,
     title: "깔깔 유머모음집 1",
-    content: "Q) 개발자가 좋아하는 향신료는?   A) 깃 허브~",
+    content: "<div>Q) 개발자가 좋아하는 향신료는?   A) 깃 허브~</div>",
     createdAt: "2024-05-05",
     visibility: true,
     tags: ["# 1", "# 2", "# 3"],
@@ -25,7 +25,7 @@ const noteDummy: MyNote[] = [
     noteId: 2,
     title: "어제 내세상이 무너졌어",
     content:
-      "취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ ",
+      "<p><code>취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~</code></p> ",
     createdAt: "2024-05-06",
     visibility: false,
     tags: ["# 3", "# 4", "# 5"],
@@ -33,7 +33,7 @@ const noteDummy: MyNote[] = [
   {
     noteId: 3,
     title: "어제 내세상이 '또' 무너졌어",
-    content: "..",
+    content: "<div>zzzzzzzzzzzz</div>",
     createdAt: "2024-05-06",
     visibility: false,
     tags: ["# 3", "# 4", "# 6"],
@@ -49,14 +49,15 @@ const NoteList = () => {
   useEffect(() => {
     const getData = async () => {
       const allMyNoteData = await getAllMyNoteData("");
-      const allTagData = await getAllTags();
-      setNoteList([...allMyNoteData]);
-      setAllTag([...allTagData]);
+      //const allTagData = await getAllTags();
+      console.log("성공", allMyNoteData);
+      // setNoteList([...allMyNoteData]);
+      // setAllTag([...allTagData]);
     };
 
     setNoteList([...noteDummy]);
     setAllTag([...tagDummy]);
-    //getData();
+    getData();
   }, []);
 
   const handleSearch = async () => {

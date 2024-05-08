@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContentParser } from "../../hooks/useContentParser";
 
 interface AllNote {
   noteId: number;
@@ -18,6 +20,7 @@ interface Props {
 
 const AllNoteContainer = ({ notes }: Props) => {
   const navigate = useNavigate();
+  const [noteList, setNoteList] = useState<AllNote[]>([]);
 
   // 노트를 클릭했을 때 상세 페이지로 이동하는 함수
   const handleNoteClick = (note: AllNote) => {
@@ -28,9 +31,19 @@ const AllNoteContainer = ({ notes }: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (notes.length === 0) return;
+    notes.map((note) => {
+      note.content = useContentParser(note.content);
+      return note;
+    });
+
+    setNoteList([...notes]);
+  }, [notes]);
+
   return (
     <div className="mt-5 flex h-full w-full flex-shrink-0 flex-col overflow-y-scroll scrollbar-webkit">
-      {notes.map((note) => (
+      {noteList.map((note) => (
         <div
           key={note.noteId}
           className="mb-5 ml-5 mr-5 box-border flex items-center justify-between rounded-xl border-[1px] border-gray-300 bg-white py-3 pb-2 pl-3 shadow-lg"

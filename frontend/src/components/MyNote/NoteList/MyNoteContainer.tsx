@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContentParser } from "../../../hooks/useContentParser";
 
 interface Props {
   notes: MyNote[];
@@ -16,13 +18,24 @@ interface MyNote {
 
 const MyNoteContainer = ({ notes, selectedTag }: Props) => {
   const navigate = useNavigate();
-
+  const [noteList, setNoteList] = useState<MyNote[]>([]);
   const handleNoteClick = (note: MyNote) => {
     navigate(`/omegi/myNote/${note.noteId}`);
   };
+
+  useEffect(() => {
+    if (notes.length === 0) return;
+    notes.map((note) => {
+      note.content = useContentParser(note.content);
+      return note;
+    });
+
+    setNoteList([...notes]);
+  }, [notes]);
+
   return (
     <div className="mt-10  flex h-full w-full flex-col overflow-y-scroll scrollbar-webkit">
-      {notes.map((note, index) => {
+      {noteList.map((note, index) => {
         if (selectedTag !== "" && !note.tags.includes(selectedTag)) return;
         return (
           <div

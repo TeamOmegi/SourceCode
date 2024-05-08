@@ -18,7 +18,7 @@ const allNoteSample: AllNote[] = [
   {
     noteId: 1,
     title: "손민기는 보아라",
-    content: "손민기 고해림 화이팅",
+    content: "<div>손민기 고해림 화이팅</div>",
     createdAt: "2024-05-04",
     isMine: false,
     user: {
@@ -30,7 +30,7 @@ const allNoteSample: AllNote[] = [
     noteId: 2,
     title: "도하이 오화이팅",
     content:
-      "휴우~~ 범죄도시 보고올게~~ㅁㄴ이ㅏ럼인;ㅏ러민ㅇ라ㅓ as;dkfa;ldsfk;alsdkf;lqwkerpoksa;ldkfjpqjfklnlk미ㅏㅇ너림ㅇ나ㅓ림ㄴ아ㅓ림;ㅏㅇ널;ㅣ바젇게ㅓㅇ리마너리마ㅓㄴㅇ리마ㅓㅇㄴ리ㅏ먼ㅇ리ㅏㅓㅂㅈ대ㅓ갠우리ㅏㅟ;ㅁ런ㅁ애ㅣㅏ러먼우치ㅏㅜ티ㅏ;ㅡㅜㅁ니;아ㅓ렙저덱'ㅐ버ㅔㅈ라이너므;ㅣㅓ리먼ㅇ'ㄹ;ㅂ저ㅐㅔ다거;안렁ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ미ㅏㄴㅇㄹ;'ㅣ",
+      "<div><p><span>휴우~~ 범죄도시 보고올게~~ㅁㄴ이ㅏ럼인;ㅏ러민ㅇ라ㅓ as;dkfa;ldsfk;alsdkf;lqwkerpoksa;ldkfjpqjfklnlk미ㅏㅇ너림ㅇ나ㅓ림ㄴ아ㅓ림;ㅏㅇ널;ㅣ바젇게ㅓㅇ리마너리마ㅓㄴㅇ리마ㅓㅇㄴ리ㅏ먼ㅇ리ㅏㅓㅂㅈ대ㅓ갠우리ㅏㅟ;ㅁ런ㅁ애ㅣㅏ러먼우치ㅏㅜ티ㅏ;ㅡㅜㅁ니;아ㅓ렙저덱'ㅐ버ㅔㅈ라이너므;ㅣㅓ리먼ㅇ'ㄹ;ㅂ저ㅐㅔ다거;안렁ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ미ㅏㄴㅇㄹ;'ㅣ</span></p></div>",
     createdAt: "2024-05-04",
     isMine: true,
     user: {
