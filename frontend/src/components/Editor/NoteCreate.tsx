@@ -141,6 +141,7 @@ const NoteCreate = () => {
       setIsWriting(true);
     }
   }, [noteData]);
+
   return (
     <div className="box-border flex h-full w-full flex-col items-center pb-4 pt-5">
       <div className="flex w-full items-center justify-end px-5">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllMyNoteData, getAllTags } from "../../../api/myNoteAxios";
 import MyNoteContainer from "./MyNoteContainer";
-import Select from "react-select";
 import CustomSelect from "./CustomSelect";
 
 interface MyNote {
