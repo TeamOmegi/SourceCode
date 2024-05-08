@@ -30,8 +30,8 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		configuration.setAllowCredentials(true);
-		configuration.setAllowedOrigins(List.of("*"));
-		configuration.setAllowedOriginPatterns(List.of("*"));
+		configuration.setAllowedOrigins(List.of("localhost:5173"));
+		// configuration.setAllowedOriginPatterns(List.of("*"));
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setExposedHeaders(List.of("*"));
