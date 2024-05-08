@@ -1,11 +1,16 @@
 package io.omegi.core.note.application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.omegi.core.common.exception.AccessDeniedException;
 import io.omegi.core.note.application.dto.request.LinkNotesRequestDto;
 import io.omegi.core.note.application.dto.request.UnlinkNotesRequestDto;
+import io.omegi.core.note.application.dto.response.LinkNotesResponseDto;
+import io.omegi.core.note.application.dto.response.UnlinkNotesResponseDto;
 import io.omegi.core.note.application.exception.LinkAlreadyExistsException;
 import io.omegi.core.note.application.exception.NoteNotFoundException;
 import io.omegi.core.note.domain.Link;
@@ -23,7 +28,7 @@ public class LinkCommandService {
 	private final LinkRepository linkRepository;
 	private final NoteRepository noteRepository;
 
-	public void linkNotes(LinkNotesRequestDto requestDto) {
+	public LinkNotesResponseDto linkNotes(LinkNotesRequestDto requestDto) {
 		Note note = noteRepository.findById(requestDto.noteId())
 			.orElseThrow(NoteNotFoundException::new);
 
@@ -31,6 +36,8 @@ public class LinkCommandService {
 		if (!user.getUserId().equals(requestDto.userId())) {
 			throw new AccessDeniedException();
 		}
+
+		List<Integer> linkedNoteIds = new ArrayList<>();
 
 		for (Integer targetNoteId : requestDto.targetNoteIds()) {
 			Note targetNote = noteRepository.findById(targetNoteId)
@@ -52,10 +59,13 @@ public class LinkCommandService {
 
 			linkRepository.save(link);
 			targetNote.linkNote();
+			linkedNoteIds.add(targetNoteId);
 		}
+
+		return new LinkNotesResponseDto(note.getNoteId(), linkedNoteIds);
 	}
 
-	public void unlinkNote(UnlinkNotesRequestDto requestDto) {
+	public UnlinkNotesResponseDto unlinkNotes(UnlinkNotesRequestDto requestDto) {
 		Note note = noteRepository.findById(requestDto.noteId())
 			.orElseThrow(NoteNotFoundException::new);
 
@@ -63,6 +73,8 @@ public class LinkCommandService {
 		if (!user.getUserId().equals(requestDto.userId())) {
 			throw new AccessDeniedException();
 		}
+
+		List<Integer> unlinkedNoteIds = new ArrayList<>();
 
 		for (Integer linkedNoteId : requestDto.linkedNoteIds()) { // todo: 하나씩 조회해서 삭제하는 비효율 개선
 			Note linkedNote = noteRepository.findById(linkedNoteId)
@@ -74,6 +86,9 @@ public class LinkCommandService {
 
 			linkRepository.deleteByLinkedNote(linkedNote);
 			linkedNote.unlinkNote();
+			unlinkedNoteIds.add(linkedNoteId);
 		}
+
+		return new UnlinkNotesResponseDto(note.getNoteId(), unlinkedNoteIds);
 	}
 }

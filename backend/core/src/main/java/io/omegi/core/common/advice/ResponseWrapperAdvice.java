@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import io.omegi.core.common.annotation.ResponseWrapping;
-import io.omegi.core.common.presentation.response.ResponseWrapper;
-import io.omegi.core.common.presentation.response.WrappedResponseStatus;
+import io.omegi.core.common.presentation.wrapper.ResponseWrapper;
+import io.omegi.core.common.presentation.wrapper.WrappedResponseStatus;
 
 @RestControllerAdvice
 public class ResponseWrapperAdvice implements ResponseBodyAdvice<Object> {

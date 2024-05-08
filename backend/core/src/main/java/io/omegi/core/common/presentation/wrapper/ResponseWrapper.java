@@ -1,4 +1,4 @@
-package io.omegi.core.common.presentation.response;
+package io.omegi.core.common.presentation.wrapper;
 
 import static lombok.AccessLevel.*;
 

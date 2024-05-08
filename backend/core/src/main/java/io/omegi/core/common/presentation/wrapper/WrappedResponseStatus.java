@@ -1,4 +1,4 @@
-package io.omegi.core.common.presentation.response;
+package io.omegi.core.common.presentation.wrapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,9 @@ public enum WrappedResponseStatus {
 	DELETE_COMMENT_SUCCESS(2108, "comment is successfully deleted"),
 	SAVE_PROJECT_SUCCESS(2109, "project is successfully created"),
 	EDIT_PROJECT_SUCCESS(2110, "project is successfully edited"),
-	DELETE_PROJECT_SUCCESS(2111, "project is successfully deleted");
+	DELETE_PROJECT_SUCCESS(2111, "project is successfully deleted"),
+
+	ACCESS_DENIED(4003, "access denied");
 
 	private final int code;
 	private final String message;
