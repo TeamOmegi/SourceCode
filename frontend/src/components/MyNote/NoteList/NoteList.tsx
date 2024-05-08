@@ -81,7 +81,7 @@ const NoteList = () => {
             className="ml-2 h-full w-full bg-transparent text-sm text-gray-700 outline-none"
           />
           <img
-            src="../public/icons/SearchIcon.png"
+            src="/icons/SearchIcon.png"
             alt="검색"
             className="mr-2 mt-2 h-4 w-4 cursor-pointer"
             onClick={handleSearch}
