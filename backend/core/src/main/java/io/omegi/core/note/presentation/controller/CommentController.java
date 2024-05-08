@@ -1,6 +1,6 @@
 package io.omegi.core.note.presentation.controller;
 
-import static io.omegi.core.common.presentation.response.WrappedResponseStatus.*;
+import static io.omegi.core.common.presentation.wrapper.WrappedResponseStatus.*;
 import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.web.bind.annotation.DeleteMapping;

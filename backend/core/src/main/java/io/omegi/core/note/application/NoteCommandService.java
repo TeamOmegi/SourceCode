@@ -8,6 +8,9 @@ import io.omegi.core.common.exception.AccessDeniedException;
 import io.omegi.core.note.application.dto.request.DeleteNoteRequestDto;
 import io.omegi.core.note.application.dto.request.EditNoteRequestDto;
 import io.omegi.core.note.application.dto.request.SaveNoteRequestDto;
+import io.omegi.core.note.application.dto.response.DeleteNoteResponseDto;
+import io.omegi.core.note.application.dto.response.EditNoteResponseDto;
+import io.omegi.core.note.application.dto.response.SaveNoteResponseDto;
 import io.omegi.core.note.application.event.NoteEditedEvent;
 import io.omegi.core.note.application.event.NoteSavedEvent;
 import io.omegi.core.note.application.exception.NoteAccessDeniedException;
@@ -36,7 +39,7 @@ public class NoteCommandService {
 
 	private final ApplicationEventPublisher eventPublisher;
 
-	public void saveNote(SaveNoteRequestDto requestDto) {
+	public SaveNoteResponseDto saveNote(SaveNoteRequestDto requestDto) {
 		NoteType noteType = noteTypeRepository.findByType(Type.valueOf(requestDto.type()))
 			.orElseThrow(RuntimeException::new);
 		NoteVisibility noteVisibility = noteVisibilityRepository.findByVisibility(Visibility.valueOf(requestDto.visibility()))
@@ -56,9 +59,11 @@ public class NoteCommandService {
 		noteRepository.save(note);
 
 		eventPublisher.publishEvent(new NoteSavedEvent(requestDto.userId(), note.getNoteId(), requestDto.tagNames(), requestDto.targetNoteIds()));
+
+		return new SaveNoteResponseDto(note.getNoteId());
 	}
 
-	public void editNote(EditNoteRequestDto requestDto) {
+	public EditNoteResponseDto editNote(EditNoteRequestDto requestDto) {
 		Note note = noteRepository.findById(requestDto.noteId())
 			.orElseThrow(NoteNotFoundException::new);
 
@@ -76,9 +81,11 @@ public class NoteCommandService {
 
 
 		eventPublisher.publishEvent(new NoteEditedEvent(requestDto.userId(), requestDto.noteId(), requestDto.tagNames(), requestDto.linkedNoteIds()));
+
+		return new EditNoteResponseDto(note.getNoteId());
 	}
 
-	public void deleteNote(DeleteNoteRequestDto requestDto) {
+	public DeleteNoteResponseDto deleteNote(DeleteNoteRequestDto requestDto) {
 		User user = userRepository.findById(requestDto.userId())
 			.orElseThrow(RuntimeException::new);
 
@@ -87,5 +94,7 @@ public class NoteCommandService {
 		}
 
 		noteRepository.deleteById(requestDto.noteId());
+
+		return new DeleteNoteResponseDto(requestDto.noteId());
 	}
 }
