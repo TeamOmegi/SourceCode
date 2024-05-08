@@ -32,7 +32,7 @@ export const getGraphData = async (): Promise<GraphData | null> => {
 // 노트 연결
 export const linkCreate = async (newLink: Link) => {
   try {
-    const response = await axios.post(`${BASE_URL}/notes/graph`, newLink);
+    const response = await axios.post<Link>(`${BASE_URL}/notes/link`, newLink);
     return response.data;
   } catch (error) {
     console.error("Fail linkCreate", error);
