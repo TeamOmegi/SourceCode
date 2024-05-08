@@ -7,7 +7,6 @@ interface Error {
   project: string;
   service: string;
   createdAt: string;
-  pastNoteCount: number;
 }
 
 const ErrorList = () => {
@@ -19,7 +18,6 @@ const ErrorList = () => {
       project: "Project A",
       service: "Service A",
       createdAt: "2021-09-01",
-      pastNoteCount: 3,
     },
     {
       errorId: 2,
@@ -28,7 +26,6 @@ const ErrorList = () => {
       project: "Project B",
       service: "Service B",
       createdAt: "2021-09-02",
-      pastNoteCount: 2,
     },
     {
       errorId: 3,
@@ -37,7 +34,6 @@ const ErrorList = () => {
       project: "Project C",
       service: "Service C",
       createdAt: "2021-09-03",
-      pastNoteCount: 1,
     },
   ];
 
