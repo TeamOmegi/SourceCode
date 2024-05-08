@@ -1,5 +1,6 @@
 package io.omegi.core.project.domain;
 
+import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class ServiceToken {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = IDENTITY)
 	private Integer serviceTokenId;
 
 	private String name;

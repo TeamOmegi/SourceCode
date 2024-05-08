@@ -51,4 +51,8 @@ public class Service {
 
 	@LastModifiedDate
 	private LocalDateTime updatedAt;
+
+	public void registerServiceToken(ServiceToken serviceToken) {
+		this.serviceToken = serviceToken;
+	}
 }
