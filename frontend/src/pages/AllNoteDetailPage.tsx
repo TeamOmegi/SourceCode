@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import CommentContainer from "../components/Comment/CommentContainer";
+import CommentForm from "../components/Comment/CommentForm";
+import { createComment } from "../api/commentAxios";
 
 interface User {
   profileImageUrl: string;
@@ -65,6 +68,15 @@ const AllNoteDetailPage = ({ noteId }: Props) => {
     getNoteDetail();
   }, [noteId]);
 
+  const handleCommentSubmit = async (content: string) => {
+    try {
+      await createComment(noteId, content);
+      console.log("댓글 작성:", content);
+    } catch (error) {
+      console.error("댓글 작성 중 오류가 발생했습니다:", error);
+    }
+  };
+
   return (
     <div className="bg-default">
       <div className="box-border flex h-full w-full flex-col rounded-xl p-10 text-black">
@@ -109,8 +121,13 @@ const AllNoteDetailPage = ({ noteId }: Props) => {
             {note ? note.backlinkCount : sampleNote.backlinkCount}개
           </p>
         </div>
-        <div className="box-border flex h-auto w-full bg-orange-100 p-5">
-          댓글
+        <div className="box-border flex h-auto w-full flex-col bg-orange-100 p-5">
+          <div>
+            <CommentContainer noteId={noteId} />
+          </div>
+          <div>
+            <CommentForm onSubmit={handleCommentSubmit} />
+          </div>
         </div>
       </div>
     </div>
