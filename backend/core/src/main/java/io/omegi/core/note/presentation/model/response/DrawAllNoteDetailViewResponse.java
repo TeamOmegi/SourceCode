@@ -15,7 +15,8 @@ public record DrawAllNoteDetailViewResponse(
 	String visibility,
 	Integer backlinkCount,
 	LocalDateTime createdAt,
-	RelatedErrorResponse error
+	RelatedErrorResponse error,
+	UserResponse user
 ) {
 	@Builder
 	public record RelatedErrorResponse(
@@ -23,6 +24,14 @@ public record DrawAllNoteDetailViewResponse(
 		String errorType,
 		String summary,
 		boolean solved
+	) {
+	}
+
+	@Builder
+	public record UserResponse(
+		Integer userId,
+		String username,
+		String profileImageUrl
 	) {
 	}
 }
