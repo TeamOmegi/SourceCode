@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CommentContainer from "../components/Comment/CommentContainer";
 import CommentForm from "../components/Comment/CommentForm";
 import { createComment } from "../api/commentAxios";
+import { useParams } from "react-router-dom";
 
 interface User {
   profileImageUrl: string;
@@ -26,11 +27,8 @@ interface NoteDetail {
   error: ErrorInfo;
 }
 
-interface Props {
-  noteId: number;
-}
-
-const AllNoteDetailPage = ({ noteId }: Props) => {
+const AllNoteDetailPage = () => {
+  const noteId = parseInt(useParams().noteId || "-1");
   const [note, setNote] = useState<NoteDetail | null>(null);
 
   const sampleNote: NoteDetail = {
@@ -121,7 +119,7 @@ const AllNoteDetailPage = ({ noteId }: Props) => {
             {note ? note.backlinkCount : sampleNote.backlinkCount}개
           </p>
         </div>
-        <div className="box-border flex h-auto w-full flex-col bg-orange-100 p-5">
+        <div className="box-border flex h-auto w-full flex-col p-3">
           <div>
             <CommentContainer noteId={noteId} />
           </div>

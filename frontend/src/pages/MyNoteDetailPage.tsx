@@ -194,7 +194,7 @@ const MyNoteDetailPage = () => {
           />
           <p className="ml-1 text-base">{note?.backlinkCount}개</p>
         </div>
-        <div className="box-border flex h-auto w-full flex-col bg-orange-100 p-5">
+        <div className="box-border flex h-auto w-full flex-col p-3">
           <div>
             <CommentContainer noteId={noteId} />
           </div>
