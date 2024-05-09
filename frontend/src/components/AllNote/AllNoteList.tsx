@@ -9,53 +9,33 @@ interface AllNote {
   createdAt: string;
   isMine: boolean;
   user: {
+    userId: number;
     profileImageUrl: string;
     username: string;
   };
 }
 
-const allNoteSample: AllNote[] = [
-  {
-    noteId: 1,
-    title: "손민기는 보아라",
-    content: "<div>손민기 고해림 화이팅</div>",
-    createdAt: "2024-05-04",
-    isMine: false,
-    user: {
-      profileImageUrl: "이미지 url",
-      username: "사용자1",
-    },
-  },
-  {
-    noteId: 2,
-    title: "도하이 오화이팅",
-    content:
-      "<div><p><span>휴우~~ 범죄도시 보고올게~~ㅁㄴ이ㅏ럼인;ㅏ러민ㅇ라ㅓ as;dkfa;ldsfk;alsdkf;lqwkerpoksa;ldkfjpqjfklnlk미ㅏㅇ너림ㅇ나ㅓ림ㄴ아ㅓ림;ㅏㅇ널;ㅣ바젇게ㅓㅇ리마너리마ㅓㄴㅇ리마ㅓㅇㄴ리ㅏ먼ㅇ리ㅏㅓㅂㅈ대ㅓ갠우리ㅏㅟ;ㅁ런ㅁ애ㅣㅏ러먼우치ㅏㅜ티ㅏ;ㅡㅜㅁ니;아ㅓ렙저덱'ㅐ버ㅔㅈ라이너므;ㅣㅓ리먼ㅇ'ㄹ;ㅂ저ㅐㅔ다거;안렁ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ미ㅏㄴㅇㄹ;'ㅣ</span></p></div>",
-    createdAt: "2024-05-04",
-    isMine: true,
-    user: {
-      profileImageUrl: "이미지 url",
-      username: "사용자2",
-    },
-  },
-];
-
 const AllNoteList = () => {
   const [allNoteList, setAllNoteList] = useState<AllNote[]>([]);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  useEffect(() => {
-    const getAllNote = async () => {
-      const allNoteList = await getAllNoteList("");
-      setAllNoteList([...allNoteList]);
-    };
+  const getAllNotes = async () => {
+    try {
+      const allNotesResponse = await getAllNoteList(searchKeyword);
+      console.log("히히 오줌발싸", allNotesResponse.notes);
 
-    setAllNoteList([...allNoteSample]);
+      setAllNoteList([...allNotesResponse.notes]);
+    } catch (error) {
+      console.error("Fail getAllNotes ", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllNotes();
   }, []);
 
-  const handleSearch = async () => {
-    const allNoteList = await getAllNoteList(searchKeyword);
-    setAllNoteList([...allNoteList]);
+  const handleSearch = () => {
+    getAllNotes();
   };
 
   return (
