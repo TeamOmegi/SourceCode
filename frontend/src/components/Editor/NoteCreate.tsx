@@ -19,23 +19,14 @@ import html from "highlight.js/lib/languages/xml";
 
 import { useQuestion, useWarnning } from "../../hooks/useComfirm";
 import { useError } from "../../hooks/useAlert";
-import { noteCreate } from "../../api/myNoteAxios";
+import { Note, noteCreate } from "../../api/myNoteAxios";
 import useEditorStore from "../../store/useEditorStore";
-
-export interface NoteData {
-  title: string;
-  tags: string[];
-  content: string;
-  type: string;
-  visibility: string;
-  links: [];
-}
 
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);
   const { setShowNote, setIsWriting } = useEditorStore();
 
-  const [noteData, setNoteDate] = useState<NoteData>({
+  const [noteData, setNoteDate] = useState<Note>({
     title: "",
     tags: [],
     content: "",
@@ -180,7 +171,7 @@ const NoteCreate = () => {
       />
       <Toolbar editor={editor} />
       <EditorContent
-        className="box-border w-full flex-1 overflow-y-scroll px-8 py-4 scrollbar-webkit"
+        className="my-4 box-border w-full flex-1 overflow-y-scroll px-8 scrollbar-webkit"
         editor={editor}
         onBlur={() => {
           console.log("성공!!");

@@ -11,34 +11,6 @@ interface MyNote {
   visibility: boolean;
   createdAt: string;
 }
-const tagDummy = ["# 1", "# 2", "# 3", "# 4", "# 5"];
-const noteDummy: MyNote[] = [
-  {
-    noteId: 1,
-    title: "깔깔 유머모음집 1",
-    content: "<div>Q) 개발자가 좋아하는 향신료는?   A) 깃 허브~</div>",
-    createdAt: "2024-05-05",
-    visibility: true,
-    tags: ["# 1", "# 2", "# 3"],
-  },
-  {
-    noteId: 2,
-    title: "어제 내세상이 무너졌어",
-    content:
-      "<p><code>취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~ 취업시켜줘잉~</code></p> ",
-    createdAt: "2024-05-06",
-    visibility: false,
-    tags: ["# 3", "# 4", "# 5"],
-  },
-  {
-    noteId: 3,
-    title: "어제 내세상이 '또' 무너졌어",
-    content: "<div>zzzzzzzzzzzz</div>",
-    createdAt: "2024-05-06",
-    visibility: false,
-    tags: ["# 3", "# 4", "# 6"],
-  },
-];
 
 const NoteList = () => {
   const [noteList, setNoteList] = useState<MyNote[]>([]);
