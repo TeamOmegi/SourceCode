@@ -1,20 +1,26 @@
 package io.omegi.core.note.application;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.omegi.core.common.exception.AccessDeniedException;
 import io.omegi.core.note.application.exception.NoteNotFoundException;
+import io.omegi.core.note.domain.Link;
 import io.omegi.core.note.domain.Note;
 import io.omegi.core.note.domain.NoteTag;
 import io.omegi.core.note.domain.Tag;
 import io.omegi.core.note.persistence.LinkRepository;
 import io.omegi.core.note.persistence.NoteRepository;
+import io.omegi.core.note.persistence.TagRepository;
 import io.omegi.core.note.presentation.model.response.DrawAllNoteDetailViewResponse;
 import io.omegi.core.note.presentation.model.response.DrawAllNoteListViewResponse;
 import io.omegi.core.note.presentation.model.response.DrawMyNoteDetailViewResponse;
+import io.omegi.core.note.presentation.model.response.DrawMyNoteGraphViewResponse;
 import io.omegi.core.note.presentation.model.response.DrawMyNoteListViewResponse;
 import io.omegi.core.project.domain.Error;
 import io.omegi.core.project.presentation.model.response.DrawNoteSummaryViewResponse;
@@ -30,6 +36,7 @@ public class NoteQueryService {
 	private final NoteRepository noteRepository;
 	private final UserRepository userRepository;
 	private final LinkRepository linkRepository;
+	private final TagRepository tagRepository;
 
 	public DrawMyNoteDetailViewResponse drawMyNoteDetailView(Integer userId, Integer noteId) {
 		Note note = noteRepository.findById(noteId)
@@ -98,6 +105,86 @@ public class NoteQueryService {
 		return new DrawMyNoteListViewResponse(noteResponses);
 	}
 
+	public DrawMyNoteGraphViewResponse drawMyNoteGraphView(Integer userId) {
+		User user = userRepository.findById(userId)
+			.orElseThrow(RuntimeException::new);
+
+		List<Note> notes = noteRepository.findAllByUser(user);
+		List<Tag> tags = tagRepository.findAllByUser(user);
+
+		Map<Integer, Integer> noteIndexes = new HashMap<>();
+		Map<Integer, Integer> tagIndexes = new HashMap<>();
+
+		List<DrawMyNoteGraphViewResponse.NodeResponse> nodes = new ArrayList<>();
+		List<DrawMyNoteGraphViewResponse.EdgeResponse> edges = new ArrayList<>();
+
+		int index = 1;
+
+		for (Note note : notes) {
+			noteIndexes.put(note.getNoteId(), index);
+			DrawMyNoteGraphViewResponse.NodeResponse node = DrawMyNoteGraphViewResponse.NodeResponse.builder()
+				.nodeId(note.getNoteId())
+				.index(index)
+				.value(note.getTitle())
+				.type("MY_NOTE")
+				.build();
+			nodes.add(node);
+			index++;
+		}
+
+		for (Tag tag : tags) {
+			tagIndexes.put(tag.getTagId(), index);
+			DrawMyNoteGraphViewResponse.NodeResponse node = DrawMyNoteGraphViewResponse.NodeResponse.builder()
+				.nodeId(tag.getTagId())
+				.index(index)
+				.value(tag.getName())
+				.type("TAG")
+				.build();
+			nodes.add(node);
+			index++;
+		}
+
+		for (Note note : notes) {
+			Integer noteIndex = noteIndexes.get(note.getNoteId());
+
+			List<Link> links = note.getLinks();
+			for (Link link : links) {
+				Note linkedNote = link.getLinkedNote();
+				Integer linkedNoteNoteId = linkedNote.getNoteId();
+
+				Integer linkedNoteIndex = null;
+
+				if (noteIndexes.containsKey(linkedNoteNoteId)) {
+					linkedNoteIndex = noteIndexes.get(linkedNoteNoteId);
+				} else {
+					linkedNoteIndex = index++;
+					noteIndexes.put(linkedNoteIndex, linkedNoteIndex);
+				}
+
+				DrawMyNoteGraphViewResponse.EdgeResponse edge = DrawMyNoteGraphViewResponse.EdgeResponse.builder()
+					.sourceIndex(noteIndex)
+					.targetIndex(linkedNoteIndex)
+					.build();
+				edges.add(edge);
+			}
+
+			List<NoteTag> noteTags = note.getNoteTags();
+			for (NoteTag noteTag : noteTags) {
+				Tag tag = noteTag.getTag();
+
+				Integer tagIndex = tagIndexes.get(tag.getTagId());
+
+				DrawMyNoteGraphViewResponse.EdgeResponse edge = DrawMyNoteGraphViewResponse.EdgeResponse.builder()
+					.sourceIndex(noteIndex)
+					.targetIndex(tagIndex)
+					.build();
+				edges.add(edge);
+			}
+		}
+
+		return new DrawMyNoteGraphViewResponse(nodes, edges);
+	}
+
 	public DrawAllNoteDetailViewResponse drawAllNoteDetailView(Integer noteId) {
 		Note note = noteRepository.findById(noteId)
 			.orElseThrow(NoteNotFoundException::new);
@@ -122,6 +209,13 @@ public class NoteQueryService {
 				.build();
 		}
 
+		User user = note.getUser();
+		DrawAllNoteDetailViewResponse.UserResponse userResponse = DrawAllNoteDetailViewResponse.UserResponse.builder()
+			.userId(user.getUserId())
+			.username(user.getUsername())
+			.profileImageUrl(user.getProfileImageUrl())
+			.build();
+
 		return DrawAllNoteDetailViewResponse.builder()
 			.noteId(note.getNoteId())
 			.title(note.getTitle())
@@ -132,6 +226,7 @@ public class NoteQueryService {
 			.backlinkCount(note.getBacklinkCount())
 			.createdAt(note.getCreatedAt())
 			.error(relatedErrorResponse)
+			.user(userResponse)
 			.build();
 	}
 

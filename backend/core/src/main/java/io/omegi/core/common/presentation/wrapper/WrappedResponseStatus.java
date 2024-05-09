@@ -24,6 +24,7 @@ public enum WrappedResponseStatus {
 	DRAW_ERROR_DETAIL_VIEW_SUCCESS(2009, "error detail view is successfully drawn"),
 	DRAW_ERRORS_VIEW_SUCCESS(2010, "errors view is successfully drawn"),
 	DRAW_ERROR_SUMMARY_VIEW_SUCCESS(2011, "error summary view is successfully drawn"),
+	DRAW_IS_LINKED_VIEW_SUCCESS(2012, "is linked view is successfully drawn"),
 
 	SAVE_NOTE_SUCCESS(2101, "note is successfully saved"),
 	EDIT_NOTE_SUCCESS(2102, "note is successfully edited"),

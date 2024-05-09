@@ -16,6 +16,7 @@ import io.omegi.core.note.application.NoteQueryService;
 import io.omegi.core.note.presentation.model.response.DrawAllNoteDetailViewResponse;
 import io.omegi.core.note.presentation.model.response.DrawAllNoteListViewResponse;
 import io.omegi.core.note.presentation.model.response.DrawMyNoteDetailViewResponse;
+import io.omegi.core.note.presentation.model.response.DrawMyNoteGraphViewResponse;
 import io.omegi.core.note.presentation.model.response.DrawMyNoteListViewResponse;
 import io.omegi.core.project.presentation.model.response.DrawNoteSummaryViewResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,8 @@ public class NoteUiController {
 	@GetMapping("/graph")
 	@ResponseStatus(OK)
 	@ResponseWrapping(status = DRAW_MY_NOTE_GRAPH_VIEW_SUCCESS)
-	public void drawMyNoteGraphView(@Login Integer userId) {
-
+	public DrawMyNoteGraphViewResponse drawMyNoteGraphView(@Login Integer userId) {
+		return noteQueryService.drawMyNoteGraphView(userId);
 	}
 
 	@GetMapping("/others")

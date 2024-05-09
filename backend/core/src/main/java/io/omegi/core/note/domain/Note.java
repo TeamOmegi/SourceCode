@@ -7,8 +7,6 @@ import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -69,9 +67,9 @@ public class Note {
 	private Integer backlinkCount;
 
 	@OneToMany(mappedBy = "note", cascade = ALL)
-	private final Collection<Link> links = new HashSet<>();
+	private final List<Link> links = new ArrayList<>();
 
-	@OneToOne(fetch = LAZY, mappedBy = "note")
+	@OneToOne(fetch = LAZY, mappedBy = "note") // todo: LAZY not working
 	private Error error;
 
 	@Builder
