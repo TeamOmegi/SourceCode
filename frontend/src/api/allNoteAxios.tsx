@@ -55,8 +55,7 @@ interface NoteDetail {
 
 export const getAllNoteDetail = async (noteId: number): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/allNote/${noteId}`);
-    console.log(response.data.response, "Success getAllNoteDetail!!!!!!!!");
+    const response = await axios.get(`${BASE_URL}/notes/others/${noteId}`);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getAllNoteDetail");
