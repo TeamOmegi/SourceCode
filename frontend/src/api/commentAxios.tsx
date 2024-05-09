@@ -2,21 +2,12 @@ import axios from "axios";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
-interface Comment {
-  commentId: number;
-  content: string;
-  writer: {
-    profileImageUrl: string;
-    userId: number;
-    username: string;
-  };
-}
-
-export const getCommentList = async (noteId: number): Promise<Comment[]> => {
+export const getCommentList = async (noteId: number): Promise<any> => {
   try {
     const response = await axios.get(`${BASE_URL}/notes/${noteId}/comments`);
-    const data: { result: { comments: Comment[] } } = response.data;
-    return data.result.comments;
+    const data = response.data.response;
+    console.log("data", data);
+    return data.comments;
   } catch (error) {
     console.error("Error fetching comments:", error);
   }
