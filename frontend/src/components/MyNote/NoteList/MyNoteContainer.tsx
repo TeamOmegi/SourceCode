@@ -34,7 +34,7 @@ const MyNoteContainer = ({ notes, selectedTag }: Props) => {
   }, [notes]);
 
   return (
-    <div className="mt-10  flex h-full w-full flex-col overflow-y-scroll scrollbar-webkit">
+    <div className="mt-5  flex h-full w-full flex-col overflow-y-scroll scrollbar-webkit">
       {noteList.map((note, index) => {
         if (selectedTag !== "" && !note.tags.includes(selectedTag)) return;
         return (

@@ -49,20 +49,20 @@ const NoteList = () => {
   useEffect(() => {
     const getData = async () => {
       const allMyNoteData = await getAllMyNoteData("");
-      //const allTagData = await getAllTags();
-      console.log("성공", allMyNoteData);
-      // setNoteList([...allMyNoteData]);
-      // setAllTag([...allTagData]);
+      const allTagData = await getAllTags();
+      console.log("성공", allMyNoteData.response);
+      console.log("성공", allTagData);
+
+      setNoteList(allMyNoteData.response.notes);
+      setAllTag([...allTagData.response.tags]);
     };
 
-    setNoteList([...noteDummy]);
-    setAllTag([...tagDummy]);
     getData();
   }, []);
 
   const handleSearch = async () => {
     const allMyNoteData = await getAllMyNoteData(searchKeyWord);
-    setNoteList([...allMyNoteData]);
+    setNoteList([...allMyNoteData.response.notes]);
   };
 
   const handleSelectTag = (tag: string) => {
@@ -73,18 +73,21 @@ const NoteList = () => {
     <div className="box-border flex h-full w-full flex-col items-center justify-center rounded-xl p-5 text-xl text-black">
       <div className="flex h-[10%] w-full items-center justify-between">
         <CustomSelect options={allTag} handleSelectTag={handleSelectTag} />
-        <div className=" mr-5 mt-2 flex h-10 w-1/3 rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
+        <div className=" mr-10 mt-2 flex h-10 w-1/3 rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
           <input
             type="text"
             placeholder="내 노트를 검색하세요!"
             value={searchKeyWord}
             onChange={(e) => setSearchKeyWord(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key == "Enter") handleSearch();
+            }}
             className="ml-2 h-full w-full bg-transparent text-sm text-gray-700 outline-none"
           />
           <img
             src="/icons/SearchIcon.png"
             alt="검색"
-            className="mr-2 mt-2 h-4 w-4 cursor-pointer"
+            className="mr-3 mt-2 h-5 w-5 hover:cursor-pointer"
             onClick={handleSearch}
           />
         </div>

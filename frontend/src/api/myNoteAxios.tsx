@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContentParser } from "../hooks/useContentParser";
 
-const BASE_URL = "";
+const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
 //Note
 export interface Note {
@@ -13,7 +13,13 @@ export interface Note {
 // 노트 전체조회
 export const getAllMyNoteData = async (keyword: string): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/notes/list/${keyword}`);
+    let params = {};
+    if (keyword.trim() !== "") {
+      params = { keyword: keyword };
+    }
+    const response = await axios.get(`${BASE_URL}/notes/list`, {
+      params,
+    });
     return response.data;
   } catch (error) {
     console.error(error, "Fail getNoteData");
@@ -34,8 +40,9 @@ export const getNoteData = async (noteId: number): Promise<any> => {
 // 사용자가 사용한 모든 Tag
 export const getAllTags = async (): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/xxx`);
+    const response = await axios.get(`${BASE_URL}/tags`);
     console.log(response, "Success AllTags");
+    return response.data;
   } catch (error) {
     console.error(error, "Fail AllTags");
   }
@@ -44,7 +51,6 @@ export const getAllTags = async (): Promise<any> => {
 // 노트 작성
 export const noteCreate = async (noteData: Note) => {
   console.log("전달완료: ", noteData);
-  console.log("번역완료!", useContentParser(noteData.content));
   try {
     const response = await axios.post(`${BASE_URL}/notes`, noteData);
     console.log(response, "Success NoteCreate");
