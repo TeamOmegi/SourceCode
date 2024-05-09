@@ -17,21 +17,17 @@ interface Props {
 const CommentList = ({ comments }: Props) => {
   return (
     <div>
-      {comments.length > 0 ? (
-        <ul>
-          {comments.map((comment) => (
-            <li key={comment.commentId}>
-              <div>
-                <img src={comment.writer.profileImageUrl} alt="Profile" />
-                <span>{comment.writer.username}</span>
-              </div>
-              <p>{comment.content}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>댓글 없음</p>
-      )}
+      <ul>
+        {comments.map((comment) => (
+          <li key={comment.commentId}>
+            <div>
+              <img src={comment.writer.profileImageUrl} alt="Profile" />
+              <span>{comment.writer.username}</span>
+            </div>
+            <p>{comment.content}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

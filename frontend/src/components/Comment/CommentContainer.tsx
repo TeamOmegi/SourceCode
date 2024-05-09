@@ -19,8 +19,15 @@ const CommentContainer = ({ noteId }: Props) => {
 
   return (
     <div>
-      <h2 className="text-lg font-bold">댓글</h2>
-      <div>
+      <div className="mx-1 flex">
+        <h2 className="mr-1 text-lg font-bold">댓글</h2>
+        <img
+          src="/icons/CommentListIcon.png"
+          alt="comment"
+          className="m-1 h-5 w-5"
+        />
+      </div>
+      <div className="mx-1 my-1 mb-3 border-b-2">
         <CommentList comments={comments} />
       </div>
     </div>
