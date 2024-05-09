@@ -26,6 +26,9 @@ export interface NoteData {
   title: string;
   tags: string[];
   content: string;
+  type: string;
+  visibility: string;
+  links: [];
 }
 
 const NoteCreate = () => {
@@ -36,6 +39,9 @@ const NoteCreate = () => {
     title: "",
     tags: [],
     content: "",
+    type: "NORMAL",
+    visibility: "PUBLIC",
+    links: [],
   });
 
   lowlight.registerLanguage("html", html);
@@ -114,7 +120,17 @@ const NoteCreate = () => {
   };
 
   const handleNoteLeave = async () => {
-    const result = await useWarnning({
+    if (
+      noteData.title === "" &&
+      noteData.tags.length === 0 &&
+      (noteData.content == "<p></p>" || noteData.content == "")
+    ) {
+      handleNoteReset();
+      setShowNote();
+      return;
+    }
+
+    const result = await useQuestion({
       title: "NoteCreate Leave",
       fireText: "Note를 저장하시겠습니까?",
       resultText: "Note가 저장되었습니다.",

@@ -86,7 +86,12 @@ const NavBar = () => {
             </div>
           </div>
           <div
-            className={isClick === "/omegi/myNote" ? btnClick : btnNoClick}
+            className={
+              isClick === "/omegi/myNote" ||
+              /^\/omegi\/myNote\/\d+$/.test(isClick)
+                ? btnClick
+                : btnNoClick
+            }
             onClick={handleMyNoteClick}
           >
             <div className="ml-5 flex items-center justify-center">
@@ -103,7 +108,12 @@ const NavBar = () => {
             </div>
           </div>
           <div
-            className={isClick === "/omegi/allNote" ? btnClick : btnNoClick}
+            className={
+              isClick === "/omegi/allNote" ||
+              /^\/omegi\/allNote\/\d+$/.test(isClick)
+                ? btnClick
+                : btnNoClick
+            }
             onClick={handleAllNoteClick}
           >
             <div className="ml-5 flex items-center justify-center">
