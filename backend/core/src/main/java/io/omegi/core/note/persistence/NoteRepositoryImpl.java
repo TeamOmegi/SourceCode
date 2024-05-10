@@ -1,5 +1,7 @@
 package io.omegi.core.note.persistence;
 
+import static io.omegi.core.note.domain.Visibility.*;
+
 import java.util.List;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -33,12 +35,13 @@ public class NoteRepositoryImpl implements CustomNoteRepository {
 	}
 
 	@Override
-	public List<Note> searchAllNotes(String keyword) {
+	public List<Note> searchAllNotes(User user, String keyword) {
 		QNote note = QNote.note;
 		BooleanExpression titleLike = keyword == null ? null : note.title.contains(keyword);
+		BooleanExpression accessable = note.user.eq(user).or(note.noteVisibility.visibility.eq(PUBLIC));
 
 		return queryFactory.selectFrom(note)
-			.where(titleLike)
+			.where(titleLike, accessable)
 			.orderBy(note.createdAt.desc())
 			.fetch();
 	}
