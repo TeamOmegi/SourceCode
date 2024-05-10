@@ -44,8 +44,8 @@ const CommentContainer = ({ noteId, currentUserId }: Props) => {
   }, []);
 
   return (
-    <div>
-      <div className="mx-1 flex">
+    <div className="h-full">
+      <div className="mx-1 flex w-[95%]">
         <h2 className="mr-1 text-lg font-bold">댓글</h2>
         <img
           src="/icons/CommentListIcon.png"
@@ -53,10 +53,10 @@ const CommentContainer = ({ noteId, currentUserId }: Props) => {
           className="m-1 h-5 w-5"
         />
       </div>
-      <div className="mx-1 my-1 mb-3 border-b-2">
+      <div className="mx-1 my-1 mb-3 p-1">
         <CommentList commentList={commentList} currentUserId={currentUserId} />
       </div>
-      <div>
+      <div className="h-24">
         <CommentForm onSubmit={handleCommentSubmit} />
       </div>
     </div>

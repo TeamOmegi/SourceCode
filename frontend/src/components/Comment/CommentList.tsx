@@ -53,7 +53,7 @@ const CommentList = ({ commentList, currentUserId }: Props) => {
     <div>
       <ul>
         {comments?.map((comment) => (
-          <li key={comment.commentId} className="box-border border-b-2 p-2">
+          <li key={comment.commentId} className="m-1 box-border border-b-2 p-2">
             <div className="flex flex-col">
               <div className="flex">
                 <img
