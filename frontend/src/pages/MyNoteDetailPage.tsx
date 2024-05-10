@@ -19,8 +19,6 @@ import html from "highlight.js/lib/languages/xml";
 import useEditorStore from "../store/useEditorStore";
 import { useDanger, useWarnning2 } from "../hooks/useComfirm";
 import CommentContainer from "../components/Comment/CommentContainer";
-import CommentForm from "../components/Comment/CommentForm";
-import { createComment } from "../api/commentAxios";
 
 interface ErrorInfo {
   errorId: number;
@@ -42,6 +40,7 @@ interface NoteDetail {
 const MyNoteDetailPage = () => {
   const navigate = useNavigate();
   const noteId = parseInt(useParams().noteId || "-1");
+  const userId = parseInt(useParams().userId || "-1");
   const { showNote, noteType, isWriting, setShowNote, setNoteType } =
     useEditorStore();
   const [note, setNote] = useState<NoteDetail | null>(null);
@@ -127,24 +126,22 @@ const MyNoteDetailPage = () => {
     editor?.commands.setContent(note?.content);
   }, [note]);
 
-  const handleCommentSubmit = async (content: string) => {
-    try {
-      await createComment(noteId, content);
-      console.log("댓글 작성:", content);
-    } catch (error) {
-      console.error("댓글 작성 중 오류가 발생했습니다:", error);
-    }
-  };
-
   const handleExit = () => {
     navigate("/omegi/myNote");
   };
 
   return (
     <div className="bg-default">
-      <div className="box-border flex h-full w-full flex-col rounded-xl p-10 text-black">
+      <div className="box-border flex h-full w-full flex-col rounded-xl  p-10 text-black">
         <div className="flex h-auto w-full flex-col  border-b-2 ">
-          <div className="ml-2 mt-10 flex items-center justify-start text-3xl font-bold">
+          <div className="hover:cursor-pointer">
+            <img
+              src="/icons/PageBackIcon2.png"
+              onClick={handleExit}
+              className="h-6 w-6"
+            />
+          </div>
+          <div className="ml-3 mt-7 flex items-center justify-start text-3xl font-bold">
             <h2>{note?.title}</h2>
           </div>
           <div className="text-md mr-5 box-border flex justify-end p-2 ">
@@ -164,23 +161,26 @@ const MyNoteDetailPage = () => {
           </div>
         </div>
         <hr />
-        <div className="my-7 h-full w-full overflow-y-scroll scrollbar-webkit">
-          <div className="box-border flex h-auto w-full flex-col border-b ">
+        <div className=" h-full w-full overflow-y-scroll scrollbar-webkit">
+          <div className="box-border flex h-auto w-full flex-col border-b p-5">
             <EditorContent
-              className="pointer-events-none box-border w-full flex-1 overflow-y-scroll px-8 py-4 scrollbar-webkit"
+              className="pointer-events-none box-border w-full flex-1 overflow-y-scroll px-6 py-4 scrollbar-webkit"
               editor={editor}
             />
             <br />
-            <div>
+
+            <div className="box-border">
               {note && note.type === "ERROR" ? (
                 <>
+                  <hr />
+                  <h3 className="m-5">에러 정보</h3>
                   <p>에러 요약: {note.error?.summary}</p>
                   <p>
                     해결 여부: {note.error?.solved ? "해결됨" : "해결되지 않음"}
                   </p>
                 </>
               ) : (
-                <p>에러가 없습니다.</p>
+                <p></p>
               )}
             </div>
           </div>
@@ -193,23 +193,18 @@ const MyNoteDetailPage = () => {
             />
             <p className="ml-1 text-base">{note?.backlinkCount}개</p>
           </div>
-          <div className="box-border flex h-auto w-full flex-col p-3">
-            <div>
-              <CommentContainer noteId={noteId} />
-            </div>
-            <div>
-              <CommentForm onSubmit={handleCommentSubmit} />
-            </div>
+          <div className="box-border flex h-auto w-full flex-col justify-center p-3">
+            <CommentContainer noteId={noteId} currentUserId={userId} />
           </div>
         </div>
-        <div className="m-2 flex h-auto w-[95%] justify-end">
+        {/* <div className="m-2 flex h-auto w-[95%] justify-end">
           <button
             className="flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#77af9c] bg-main-200 text-sm font-extrabold text-[#868E96]  hover:bg-[#77af9c] hover:text-main-200 "
             onClick={handleExit}
           >
             나가기
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
