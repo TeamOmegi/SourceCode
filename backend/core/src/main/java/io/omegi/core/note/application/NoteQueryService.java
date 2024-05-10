@@ -150,15 +150,26 @@ public class NoteQueryService {
 			List<Link> links = note.getLinks();
 			for (Link link : links) {
 				Note linkedNote = link.getLinkedNote();
-				Integer linkedNoteNoteId = linkedNote.getNoteId();
 
+				if (!linkedNote.isPublic()) {
+					continue;
+				}
+
+				Integer linkedNoteId = linkedNote.getNoteId();
 				Integer linkedNoteIndex = null;
 
-				if (noteIndexes.containsKey(linkedNoteNoteId)) {
-					linkedNoteIndex = noteIndexes.get(linkedNoteNoteId);
+				if (noteIndexes.containsKey(linkedNoteId)) {
+					linkedNoteIndex = noteIndexes.get(linkedNoteId);
 				} else {
 					linkedNoteIndex = index++;
-					noteIndexes.put(linkedNoteIndex, linkedNoteIndex);
+					noteIndexes.put(linkedNoteId, linkedNoteIndex);
+					DrawMyNoteGraphViewResponse.NodeResponse node = DrawMyNoteGraphViewResponse.NodeResponse.builder()
+						.nodeId(linkedNoteId)
+						.index(linkedNoteIndex)
+						.value(linkedNote.getTitle())
+						.type("OTHERS_NOTE")
+						.build();
+					nodes.add(node);
 				}
 
 				DrawMyNoteGraphViewResponse.EdgeResponse edge = DrawMyNoteGraphViewResponse.EdgeResponse.builder()
