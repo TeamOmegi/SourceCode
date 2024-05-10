@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useQuestion } from "../../../hooks/useComfirm";
-import { linkCreate, linkDelete } from "../../../api/noteGraphAxios";
+import {
+  getGraphData,
+  linkCreate,
+  linkDelete,
+} from "../../../api/noteGraphAxios";
 
 interface Node {
-  id: number;
+  nodeId: number;
   idx: number;
-  title: string;
+  value: string;
   type: string;
 }
 
@@ -22,19 +26,20 @@ interface Graph {
 
 const GraphDataSample: Graph = {
   nodes: [
-    { id: 2, idx: 1, title: "태그", type: "TAG" },
-    { id: 3, idx: 2, title: "해림메모1", type: "MYNOTE" },
-    { id: 4, idx: 3, title: "도하메모", type: "OTHERNOTE" },
-    { id: 5, idx: 4, title: "화석메모", type: "OTHERNOTE" },
-    { id: 7, idx: 5, title: "아영메모", type: "OTHERNOTE" },
-    { id: 8, idx: 6, title: "제훈메모", type: "OTHERNOTE" },
-    { id: 9, idx: 7, title: "도하메모2", type: "OTHERNOTE" },
-    { id: 11, idx: 8, title: "해림메모3", type: "MYNOTE" },
-    { id: 12, idx: 9, title: "민기메모1", type: "OTHERNOTE" },
-    { id: 13, idx: 10, title: "민기메모2", type: "OTHERNOTE" },
-    { id: 16, idx: 11, title: "민기메모3", type: "OTHERNOTE" },
-    { id: 19, idx: 12, title: "연결안됨", type: "MYNOTE" },
+    { nodeId: 2, idx: 1, value: "태그", type: "TAG" },
+    { nodeId: 3, idx: 2, value: "해림메모1", type: "MYNOTE" },
+    { nodeId: 4, idx: 3, value: "도하메모", type: "OTHERNOTE" },
+    { nodeId: 5, idx: 4, value: "화석메모", type: "OTHERNOTE" },
+    { nodeId: 7, idx: 5, value: "아영메모", type: "OTHERNOTE" },
+    { nodeId: 8, idx: 6, value: "제훈메모", type: "OTHERNOTE" },
+    { nodeId: 9, idx: 7, value: "도하메모2", type: "OTHERNOTE" },
+    { nodeId: 11, idx: 8, value: "해림메모3", type: "MYNOTE" },
+    { nodeId: 12, idx: 9, value: "민기메모1", type: "OTHERNOTE" },
+    { nodeId: 13, idx: 10, value: "민기메모2", type: "OTHERNOTE" },
+    { nodeId: 16, idx: 11, value: "민기메모3", type: "OTHERNOTE" },
+    { nodeId: 19, idx: 12, value: "연결안됨", type: "MYNOTE" },
   ],
+
   links: [
     { source: 2, target: 1 },
     { source: 3, target: 2 },
@@ -58,6 +63,28 @@ const NoteGraph = () => {
   const [nodes, setNodes] = useState<Node[]>(GraphDataSample.nodes);
   const [links, setLinks] = useState<Link[]>(GraphDataSample.links);
   let simulation: d3.Simulation<Node, Link>;
+
+  // 그래프 그리기
+  const getGraph = async () => {
+    try {
+      const response = await getGraphData();
+      if (response) {
+        setNodes([...response.nodes]);
+        setLinks([...response.links]);
+      }
+      console.log("response", response);
+    } catch (error) {
+      console.error("Failed to get graph data:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(nodes);
+  }, []);
+
+  useEffect(() => {
+    getGraph();
+  }, []);
 
   // ================== 노트 연결  ==================
   const handleNodeDoubleClick = (nodeIdx: number) => {
@@ -109,19 +136,19 @@ const NoteGraph = () => {
   };
 
   // ================== 링크 삭제 ==================
-  const handleLinkClick = async (
-    sourceNode: number,
-    targetNode: number,
-    d: Link,
-    graph: Graph,
-  ) => {
+  const handleLinkClick = async (event: MouseEvent, d: Link, graph: Graph) => {
     // 연결 끊기 작업 수행
+    console.log(d);
     console.log("링크 클릭:", d.source, "->", d.target);
+    const sourceNode = d.source;
+    const targetNode = d.target;
+    console.log("sourceNode", sourceNode.nodeId);
+    console.log("targetNode", targetNode.nodeId);
 
     const handleDeleteLink = async () => {
       try {
         // linkDelete 함수를 사용하여 선택된 링크의 연결을 끊습니다.
-        await linkDelete(sourceNode, targetNode);
+        await linkDelete(sourceNode.nodeId, targetNode.nodeId);
 
         // 연결을 끊은 후에 로컬 상태를 업데이트합니다.
         const updatedLinks = graph.links.filter(
@@ -132,7 +159,7 @@ const NoteGraph = () => {
 
         // 연결을 끊은 후에 로컬 상태를 업데이트합니다.
         const updatedNodes = graph.nodes.filter(
-          (node) => node.id !== sourceNode && node.id !== targetNode,
+          (node) => node.nodeId !== sourceNode && node.nodeId !== targetNode,
         );
         setNodes(updatedNodes);
         console.log("updatedNodes:", updatedNodes);
@@ -163,17 +190,28 @@ const NoteGraph = () => {
     const width = 1212;
     const height = 830;
 
-    const graph: Graph = { nodes, links };
+    console.log("nodes11111111111111", nodes);
+    const graph = { nodes, links };
+    // getGraph();
+    if (nodes.length == 0 || links.length == 0) return;
+
+    console.log("nodes222222222222", nodes);
+    console.log("links?????", links);
+
+    // console.log("graph: 그려지나?!??", graph);
 
     // 이전에 생성된 시뮬레이션을 중지하고 삭제합니다.
     if (simulation) simulation.stop();
     simulation = d3
-      .forceSimulation<Node, Link>(graph.nodes)
+      .forceSimulation<Node, Link>(nodes)
       .force(
         "link",
         d3
-          .forceLink<Link>(graph.links)
-          .id((d) => d.idx)
+          .forceLink<Link>(links)
+          .id((d) => {
+            // console.log("d.idx", d.idx);
+            return d.idx;
+          })
           .distance(50), // 링크의 길이
       )
       .force("charge", d3.forceManyBody().strength(-300))
@@ -241,7 +279,7 @@ const NoteGraph = () => {
       .attr("text-anchor", "middle")
       .attr("dy", 21)
       .style("font-size", "12px") // 글자 크기 설정
-      .text((d) => d.title);
+      .text((d) => d.value);
 
     node.on("dblclick", (event, d) => {
       handleNodeDoubleClick(d.idx);
@@ -260,7 +298,7 @@ const NoteGraph = () => {
       node.attr("transform", (d) => `translate(${d.x},${d.y})`);
     };
 
-    simulation.nodes(graph.nodes).on("tick", ticked);
+    simulation.nodes(nodes).on("tick", ticked);
   }, [nodes, links, selectedNodes]);
 
   return (
