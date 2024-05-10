@@ -231,16 +231,19 @@ public class NoteQueryService {
 	}
 
 	public DrawAllNoteListViewResponse drawAllNoteListView(Integer userId, String keyword) {
-		List<Note> notes = noteRepository.searchAllNotes(keyword);
+		User user = userRepository.findById(userId)
+			.orElseThrow(RuntimeException::new);
+
+		List<Note> notes = noteRepository.searchAllNotes(user, keyword);
 
 		List<DrawAllNoteListViewResponse.NoteResponse> noteResponses = notes.stream()
 			.map(note -> {
-				User user = note.getUser();
+				User writer = note.getUser();
 
 				DrawAllNoteListViewResponse.UserResponse userResponse = DrawAllNoteListViewResponse.UserResponse.builder()
-					.userId(user.getUserId())
-					.username(user.getUsername())
-					.profileImageUrl(user.getProfileImageUrl())
+					.userId(writer.getUserId())
+					.username(writer.getUsername())
+					.profileImageUrl(writer.getProfileImageUrl())
 					.build();
 
 				return DrawAllNoteListViewResponse.NoteResponse.builder()
@@ -248,7 +251,7 @@ public class NoteQueryService {
 					.title(note.getTitle())
 					.content(note.getContent())
 					.createdAt(note.getCreatedAt())
-					.isMine(user.getUserId().equals(userId))
+					.isMine(writer.getUserId().equals(userId))
 					.user(userResponse)
 					.build();
 			})

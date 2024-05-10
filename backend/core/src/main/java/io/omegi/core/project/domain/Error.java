@@ -49,6 +49,8 @@ public class Error {
 
 	private boolean solved;
 
+	private String mongoId;
+
 	@CreatedDate
 	private LocalDateTime createdAt;
 
