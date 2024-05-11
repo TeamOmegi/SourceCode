@@ -8,35 +8,51 @@ interface ErrorItem {
   errorType: string;
   project: string;
   service: string;
-  time: string; // 에러 발생 시간의 형식에 따라 수정해야 합니다.
+  time: string;
   pastNoteCount: number;
 }
 
-interface ErrorListResponse {
-  status: number;
-  message: string;
-  result: ErrorItem[];
-}
-
 // 에러 리스트 가져오기
-export const getErrorList = async (
-  project: string,
-  service: string,
-  solved: boolean | undefined,
-  errorType: string | undefined,
-): Promise<any> => {
+export const getErrorList = async (project: string, service: string) => {
   try {
-    const response = await axios.get<ErrorListResponse>(`${BASE_URL}/errors`, {
-      params: {
-        project,
-        service,
-        solved,
-        errorType,
-      },
+    let params = {};
+    if (project.trim() !== "") {
+      params = { project: project, service: service };
+    }
+    const response = await axios.get("/errors", {
+      params,
     });
     return response.data.result;
   } catch (error) {
-    console.error(error, "Fail getErrorList");
+    console.error("Error getErrorList", error);
+  }
+};
+
+export const getAllMyNoteData = async (
+  keyword: string,
+  project: string,
+  service: string,
+): Promise<any> => {
+  try {
+    let params: any = { keyword: keyword };
+
+    // 프로젝트 및 서비스 이름이 주어진 경우에만 params에 추가합니다.
+    if (project.trim() !== "") {
+      params.project = project;
+    }
+
+    if (service.trim() !== "") {
+      params.service = service;
+    }
+
+    const response = await axios.get(`${BASE_URL}/notes/list`, {
+      params,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error, "Fail getNoteData");
+    throw error;
   }
 };
 
@@ -56,9 +72,7 @@ interface ErrorDetailResponse {
 
 export const getErrorDetail = async (errorId: number): Promise<any> => {
   try {
-    const response = await axios.get<ErrorDetailResponse>(
-      `${BASE_URL}/errors/${errorId}`,
-    );
+    const response = await axios.get(`${BASE_URL}/errors/${errorId}`);
     return response.data.result;
   } catch (error) {
     console.error(error, "Fail getErrorDetail");
