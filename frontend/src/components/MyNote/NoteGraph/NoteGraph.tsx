@@ -6,6 +6,7 @@ import {
   linkCreate,
   linkDelete,
 } from "../../../api/noteGraphAxios";
+import { useError2 } from "../../../hooks/useAlert";
 
 interface Node {
   nodeId: number;
@@ -59,7 +60,7 @@ const NoteGraph = () => {
   const graphRef = useRef<HTMLDivElement | null>(null);
 
   // State 정의
-  const [selectedNodes, setSelectedNodes] = useState<number[]>([]);
+  const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
   const [nodes, setNodes] = useState<Node[]>(GraphDataSample.nodes);
   const [links, setLinks] = useState<Link[]>(GraphDataSample.links);
   let simulation: d3.Simulation<Node, Link>;
@@ -72,15 +73,11 @@ const NoteGraph = () => {
         setNodes([...response.nodes]);
         setLinks([...response.links]);
       }
-      console.log("response", response);
+      console.log("getGraph 들어옴");
     } catch (error) {
       console.error("Failed to get graph data:", error);
     }
   };
-
-  useEffect(() => {
-    console.log(nodes);
-  }, []);
 
   useEffect(() => {
     getGraph();
@@ -92,20 +89,36 @@ const NoteGraph = () => {
     if (!selectedNode) return;
 
     if (selectedNodes.length === 0) {
-      console.log("노드 더블클릭:", nodeIdx);
-      setSelectedNodes([nodeIdx]);
+      console.log("노드 더블클릭:", selectedNode);
+      setSelectedNodes([selectedNode]);
+      console.log("selectedNodes", selectedNodes);
     } else if (selectedNodes.length === 1) {
       console.log("노드 두번째 더블클릭");
-      const firstNodeIdx = selectedNodes[0];
-      console.log("firstNodeIdx", firstNodeIdx);
-      const firstNode = nodes.find((node) => node.idx === firstNodeIdx);
+      const firstSelectedNode = selectedNodes[0];
+      console.log("firstSelectedNode", firstSelectedNode);
+      console.log("selectedNode 두번째다.", selectedNode);
+      console.log("selectedNodes??????", selectedNodes);
+      const firstNode = nodes.find(
+        (node) => node.idx === firstSelectedNode.idx,
+      );
+      console.log("firstNode", firstNode);
       if (!firstNode) return;
 
       if (firstNode.type === "OTHERNOTE" && selectedNode.type === "OTHERNOTE") {
-        alert("다른 노트끼리는 연결할 수 없습니다.");
+        useError2({
+          title: "Other Note Connection Error",
+          text: "다른 사람의 노트끼리는 연결할 수 없습니다.",
+        });
+        setSelectedNodes([]);
+      }
+      if (firstNode.type === "TAG" || selectedNode.type === "TAG") {
+        useError2({
+          title: "Tag Connection Error",
+          text: "그래프에서는 태그와 연결이 어렵습니다.",
+        });
         setSelectedNodes([]);
       } else {
-        handleConnect(firstNodeIdx, nodeIdx);
+        handleConnect(firstNode.idx, selectedNode.idx);
       }
     } else {
       setSelectedNodes([]);
@@ -113,7 +126,7 @@ const NoteGraph = () => {
   };
 
   // 노드 연결 핸들러
-  const handleConnect = async (firstNodeIdx: number, nodeIdx: number) => {
+  const handleConnect = async (noteId: number, targetNodeId: number) => {
     const result = await useQuestion({
       title: "Connect Note",
       fireText: "노트를 연결하시겠습니까?",
@@ -121,13 +134,8 @@ const NoteGraph = () => {
     });
 
     if (result) {
-      // 링크 추가
-      const newLink = { source: firstNodeIdx, target: nodeIdx };
-      setLinks([...links, newLink]);
-
-      // linkCreate 함수를 사용하여 링크 생성
       try {
-        await linkCreate(newLink);
+        await linkCreate(noteId, targetNodeId);
       } catch (error) {
         console.error("Failed to create link:", error);
       }
@@ -139,15 +147,27 @@ const NoteGraph = () => {
   const handleLinkClick = async (event: MouseEvent, d: Link, graph: Graph) => {
     // 연결 끊기 작업 수행
     console.log(d);
-    console.log("링크 클릭:", d.source, "->", d.target);
+    // source와 target 노드의 idx를 가져옵니다.
     const sourceNode = d.source;
     const targetNode = d.target;
-    console.log("sourceNode", sourceNode.nodeId);
-    console.log("targetNode", targetNode.nodeId);
+    console.log("sourceNode ???", sourceNode);
+    console.log("targetNode ???", targetNode);
+
+    // source나 target 중에 type이 TAG인 것이 있는지 확인
+    const isTagInLink =
+      sourceNode?.type === "TAG" || targetNode?.type === "TAG";
+
+    // TAG가 있는 경우 알림 띄우기
+    if (isTagInLink) {
+      useError2({
+        title: "Tag Link Error",
+        text: "태그와 연결된 노트는 연결을 끊을 수 없습니다.",
+      });
+      return;
+    }
 
     const handleDeleteLink = async () => {
       try {
-        // linkDelete 함수를 사용하여 선택된 링크의 연결을 끊습니다.
         await linkDelete(sourceNode.nodeId, targetNode.nodeId);
 
         // 연결을 끊은 후에 로컬 상태를 업데이트합니다.
@@ -155,14 +175,12 @@ const NoteGraph = () => {
           (link) => !(link.source === d.source && link.target === d.target),
         );
         setLinks(updatedLinks);
-        console.log("updatedLinks:", updatedLinks);
 
         // 연결을 끊은 후에 로컬 상태를 업데이트합니다.
         const updatedNodes = graph.nodes.filter(
           (node) => node.nodeId !== sourceNode && node.nodeId !== targetNode,
         );
         setNodes(updatedNodes);
-        console.log("updatedNodes:", updatedNodes);
         console.log("링크 연결 해제 완료");
       } catch (error) {
         console.error("Failed to disconnect link:", error);
@@ -190,15 +208,9 @@ const NoteGraph = () => {
     const width = 1212;
     const height = 830;
 
-    console.log("nodes11111111111111", nodes);
     const graph = { nodes, links };
     // getGraph();
     if (nodes.length == 0 || links.length == 0) return;
-
-    console.log("nodes222222222222", nodes);
-    console.log("links?????", links);
-
-    // console.log("graph: 그려지나?!??", graph);
 
     // 이전에 생성된 시뮬레이션을 중지하고 삭제합니다.
     if (simulation) simulation.stop();
@@ -283,9 +295,12 @@ const NoteGraph = () => {
 
     node.on("dblclick", (event, d) => {
       handleNodeDoubleClick(d.idx);
-      d3.select(event.currentTarget)
+      d3.select(this)
         .select("circle")
-        .attr("stroke", selectedNodes.includes(d.idx) ? "red" : "black");
+        .attr(
+          "stroke",
+          selectedNodes.find((node) => node.idx === d.idx) ? "red" : "black",
+        );
     });
 
     const ticked = () => {

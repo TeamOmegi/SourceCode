@@ -32,7 +32,6 @@ export const getGraphData = async (): Promise<{
         value: string;
         type: string;
       }) => {
-        console.log("node", node);
         return {
           nodeId: node.nodeId,
           idx: node.index,
@@ -49,7 +48,7 @@ export const getGraphData = async (): Promise<{
         };
       },
     );
-
+    console.log("getGraphData axios 잘 들어옴~~~~");
     return {
       nodes: Nodes,
       links: Links,
@@ -61,9 +60,17 @@ export const getGraphData = async (): Promise<{
 };
 
 // 노트 연결
-export const linkCreate = async (newLink: Link) => {
+export const linkCreate = async (noteId: number, targetNoteId: number) => {
+  console.log("연결할 noteId", noteId);
+  console.log("연결할 targetNoteId", targetNoteId);
+  console.log("여기는 들어오나? ㅜㅜ ");
   try {
-    const response = await axios.post<Link>(`${BASE_URL}/notes/link`, newLink);
+    const response = await axios.post(`${BASE_URL}/notes/link`, {
+      noteId: noteId,
+      targetNoteId: targetNoteId,
+    });
+    console.log("링크 생성 개열받네");
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Fail linkCreate", error);
@@ -71,21 +78,16 @@ export const linkCreate = async (newLink: Link) => {
 };
 
 // 링크 삭제
-export const linkDelete = async (
-  sourceNodeId: number,
-  targetNodeId: number,
-) => {
-  console.log("sourceNodeId", sourceNodeId);
-  console.log("targetNodeId", targetNodeId);
-  console.log("링크 삭제 개열받네");
+export const linkDelete = async (noteId: number, targetNoteId: number) => {
+  console.log("삭제할 noteId", noteId);
+  console.log("삭제할 targetNoteId", targetNoteId);
+
   try {
-    const response = await axios.delete(
-      `${BASE_URL}/notes/link`, // 수정된 URL 형식
-      {
-        noteId: sourceNodeId,
-        targetNoteId: targetNodeId,
-      },
-    );
+    const response = await axios.delete(`${BASE_URL}/notes/link`, {
+      noteId: noteId,
+      targetNoteId: targetNoteId,
+    });
+    console.log("링크 삭제 개열받네");
     console.log("링크삭제완료됨요 ~~~~~ ", response.data);
     return response.data;
   } catch (error) {
