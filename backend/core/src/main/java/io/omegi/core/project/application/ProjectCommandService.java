@@ -79,14 +79,18 @@ public class ProjectCommandService {
 		if (existingToken != null) {
 			throw new AccessDeniedException();
 		}
-		String token = jwtUtil.createJwtForService(service.getServiceId(), Long.MAX_VALUE);
+		if (service.getProject() == null) {
+			throw new AccessDeniedException();
+		}
+		Integer projectId = service.getProject().getProjectId();
+		System.out.println(projectId);
+		String token = jwtUtil.createJwtForService(projectId, service.getServiceId());
 		ServiceToken serviceToken = ServiceToken.builder()
 				.name(requestDto.name())
 				.token(token)
 				.activated(true)                                                                                                                                                                                      .build();
 		serviceTokenRepository.save(serviceToken);
 		service.registerServiceToken(serviceToken);
-		serviceRepository.save(service);
 		return new CreateServiceTokenResponseDto(token);
 
 	}

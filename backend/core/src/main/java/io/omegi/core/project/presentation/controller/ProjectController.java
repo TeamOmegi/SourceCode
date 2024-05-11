@@ -63,9 +63,9 @@ public class ProjectController {
 
 	@PostMapping("/{projectId}/services/{serviceId}/tokens")
 	@ResponseStatus(CREATED)
-	public CreateServiceTokenResponse createServiceToken(@Login Integer userId, @PathVariable Integer projectId, @PathVariable Integer serviceId, @RequestBody CreateServiceTokenRequest request) {
+	public CreateServiceTokenResponse createServiceToken( @PathVariable Integer projectId, @PathVariable Integer serviceId, @RequestBody CreateServiceTokenRequest request) {
 		System.out.println("111");
-		CreateServiceTokenRequestDto requestDto = new CreateServiceTokenRequestDto(userId, projectId, serviceId, request.name());
+		CreateServiceTokenRequestDto requestDto = new CreateServiceTokenRequestDto(6, projectId, serviceId, request.name());
 		CreateServiceTokenResponseDto responseDto = projectCommandService.createServiceToken(requestDto);
 		return new CreateServiceTokenResponse(responseDto.serviceToken());
 	}
