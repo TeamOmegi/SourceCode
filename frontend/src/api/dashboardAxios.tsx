@@ -12,8 +12,8 @@ interface ErrorSummary {
 // 에러 한눈에 보기
 export const getErrorSummary = async (): Promise<ErrorSummary | undefined> => {
   try {
-    const response = await axios.get(`${BASE_URL}/error/summary`);
-    return response.data;
+    const response = await axios.get(`${BASE_URL}/errors/summary`);
+    return response.data.response;
   } catch (error) {
     console.error(error, "Fail getErrorSummary");
   }
@@ -29,8 +29,8 @@ interface NoteSummary {
 // 노트 한눈에 보기
 export const getNoteSummary = async (): Promise<NoteSummary | undefined> => {
   try {
-    const response = await axios.get(`${BASE_URL}/note/summary`);
-    return response.data;
+    const response = await axios.get(`${BASE_URL}/notes/summary`);
+    return response.data.response;
   } catch (error) {
     console.error(error, "Fail getNoteSummary");
   }
