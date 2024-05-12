@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 import static io.omegi.core.common.presentation.wrapper.WrappedResponseStatus.DRAW_MY_PROFILE_VIEW_SUCCESS;
 import static io.omegi.core.common.presentation.wrapper.WrappedResponseStatus.LOGOUT_MY_USER_SUCCESS;
 import static org.springframework.http.HttpStatus.OK;
@@ -49,29 +51,30 @@ public class UserController {
     @ResponseStatus(OK)
     @ResponseWrapping(status = LOGOUT_MY_USER_SUCCESS)
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = null;
+        String accessToken = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("refresh".equals(cookie.getName())) {
-                    refreshToken = cookie.getValue();
-                    break;
-                }
-            }
+            accessToken = Arrays.stream(cookies)
+                    .filter(cookie -> "access".equals(cookie.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse(null);
         }
-        System.out.println("로그아웃됨");
-        if (refreshToken != null) {
-            String username = jwtUtil.getUsername(refreshToken);
+
+        if (accessToken != null) {
+            String username = jwtUtil.getUsername(accessToken);
             refreshTokenService.deleteRefreshToken(username);
         }
+        System.out.println("로그아웃됨");
+
         Cookie accessCookie = new Cookie("access", null);
         accessCookie.setMaxAge(0);
         accessCookie.setPath("/");
         response.addCookie(accessCookie);
-
-        Cookie refreshCookie = new Cookie("refresh", null);
-        refreshCookie.setMaxAge(0);
-        refreshCookie.setPath("/");
-        response.addCookie(refreshCookie);
+//
+//        Cookie refreshCookie = new Cookie("refresh", null);
+//        refreshCookie.setMaxAge(0);
+//        refreshCookie.setPath("/");
+//        response.addCookie(refreshCookie);
     }
 }

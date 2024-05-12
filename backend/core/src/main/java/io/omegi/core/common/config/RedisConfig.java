@@ -20,19 +20,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableRedisRepositories
 public class RedisConfig {
-    @Value("${spring.data.redis.host}")
-    private String host;
-    @Value("${spring.data.redis.port}")
-    private int port;
-
     private final RedisProperties redisProperties;
-
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(host);
-        redisStandaloneConfiguration.setPort(port);
+        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
+        redisStandaloneConfiguration.setPort(redisProperties.getPort());
         redisStandaloneConfiguration.setDatabase(redisProperties.getDatabase());
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
@@ -45,5 +39,4 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(RefreshEntity.class));
         return redisTemplate;
     }
-
 }
