@@ -16,9 +16,10 @@ import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 
-import useEditorStore from "../store/useEditorStore";
 import { useDanger, useWarnning2 } from "../hooks/useComfirm";
 import CommentContainer from "../components/Comment/CommentContainer";
+import useEditorStore from "../store/useEditorStore";
+import useLinkStore from "../store/useLinkStore";
 
 interface ErrorInfo {
   errorId: number;
@@ -43,7 +44,19 @@ const MyNoteDetailPage = () => {
   const userId = parseInt(useParams().userId || "-1");
   const { showNote, noteType, isWriting, setShowNote, setNoteType } =
     useEditorStore();
+  const { setLinkSource } = useLinkStore();
   const [note, setNote] = useState<NoteDetail | null>(null);
+
+  useEffect(() => {
+    if (noteId === -1) return;
+    setLinkSource(noteId);
+    getNoteDetail();
+  }, [noteId]);
+
+  useEffect(() => {
+    if (note?.content == undefined) return;
+    editor?.commands.setContent(note?.content);
+  }, [note]);
 
   const getNoteDetail = async () => {
     try {
@@ -67,11 +80,13 @@ const MyNoteDetailPage = () => {
           if (!showNote) setShowNote();
           setNoteType("edit");
         }
-        return;
       } else {
         if (!showNote) setShowNote();
         setNoteType("edit");
       }
+    } else if (noteType == "link") {
+      if (!showNote) setShowNote();
+      setNoteType("edit");
     }
   };
 
@@ -84,6 +99,28 @@ const MyNoteDetailPage = () => {
     if (result) {
       noteDelete(noteId);
       navigate("/omegi/myNote");
+    }
+  };
+
+  const handleExit = () => {
+    navigate("/omegi/myNote");
+  };
+
+  const hadleBackLink = async () => {
+    if ((noteType === "create" && isWriting) || noteType === "edit") {
+      const result = await useWarnning2({
+        title: "노트 연결로 이동하시겠습니까?",
+        fireText: "작성중인 노트는 저장되지 않습니다.",
+      });
+
+      if (result) {
+        if (!showNote) setShowNote();
+        setNoteType("link");
+      }
+      return;
+    } else {
+      if (!showNote) setShowNote();
+      setNoteType("link");
     }
   };
 
@@ -114,21 +151,6 @@ const MyNoteDetailPage = () => {
       },
     },
   });
-
-  useEffect(() => {
-    if (noteId === -1) return;
-    localStorage.setItem("noteId", `${noteId}`);
-    getNoteDetail();
-  }, [noteId]);
-
-  useEffect(() => {
-    if (note?.content == undefined) return;
-    editor?.commands.setContent(note?.content);
-  }, [note]);
-
-  const handleExit = () => {
-    navigate("/omegi/myNote");
-  };
 
   return (
     <div className="bg-default">
@@ -189,7 +211,8 @@ const MyNoteDetailPage = () => {
             <img
               src="/public/icons/BacklinkIcon.png"
               alt="백링크"
-              className="h-5 w-5"
+              className="h-5 w-5 hover:cursor-pointer"
+              onClick={hadleBackLink}
             />
             <p className="ml-1 text-base">{note?.backlinkCount}개</p>
           </div>

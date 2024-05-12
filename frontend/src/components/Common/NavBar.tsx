@@ -46,18 +46,30 @@ const NavBar = () => {
         title: "새 노트를 작성하시겠습니까?",
         fireText: "이전 변경사항은 저장되지 않습니다.",
       });
-
       if (result) {
-        setNoteType("create");
+        return setNoteType("create");
       }
-      return;
-    }
+    } else if (noteType === "link") return setNoteType("create");
     setShowNote();
   };
 
   useEffect(() => {
     setIsClick(location.pathname);
   }, []);
+
+  useEffect(() => {
+    if (noteType === "link") {
+      if (
+        !/^\/omegi\/myNote\/\d+$/.test(location.pathname) &&
+        !/^\/omegi\/allNote\/\d+$/.test(location.pathname)
+      ) {
+        if (showNote) setShowNote();
+        setTimeout(() => {
+          setNoteType("create");
+        }, 750);
+      }
+    }
+  }, [location.pathname]);
 
   return (
     <div className="flex h-full w-full">
