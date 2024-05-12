@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 public class User {

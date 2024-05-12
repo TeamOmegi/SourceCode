@@ -39,6 +39,7 @@ public enum WrappedResponseStatus {
 	DELETE_PROJECT_SUCCESS(2111, "project is successfully deleted"),
 
 	DRAW_MY_PROFILE_VIEW_SUCCESS(2201, "userProfile is successfully drawn"),
+	LOGOUT_MY_USER_SUCCESS(2202,"userProfile is logout"),
 
 	ACCESS_DENIED(4003, "access denied");
 

@@ -29,41 +29,47 @@ public class ReissueController {
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         String refresh = null;
+        Cookie[] cookies = request.getCookies();
 
-        refresh = Arrays.stream(request.getCookies())
-                .filter(cookie -> "refresh".equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElse(null);
+        if (cookies != null) {
+            refresh = Arrays.stream(cookies)
+                    .filter(cookie -> "refresh".equals(cookie.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse(null);
+        }
+        System.out.println();
 
         if (refresh == null) {
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
         }
-        RefreshEntity storedToken = refreshTokenService.getRefreshToken(jwtUtil.getUsername(refresh));
+        String username = jwtUtil.getUsername(refresh);
+        RefreshEntity storedToken = refreshTokenService.getRefreshToken(username);
 
-        System.out.println(
-                storedToken
-        );
+        System.out.println(storedToken);
+
         if (storedToken == null) {
             return new ResponseEntity<>("refresh token not found or expired", HttpStatus.BAD_REQUEST);
         }
-        if (System.currentTimeMillis() > storedToken.getExpiration()) {
+        if (System.currentTimeMillis() > storedToken.getExpiration() * 1000) {
             return new ResponseEntity<>("refresh token expired", HttpStatus.UNAUTHORIZED);
         }
 
         String category = jwtUtil.getCategory(refresh);
 
         if (!category.equals("refresh")) {
-
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
-        String username = jwtUtil.getUsername(refresh);
-        refreshTokenService.deleteRefreshToken(username);
-        String newAccess = jwtUtil.createJwt("access", username, 86400L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, 259200L);
-        refreshTokenService.storeRefreshToken(username, newRefresh, 259200L);
-        response.addCookie(createCookie("access",newAccess));
+//        String username = jwtUtil.getUsername(refresh);
+        String newAccess = jwtUtil.createJwt("access", username, 24 * 60 * 60 * 1000L);
+        String newRefresh = jwtUtil.createJwt("refresh", username, 2 * 24 * 60 * 60 * 1000L);
+//
+        refreshTokenService.deleteRefreshToken(username); // 기존 토큰 삭제
+        System.out.println("삭제되니");
+        System.out.println(newAccess);
+        refreshTokenService.storeRefreshToken(username, newRefresh, 300L); // 새 토큰 저장
+        response.addCookie(createCookie("access", newAccess));
         response.addCookie(createCookie("refresh", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -73,10 +79,8 @@ public class ReissueController {
         if ("access".equals(key)) {
             cookie.setMaxAge(24 * 60 * 60);
         } else if ("refresh".equals(key)) {
-            cookie.setMaxAge(72 * 60 * 60);
+            cookie.setMaxAge(2 * 24 * 60 * 60);
         }
-
-
         return cookie;
     }
 }

@@ -38,11 +38,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         System.out.println("여기까지 옴");
 
 
-        String access = jwtUtil.createJwt("access", username, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, 86400000L);
+        String access = jwtUtil.createJwt("access", username, 24 * 60 * 60 * 1000L);
+        String refresh = jwtUtil.createJwt("refresh", username, 2 * 24 * 60 * 60 * 1000L);
+        refreshTokenService.deleteRefreshToken(username);
         System.out.println(access);
         System.out.println(refresh);
-        refreshTokenService.storeRefreshToken(username, refresh, 86400000L);  // Store refresh token in Redis
+        refreshTokenService.storeRefreshToken(username, refresh, 300L);  // Store refresh token in Redis
         response.addCookie(createCookie("access", access));
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
@@ -54,8 +55,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Cookie cookie = new Cookie(key, value);
         if ("access".equals(key)) {
             cookie.setMaxAge(24 * 60 * 60); // 유효 기간을 하루로 설정
+//            cookie.setMaxAge(180); // 유효 기간을 하루로 설정
         } else if ("refresh".equals(key)) {
-            cookie.setMaxAge(72 * 60 * 60); // 유효 기간을 3일로 설정
+            cookie.setMaxAge(2 * 24 * 60 * 60); // 유효 기간을 3일로 설정
+//            cookie.setMaxAge(300);
         }
 //        cookie.setSecure(true); // HTTPS를 통해서만 쿠키를 전송하도록 설정
         cookie.setPath("/"); // 쿠키의 유효 경로를 루트로 설정
