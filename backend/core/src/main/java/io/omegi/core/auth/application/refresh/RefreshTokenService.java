@@ -35,11 +35,6 @@ public class RefreshTokenService {
     public RefreshEntity getRefreshToken(String username) {
         RefreshEntity refreshEntity = redisTemplate.opsForValue().get(username);
 
-        if (refreshEntity != null && System.currentTimeMillis() > refreshEntity.getExpiration()) {
-            deleteRefreshToken(username);
-            logger.debug("Expired refresh token deleted for user: {}", username);
-            return null;
-        }
         return refreshEntity;
     }
 
