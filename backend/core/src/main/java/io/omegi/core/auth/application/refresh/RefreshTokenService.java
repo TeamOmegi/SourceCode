@@ -18,9 +18,8 @@ public class RefreshTokenService {
     @Autowired
     private RedisTemplate<String, RefreshEntity> redisTemplate;
 
-    public void storeRefreshToken(String username, String refreshToken, long durationInSeconds) {
-
-        long expirationTimestamp = System.currentTimeMillis() / 1000 + durationInSeconds;
+    public void storeRefreshToken(String username, String refreshToken, long durationInMillis) {
+        long expirationTimestamp = System.currentTimeMillis() + durationInMillis;
 
         RefreshEntity refreshEntity = RefreshEntity.builder()
                 .username(username)
@@ -28,7 +27,7 @@ public class RefreshTokenService {
                 .expiration(expirationTimestamp)
                 .build();
 
-        redisTemplate.opsForValue().set(username, refreshEntity, durationInSeconds, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(username, refreshEntity, durationInMillis, TimeUnit.MILLISECONDS);
 
         logger.debug("Stored refresh token for user: {}, token: {}, expires at: {}", username, refreshToken, expirationTimestamp);
     }
