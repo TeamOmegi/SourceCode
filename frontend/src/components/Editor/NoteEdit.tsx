@@ -30,7 +30,6 @@ const NoteEdit = () => {
   const noteId = parseInt(localStorage.getItem("noteId") || "0");
 
   const [noteData, setNoteData] = useState<Note>({
-    noteId: noteId,
     title: "",
     tags: [],
     content: "",

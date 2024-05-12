@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useContentParser } from "../../../hooks/useContentParser";
 import { noteDelete } from "../../../api/myNoteAxios";
 import { useDanger } from "../../../hooks/useComfirm";
+import { linkCheck, linkCreate, linkDelete } from "../../../api/noteGraphAxios";
+import useLinkStore from "../../../store/useLinkStore";
 
 interface Props {
+  type?: string;
   notes: MyNote[];
-  selectedTag: string;
+  selectedTag?: string;
 }
 
 interface MyNote {
@@ -18,7 +21,8 @@ interface MyNote {
   createdAt: string;
 }
 
-const MyNoteContainer = ({ notes, selectedTag }: Props) => {
+const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
+  const { linkSource } = useLinkStore();
   const navigate = useNavigate();
   const [noteList, setNoteList] = useState<MyNote[]>([]);
   const handleNoteClick = (note: MyNote) => {
@@ -45,17 +49,44 @@ const MyNoteContainer = ({ notes, selectedTag }: Props) => {
     if (result) noteDelete(noteId);
   };
 
+  const handleNoteLink = async (linkTarget: number) => {
+    //노트체크
+    const checked = await linkCheck(linkSource, linkTarget);
+    console.log(checked);
+    if (checked) {
+      // 이미 연결되어있는 노트입니다.
+      // 연결을 끊겠습니까?
+      console.log("이미 연결된 노트");
+      //linkDelete(linkSource, linkTarget);
+    } else {
+      // 노트를 연결하시겠습니까?
+      console.log("노트 연결할래?");
+      //linkCreate({ source: linkSource, target: linkTarget });
+    }
+  };
+
   return (
     <div className="mt-5  flex h-full w-full flex-col overflow-y-scroll scrollbar-webkit">
       {noteList.map((note, index) => {
-        if (selectedTag !== "" && !note.tags.includes(selectedTag)) return;
+        if (
+          selectedTag &&
+          selectedTag !== "" &&
+          !note.tags.includes(selectedTag)
+        )
+          return;
         return (
           <div
             key={index}
             className="mb-5 ml-5 mr-5 box-border flex justify-between rounded-xl border-[1px] bg-white py-3 pl-3 shadow-lg hover:cursor-pointer"
-            onClick={() => {
-              handleNoteClick(note);
-            }}
+            onClick={
+              type === "link"
+                ? () => {
+                    handleNoteLink(note.noteId);
+                  }
+                : () => {
+                    handleNoteClick(note);
+                  }
+            }
           >
             <div className="box-border flex h-auto w-full flex-col justify-start">
               <div className="box-border flex flex-col">
