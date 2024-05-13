@@ -25,34 +25,34 @@ interface Graph {
   links: Link[];
 }
 
-const GraphDataSample: Graph = {
-  nodes: [
-    { nodeId: 2, idx: 1, value: "태그", type: "TAG" },
-    { nodeId: 3, idx: 2, value: "해림메모1", type: "MYNOTE" },
-    { nodeId: 4, idx: 3, value: "도하메모", type: "OTHERNOTE" },
-    { nodeId: 5, idx: 4, value: "화석메모", type: "OTHERNOTE" },
-    { nodeId: 7, idx: 5, value: "아영메모", type: "OTHERNOTE" },
-    { nodeId: 8, idx: 6, value: "제훈메모", type: "OTHERNOTE" },
-    { nodeId: 9, idx: 7, value: "도하메모2", type: "OTHERNOTE" },
-    { nodeId: 11, idx: 8, value: "해림메모3", type: "MYNOTE" },
-    { nodeId: 12, idx: 9, value: "민기메모1", type: "OTHERNOTE" },
-    { nodeId: 13, idx: 10, value: "민기메모2", type: "OTHERNOTE" },
-    { nodeId: 16, idx: 11, value: "민기메모3", type: "OTHERNOTE" },
-    { nodeId: 19, idx: 12, value: "연결안됨", type: "MYNOTE" },
-  ],
+// const GraphDataSample: Graph = {
+//   nodes: [
+//     { nodeId: 2, idx: 1, value: "태그", type: "TAG" },
+//     { nodeId: 3, idx: 2, value: "해림메모1", type: "MYNOTE" },
+//     { nodeId: 4, idx: 3, value: "도하메모", type: "OTHERNOTE" },
+//     { nodeId: 5, idx: 4, value: "화석메모", type: "OTHERNOTE" },
+//     { nodeId: 7, idx: 5, value: "아영메모", type: "OTHERNOTE" },
+//     { nodeId: 8, idx: 6, value: "제훈메모", type: "OTHERNOTE" },
+//     { nodeId: 9, idx: 7, value: "도하메모2", type: "OTHERNOTE" },
+//     { nodeId: 11, idx: 8, value: "해림메모3", type: "MYNOTE" },
+//     { nodeId: 12, idx: 9, value: "민기메모1", type: "OTHERNOTE" },
+//     { nodeId: 13, idx: 10, value: "민기메모2", type: "OTHERNOTE" },
+//     { nodeId: 16, idx: 11, value: "민기메모3", type: "OTHERNOTE" },
+//     { nodeId: 19, idx: 12, value: "연결안됨", type: "MYNOTE" },
+//   ],
 
-  links: [
-    { source: 2, target: 1 },
-    { source: 3, target: 2 },
-    { source: 4, target: 1 },
-    { source: 5, target: 1 },
-    { source: 9, target: 8 },
-    { source: 10, target: 8 },
-    { source: 11, target: 2 },
-    { source: 7, target: 2 },
-    { source: 6, target: 8 },
-  ],
-};
+//   links: [
+//     { source: 2, target: 1 },
+//     { source: 3, target: 2 },
+//     { source: 4, target: 1 },
+//     { source: 5, target: 1 },
+//     { source: 9, target: 8 },
+//     { source: 10, target: 8 },
+//     { source: 11, target: 2 },
+//     { source: 7, target: 2 },
+//     { source: 6, target: 8 },
+//   ],
+// };
 
 const NoteGraph = () => {
   // Refs 정의
@@ -61,8 +61,8 @@ const NoteGraph = () => {
 
   // State 정의
   const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
-  const [nodes, setNodes] = useState<Node[]>(GraphDataSample.nodes);
-  const [links, setLinks] = useState<Link[]>(GraphDataSample.links);
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [links, setLinks] = useState<Link[]>([]);
   let simulation: d3.Simulation<Node, Link>;
 
   // 그래프 그리기
@@ -249,7 +249,7 @@ const NoteGraph = () => {
 
     const node = svg
       .append("g")
-      .selectAll(".circle") // class로 선택하도록 수정
+      .selectAll(".circle")
       .data(graph.nodes)
       .enter()
       .append("g")
@@ -277,14 +277,16 @@ const NoteGraph = () => {
       .append("circle")
       .attr("r", 10)
       .attr("fill", (d) => {
-        if (d.type === "MYNOTE") {
+        if (d.type === "MY_NOTE") {
           return "#A9DFD8";
-        } else if (d.type === "OTHERNOTE") {
+        } else if (d.type === "OTHERS_NOTE") {
           return "#B6B1EC";
         } else {
           return "orange";
         }
-      });
+      })
+      .attr("id", "drop-shadow")
+      .attr("height", "130%");
 
     node
       .append("text")
@@ -322,12 +324,7 @@ const NoteGraph = () => {
       className="flex h-full w-full items-center justify-center"
     >
       {/* 그래프 컨텐츠 */}
-      <svg
-        ref={svgRef}
-        width={1212}
-        height={830}
-        className="h-full w-full"
-      ></svg>
+      <svg ref={svgRef} width={1000} height={800} className="h-5/6 w-5/6"></svg>
     </div>
   );
 };
