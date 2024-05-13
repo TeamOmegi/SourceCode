@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getErrorList } from "../../api/errorAxios";
 
@@ -21,13 +21,12 @@ const ErrorList = ({ selectedProject }: Props) => {
   const [errorList, setErrorList] = useState<Error[]>([]);
 
   const handleErrorClick = (error: Error) => {
-    navigate(`/omegi/error/${error.errorId}`);
+    navigate(`/omegi/error/${error.errorId}`, { state: { error } }); // 에러 정보를 상태로 함께 전달
   };
 
   useEffect(() => {
-    const fetchErrors = async () => {
+    const getErrors = async () => {
       try {
-        // getErrorList 함수를 사용하여 선택된 프로젝트에 해당하는 에러 리스트 가져오기
         const response = await getErrorList(selectedProject, "", false);
         setErrorList(response.errors);
       } catch (error) {
@@ -35,7 +34,7 @@ const ErrorList = ({ selectedProject }: Props) => {
       }
     };
 
-    fetchErrors();
+    getErrors();
   }, [selectedProject]);
 
   // 에러 타입의 마지막 . 뒷부분만 가져오기

@@ -54,12 +54,8 @@ interface ErrorDetail {
 
 export const getErrorDetail = async (errorId: number): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/errors/`, {
-      params: {
-        errorId: errorId,
-      },
-    });
-    return response.data.result;
+    const response = await axios.get(`${BASE_URL}/errors/${errorId}`);
+    return response.data.response;
   } catch (error) {
     console.error(error, "Fail getErrorDetail");
   }

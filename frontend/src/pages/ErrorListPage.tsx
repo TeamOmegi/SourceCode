@@ -1,5 +1,3 @@
-// ErrorListPage.tsx
-
 import { useState, useEffect } from "react";
 import ErrorList from "../components/Error/ErrorList";
 import { getErrorList, getProjectList } from "../api/errorAxios";
@@ -26,7 +24,7 @@ const ErrorListPage = () => {
   const [allProject, setAllProject] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getProjects = async () => {
       try {
         const projectData = await getProjectList();
         setAllProject(projectData.map((project: Project) => project.name));
@@ -41,7 +39,7 @@ const ErrorListPage = () => {
       }
     };
 
-    fetchData();
+    getProjects();
   }, []);
 
   const handleSelectProject = async (project: string) => {
