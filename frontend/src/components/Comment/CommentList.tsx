@@ -20,8 +20,6 @@ interface Props {
 const CommentList = ({ commentList, currentUserId }: Props) => {
   const noteId = parseInt(useParams().noteId || "-1");
   const [comments, setComments] = useState<Comment[]>([]);
-  console.log("commentList", commentList);
-  console.log("currentUserId!!!!!!", currentUserId);
 
   useEffect(() => {
     setComments([...commentList]);
