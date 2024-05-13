@@ -19,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -56,4 +57,8 @@ public class Error {
 
 	@LastModifiedDate
 	private LocalDateTime updatedAt;
+
+	public void solve() {
+		this.solved = true;
+	}
 }
