@@ -8,7 +8,7 @@ import io.omegi.core.project.application.event.ErrorOccurredEvent;
 import io.omegi.core.project.application.message.ErrorOccurredMessage;
 import lombok.RequiredArgsConstructor;
 
-// @Component
+@Component
 @RequiredArgsConstructor
 public class ErrorOccurredMessageListener {
 
