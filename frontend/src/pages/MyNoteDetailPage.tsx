@@ -44,12 +44,12 @@ const MyNoteDetailPage = () => {
   const userId = parseInt(useParams().userId || "-1");
   const { showNote, noteType, isWriting, setShowNote, setNoteType } =
     useEditorStore();
-  const { setLinkSource } = useLinkStore();
+  const { setLinkTarget } = useLinkStore();
   const [note, setNote] = useState<NoteDetail | null>(null);
 
   useEffect(() => {
     if (noteId === -1) return;
-    setLinkSource(noteId);
+    setLinkTarget(noteId);
     getNoteDetail();
   }, [noteId]);
 
@@ -103,7 +103,7 @@ const MyNoteDetailPage = () => {
   };
 
   const handleExit = () => {
-    navigate("/omegi/myNote");
+    navigate(-1);
   };
 
   const hadleBackLink = async () => {
@@ -118,9 +118,18 @@ const MyNoteDetailPage = () => {
         setNoteType("link");
       }
       return;
-    } else {
-      if (!showNote) setShowNote();
+    } else if (noteType === "create") {
+      if (!showNote) {
+        setShowNote();
+      }
       setNoteType("link");
+    } else {
+      if (showNote) {
+        setShowNote();
+        setTimeout(() => {
+          setNoteType("create");
+        }, 1000);
+      }
     }
   };
 

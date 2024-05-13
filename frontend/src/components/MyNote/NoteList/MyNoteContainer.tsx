@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContentParser } from "../../../hooks/useContentParser";
 import { noteDelete } from "../../../api/myNoteAxios";
-import { useDanger } from "../../../hooks/useComfirm";
+import { useDanger, useQuestion, useWarnning } from "../../../hooks/useComfirm";
 import { linkCheck, linkCreate, linkDelete } from "../../../api/noteGraphAxios";
 import useLinkStore from "../../../store/useLinkStore";
+import { useError } from "../../../hooks/useAlert";
+import useEditorStore from "../../../store/useEditorStore";
 
 interface Props {
   type?: string;
@@ -22,7 +24,8 @@ interface MyNote {
 }
 
 const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
-  const { linkSource } = useLinkStore();
+  const { setShowNote, setNoteType } = useEditorStore();
+  const { linkTarget } = useLinkStore();
   const navigate = useNavigate();
   const [noteList, setNoteList] = useState<MyNote[]>([]);
   const handleNoteClick = (note: MyNote) => {
@@ -49,20 +52,42 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
     if (result) noteDelete(noteId);
   };
 
-  const handleNoteLink = async (linkTarget: number) => {
-    //노트체크
-    const checked = await linkCheck(linkSource, linkTarget);
-    console.log(checked);
-    if (checked) {
-      // 이미 연결되어있는 노트입니다.
-      // 연결을 끊겠습니까?
-      console.log("이미 연결된 노트");
-      //linkDelete(linkSource, linkTarget);
-    } else {
-      // 노트를 연결하시겠습니까?
-      console.log("노트 연결할래?");
-      //linkCreate({ source: linkSource, target: linkTarget });
+  const handleNoteLink = async (linkeSource: number) => {
+    if (linkTarget === linkeSource) {
+      useError({
+        title: "Link Error",
+        text: "같은 노트는 연결할 수 없습니다.",
+      });
+      return;
     }
+    //노트체크
+    const checked = await linkCheck(linkeSource, linkTarget);
+    console.log(checked, "연결된링크");
+    if (checked) {
+      // 이미 연결된 노트입니다.
+
+      const result = await useWarnning({
+        title: "Link Delete",
+        fireText: "Note 연결을 끊겠습니까?",
+        resultText: "Note가 연결을 끊었습니다.",
+      });
+      if (result) {
+        //linkDelete(linkTarget, linkTarget1111);
+      }
+    } else {
+      const result = await useQuestion({
+        title: "Link Create",
+        fireText: "Note를 연결하시겠습니까?",
+        resultText: "Note가 연결되었습니다.",
+      });
+      if (result) {
+        //linkCreate({ source: linkTarget, target: linkTarget1111 });
+      }
+    }
+    setShowNote();
+    setTimeout(() => {
+      setNoteType("create");
+    }, 1000);
   };
 
   return (
@@ -74,10 +99,11 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
           !note.tags.includes(selectedTag)
         )
           return;
+
         return (
           <div
             key={index}
-            className="mb-5 ml-5 mr-5 box-border flex justify-between rounded-xl border-[1px] bg-white py-3 pl-3 shadow-lg hover:cursor-pointer"
+            className="mb-5 ml-5 mr-5 box-border flex w-[97%] flex-nowrap justify-between overflow-visible rounded-xl border-[1px] bg-white py-3 pl-3 shadow-lg hover:cursor-pointer"
             onClick={
               type === "link"
                 ? () => {

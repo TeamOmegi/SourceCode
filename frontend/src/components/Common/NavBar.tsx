@@ -46,9 +46,8 @@ const NavBar = () => {
         title: "새 노트를 작성하시겠습니까?",
         fireText: "이전 변경사항은 저장되지 않습니다.",
       });
-      if (result) {
-        return setNoteType("create");
-      }
+      if (result) return setNoteType("create");
+      else return;
     } else if (noteType === "link") return setNoteType("create");
     setShowNote();
   };

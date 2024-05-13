@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
 interface Store {
-  linkSource: number;
-  setLinkSource: (source: number) => void;
+  linkTarget: number;
+  setLinkTarget: (source: number) => void;
 }
 
 const useLinkStore = create<Store>()((set) => ({
-  linkSource: -1,
-  setLinkSource: (source) => set(() => ({ linkSource: source })),
+  linkTarget: -1,
+  setLinkTarget: (target) => set(() => ({ linkTarget: target })),
 }));
 
 export default useLinkStore;
