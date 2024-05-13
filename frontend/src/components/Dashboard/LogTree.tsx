@@ -25,7 +25,7 @@ const LogTree = () => {
           로그 트리
         </div>
         <div className=" mr-7 box-border flex h-5/6 w-1/3 items-center pt-3">
-          <select
+          {/* <select
             value={selectedProject}
             onChange={(e) => handleProjectChange(Number(e.target.value))}
             className="w-full appearance-none rounded-xl border-gray-400 bg-secondary-50 px-4 py-2 pr-8 shadow hover:border-gray-500"
@@ -43,17 +43,11 @@ const LogTree = () => {
               src="/icons/DropdownIcon.png"
               alt="DropdownIcon"
             />
-          </select>
+          </select> */}
         </div>
       </div>
 
-      <div className="box-border flex h-[85%] w-full p-5">
-        <img
-          className="h-full w-full rounded-xl"
-          src="/LogTemp.png"
-          alt="LogTemp"
-        />
-      </div>
+      <div className="box-border flex h-[85%] w-full p-5"></div>
     </div>
   );
 };

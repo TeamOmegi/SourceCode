@@ -5,10 +5,40 @@ import NavBar from "../components/Common/NavBar";
 import NoteCreate from "../components/SideComponent/NoteCreate";
 import NoteEdit from "../components/SideComponent/NoteEdit";
 import NoteLink from "../components/SideComponent/NoteLink";
-
+import useErrorStore from "../store/useErrorStore";
+interface Error {
+  errorId: number;
+  serviceId: number;
+  projectId: number;
+  solved: boolean;
+  type: string;
+  time: string;
+}
 const MainPage = () => {
-  const { showNote, noteType, setShowNote, setNoteType } = useEditorStore();
+  const { showNote, noteType, setShowNote } = useEditorStore();
+  const { setErrorList } = useErrorStore();
   const location = useLocation();
+
+  useEffect(() => {
+    //SSE연결 로직
+    const eventSource = new EventSource(
+      "http://k10a308.p.ssafy.io:8081/errors/real-time/subscription",
+    );
+
+    eventSource.addEventListener("REAL_TIME_ERROR", (event) => {
+      const errorData: Error = JSON.parse(event.data); // 서버에서 받은 데이터 파싱
+      setErrorList(errorData);
+      console.log("쨘:", errorData);
+    });
+
+    eventSource.onerror = () => {
+      eventSource.close(); //연결 끊기
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   useEffect(() => {
     console.log(location.pathname);
@@ -16,13 +46,6 @@ const MainPage = () => {
       if (showNote) setShowNote();
     }
   }, [location.pathname]);
-
-  // useEffect(() => {
-  //   if (noteType === "edit") {
-  //     //axios로 데이터 가져오기,
-  //     //setContent에 담아주기
-  //   }
-  // }, [showNote, noteType]);
 
   return (
     <div className="flex h-svh w-screen overflow-hidden bg-main-100">
