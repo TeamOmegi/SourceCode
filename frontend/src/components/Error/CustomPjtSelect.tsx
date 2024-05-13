@@ -1,5 +1,3 @@
-// CustomPjtSelect.tsx
-
 import { useState, useEffect } from "react";
 
 interface Project {
@@ -34,7 +32,7 @@ const CustomPjtSelect = ({
 
   const handleOptionClick = (option: string) => {
     handleSelectProject(option); // 선택한 프로젝트를 부모 컴포넌트로 전달
-    setIsOpen(false);
+    setIsOpen(false); // 프로젝트 선택 후 드롭다운을 닫음
   };
 
   return (
