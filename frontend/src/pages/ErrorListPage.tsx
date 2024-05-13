@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
+// ErrorListPage.tsx
+
+import { useState, useEffect } from "react";
 import ErrorList from "../components/Error/ErrorList";
-import { getErrorList } from "../api/errorAxios";
+import { getErrorList, getProjectList } from "../api/errorAxios";
 import CustomPjtSelect from "../components/Error/CustomPjtSelect";
+
+interface Project {
+  projectId: number;
+  name: string;
+}
 
 interface Error {
   errorId: number;
@@ -14,30 +21,37 @@ interface Error {
 }
 
 const ErrorListPage = () => {
+  const [selectedProject, setSelectedProject] = useState<string>("");
   const [errorList, setErrorList] = useState<Error[]>([]);
   const [allProject, setAllProject] = useState<string[]>([]);
-  const [searchProject, setsearchProject] = useState<string>("");
-  const [searchService, setSearchService] = useState<string>("");
-  const [selectedProject, setSelectedProject] = useState<string>("");
 
   useEffect(() => {
-    const getErrors = async () => {
-      const allErrorData = await getErrorList("", "");
-      console.log("성공", allErrorData);
-      setErrorList(allErrorData.errors);
-      setAllProject([...allErrorData.projects]);
+    const fetchData = async () => {
+      try {
+        const projectData = await getProjectList();
+        setAllProject(projectData.map((project: Project) => project.name));
+        if (projectData.length > 0) {
+          const firstProjectName = projectData[0].name;
+          setSelectedProject(firstProjectName);
+          const errorData = await getErrorList(selectedProject, "", false);
+          setErrorList(errorData.errors);
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     };
 
-    getErrors();
+    fetchData();
   }, []);
 
-  const handleSearch = async () => {
-    const allErrorData = await getErrorList(searchProject, searchService);
-    setErrorList([...allErrorData.errors]);
-  };
-
-  const handleSelectProject = (project: string) => {
+  const handleSelectProject = async (project: string) => {
     setSelectedProject(project);
+    try {
+      const errorData = await getErrorList(project, "", false);
+      setErrorList(errorData.errors);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
   };
 
   return (
@@ -53,33 +67,13 @@ const ErrorListPage = () => {
             {/* 프로젝트 선택 dropdown */}
             <CustomPjtSelect
               options={allProject}
+              selectedOption={selectedProject}
               handleSelectProject={handleSelectProject}
             />
           </div>
-          <div className="mt-1 flex h-full w-72">
-            {/* 검색창 */}
-            <div className="flex h-[80%] w-full rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
-              <input
-                type="text"
-                placeholder="에러를 검색하세요!"
-                value={searchProject}
-                onChange={(e) => setsearchProject(e.target.value)}
-                onKeyUp={(e) => {
-                  if (e.key == "Enter") handleSearch();
-                }}
-                className="ml-2 h-full w-full bg-transparent text-sm text-gray-700 outline-none"
-              />
-              <img
-                src="/icons/SearchIcon.png"
-                alt="검색"
-                className="mr-3 mt-[0.5rem] h-5 w-5 hover:cursor-pointer"
-                onClick={handleSearch}
-              />
-            </div>
-          </div>
         </div>
-        <div className="border-1 mt-1 flex h-[90%] w-11/12 items-center justify-center rounded-lg border-primary-100 text-black">
-          <ErrorList />
+        <div className="border-1 mt-1 flex h-[90%] w-11/12 items-center justify-center overflow-y-scroll rounded-lg border-primary-100 text-black scrollbar-webkit">
+          <ErrorList selectedProject={selectedProject} />
         </div>
       </div>
     </div>

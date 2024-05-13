@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getErrorList } from "../../api/errorAxios";
 
 interface Error {
   errorId: number;
@@ -7,46 +8,86 @@ interface Error {
   errorType: string;
   project: string;
   service: string;
-  createdAt: string;
+  time: string;
   pastNoteCount: number;
 }
 
-const ErrorList = () => {
+interface Props {
+  selectedProject: string;
+}
+
+const ErrorList = ({ selectedProject }: Props) => {
   const navigate = useNavigate();
   const [errorList, setErrorList] = useState<Error[]>([]);
+
   const handleErrorClick = (error: Error) => {
     navigate(`/omegi/error/${error.errorId}`);
   };
 
   useEffect(() => {
-    if (errorList.length === 0) return;
-    console.log("errorList", errorList);
-    errorList.map((error) => {
-      return error;
-    });
-    setErrorList([...errorList]);
-  }, [errorList]);
+    const fetchErrors = async () => {
+      try {
+        // getErrorList 함수를 사용하여 선택된 프로젝트에 해당하는 에러 리스트 가져오기
+        const response = await getErrorList(selectedProject, "", false);
+        setErrorList(response.errors);
+      } catch (error) {
+        console.error("Failed to fetch error list:", error);
+      }
+    };
+
+    fetchErrors();
+  }, [selectedProject]);
+
+  // 에러 타입의 마지막 . 뒷부분만 가져오기
+  const getLastErrorType = (errorType: string) => {
+    const lastIndex = errorType.lastIndexOf(".");
+    if (lastIndex !== -1) {
+      return errorType.substring(lastIndex + 1);
+    } else {
+      return "..." + "." + errorType;
+    }
+  };
 
   return (
-    <div className=" flex h-full w-full flex-col items-start">
+    <div className="flex h-full w-full flex-col items-start overflow-y-scroll scrollbar-webkit">
       <div className="mt-1 flex h-9 w-full items-center rounded-t-xl bg-slate-300 text-base">
-        <div className="ml-5 mt-2 flex h-full w-[30%]">에러 종류</div>
-        <div className="ml-3 mt-2 flex h-full w-[30%]">프로젝트</div>
-        <div className="ml-5 mt-2 flex h-full w-[30%]">날짜</div>
-        <div className="mr-5 mt-2 flex h-full w-[10%]">해결여부</div>
+        <div className="ml-5 mt-2 flex h-full w-[10%] justify-center">
+          해결여부
+        </div>
+        <div className="ml-5 mt-2 flex h-full w-[35%] justify-center">
+          에러 종류
+        </div>
+        <div className="ml-3 mt-2 flex h-full w-[15%] justify-center">
+          서비스
+        </div>
+        <div className="ml-3 mt-2 flex h-full w-[15%] justify-center">
+          프로젝트
+        </div>
+        <div className="ml-3 mr-5  mt-2 flex h-full w-[15%] justify-center">
+          날짜
+        </div>
       </div>
-      <div className="flex h-[90%] w-full flex-col rounded-b-xl bg-slate-200 text-sm">
+      <div className="flex  w-full flex-col rounded-b-xl bg-slate-200 text-sm">
         {errorList.map((error) => (
           <div
             key={error.errorId}
-            className="box-border flex w-full p-1 hover:cursor-pointer"
+            className="mb-2 flex w-full items-center hover:cursor-pointer"
             onClick={() => handleErrorClick(error)}
           >
-            <div className="ml-5 flex h-full w-[30%]">{error.errorType}</div>
-            <div className="flex h-full w-[30%]">{error.project}</div>
-            <div className="flex h-full w-[30%]">{error.createdAt}</div>
-            <div className="flex h-full w-[10%]">
+            <div className="ml-5 mt-2 flex h-full w-[10%] justify-center">
               {error.isSolved ? "해결" : "미해결"}
+            </div>
+            <div className="ml-5 mt-2 flex h-full w-[35%] justify-center">
+              ... {getLastErrorType(error.errorType)}
+            </div>
+            <div className="ml-3 mt-2 flex h-full w-[15%] justify-center">
+              {error.service}
+            </div>
+            <div className="ml-3 mt-2 flex h-full w-[15%] justify-center">
+              {error.project}
+            </div>
+            <div className="mr-5 mt-2 flex h-full w-[15%] justify-center">
+              {error.time.split("T")[0]}
             </div>
           </div>
         ))}
