@@ -11,6 +11,7 @@ import MainPage from "../pages/MainPage";
 import IndexPage from "../pages/IndexPage";
 import MyNoteDetailPage from "../pages/MyNoteDetailPage";
 import LoginPage from "../pages/LoginPage";
+import ErrorDetailPage from "../pages/ErrorDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -58,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: "error/:errorId",
-        element: <ErrorListPage />,
+        element: <ErrorDetailPage />,
       },
       {
         path: "setting",
