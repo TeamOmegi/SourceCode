@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContentParser } from "../../../hooks/useContentParser";
 import { noteDelete } from "../../../api/myNoteAxios";
-import { useDanger } from "../../../hooks/useComfirm";
+import { useDanger, useQuestion, useWarnning } from "../../../hooks/useComfirm";
+import { linkCheck, linkCreate, linkDelete } from "../../../api/noteGraphAxios";
+import useLinkStore from "../../../store/useLinkStore";
+import { useError } from "../../../hooks/useAlert";
+import useEditorStore from "../../../store/useEditorStore";
 
 interface Props {
+  type?: string;
   notes: MyNote[];
-  selectedTag: string;
+  selectedTag?: string;
 }
 
 interface MyNote {
@@ -18,7 +23,9 @@ interface MyNote {
   createdAt: string;
 }
 
-const MyNoteContainer = ({ notes, selectedTag }: Props) => {
+const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
+  const { setShowNote, setNoteType } = useEditorStore();
+  const { linkTarget } = useLinkStore();
   const navigate = useNavigate();
   const [noteList, setNoteList] = useState<MyNote[]>([]);
   const handleNoteClick = (note: MyNote) => {
@@ -45,17 +52,67 @@ const MyNoteContainer = ({ notes, selectedTag }: Props) => {
     if (result) noteDelete(noteId);
   };
 
+  const handleNoteLink = async (linkeSource: number) => {
+    if (linkTarget === linkeSource) {
+      useError({
+        title: "Link Error",
+        text: "같은 노트는 연결할 수 없습니다.",
+      });
+      return;
+    }
+    //노트체크
+    const checked = await linkCheck(linkeSource, linkTarget);
+    console.log(checked, "연결된링크");
+    if (checked) {
+      // 이미 연결된 노트입니다.
+
+      const result = await useWarnning({
+        title: "Link Delete",
+        fireText: "Note 연결을 끊겠습니까?",
+        resultText: "Note가 연결을 끊었습니다.",
+      });
+      if (result) {
+        //linkDelete(linkTarget, linkTarget1111);
+      }
+    } else {
+      const result = await useQuestion({
+        title: "Link Create",
+        fireText: "Note를 연결하시겠습니까?",
+        resultText: "Note가 연결되었습니다.",
+      });
+      if (result) {
+        //linkCreate({ source: linkTarget, target: linkTarget1111 });
+      }
+    }
+    setShowNote();
+    setTimeout(() => {
+      setNoteType("create");
+    }, 1000);
+  };
+
   return (
     <div className="mt-5  flex h-full w-full flex-col overflow-y-scroll scrollbar-webkit">
       {noteList.map((note, index) => {
-        if (selectedTag !== "" && !note.tags.includes(selectedTag)) return;
+        if (
+          selectedTag &&
+          selectedTag !== "" &&
+          !note.tags.includes(selectedTag)
+        )
+          return;
+
         return (
           <div
             key={index}
-            className="mb-5 ml-5 mr-5 box-border flex justify-between rounded-xl border-[1px] bg-white py-3 pl-3 shadow-lg hover:cursor-pointer"
-            onClick={() => {
-              handleNoteClick(note);
-            }}
+            className="mb-5 ml-5 mr-5 box-border flex w-[97%] flex-nowrap justify-between overflow-visible rounded-xl border-[1px] bg-white py-3 pl-3 shadow-lg hover:cursor-pointer"
+            onClick={
+              type === "link"
+                ? () => {
+                    handleNoteLink(note.noteId);
+                  }
+                : () => {
+                    handleNoteClick(note);
+                  }
+            }
           >
             <div className="box-border flex h-auto w-full flex-col justify-start">
               <div className="box-border flex flex-col">

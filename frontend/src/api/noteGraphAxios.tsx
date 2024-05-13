@@ -94,3 +94,18 @@ export const linkDelete = async (noteId: number, targetNoteId: number) => {
     console.error("Fail linkDelete", error);
   }
 };
+// 링크 연결확인
+export const linkCheck = async (sourceNode: number, targetNode: number) => {
+  console.log("소스:", sourceNode, "타켓:", targetNode);
+  try {
+    const response = await axios.get(`${BASE_URL}/notes/link`, {
+      params: {
+        noteId: sourceNode,
+        targetNoteId: targetNode,
+      },
+    });
+    return response.data.response.linked;
+  } catch (error) {
+    console.error("Fail linkeDelete", error);
+  }
+};

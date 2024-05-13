@@ -2,17 +2,13 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useEditorStore from "../store/useEditorStore";
 import NavBar from "../components/Common/NavBar";
-import NoteCreate from "../components/Editor/NoteCreate";
-import NoteEdit from "../components/Editor/NoteEdit";
+import NoteCreate from "../components/SideComponent/NoteCreate";
+import NoteEdit from "../components/SideComponent/NoteEdit";
+import NoteLink from "../components/SideComponent/NoteLink";
 
 const MainPage = () => {
-  const [content, setContent] = useState<string>();
-  const { showNote, noteType, setShowNote } = useEditorStore();
+  const { showNote, noteType, setShowNote, setNoteType } = useEditorStore();
   const location = useLocation();
-
-  useEffect(() => {
-    console.log(showNote);
-  }, []);
 
   useEffect(() => {
     console.log(location.pathname);
@@ -44,6 +40,7 @@ const MainPage = () => {
         <div className="bg-default">
           {noteType === "create" && <NoteCreate />}
           {noteType === "edit" && <NoteEdit />}
+          {noteType === "link" && <NoteLink />}
         </div>
       </div>
     </div>

@@ -16,6 +16,9 @@ import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
+import useEditorStore from "../store/useEditorStore";
+import { useWarnning2 } from "../hooks/useComfirm";
+import useLinkStore from "../store/useLinkStore";
 
 interface User {
   userId?: number;
@@ -47,7 +50,9 @@ const AllNoteDetailPage = () => {
   const userId = parseInt(useParams().userId || "-1");
   console.log("userId?!!??!?!?!?!?", userId);
   const [note, setNote] = useState<NoteDetail | undefined>();
-
+  const { showNote, noteType, isWriting, setShowNote, setNoteType } =
+    useEditorStore();
+  const { setLinkTarget } = useLinkStore();
   const getNoteDetail = async (noteId: number) => {
     try {
       const response = await getAllNoteDetail(noteId);
@@ -57,6 +62,17 @@ const AllNoteDetailPage = () => {
       console.error("노트 상세 정보를 불러오는 중 오류가 발생했습니다", error);
     }
   };
+
+  useEffect(() => {
+    if (noteId === -1) return;
+    setLinkTarget(noteId);
+    getNoteDetail(noteId);
+  }, [noteId]);
+
+  useEffect(() => {
+    if (note?.content == undefined) return;
+    editor?.commands.setContent(note?.content);
+  }, [note]);
 
   lowlight.registerLanguage("html", html);
   lowlight.registerLanguage("css", css);
@@ -86,15 +102,32 @@ const AllNoteDetailPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (noteId === -1) return;
-    getNoteDetail(noteId);
-  }, [noteId]);
+  const hadleBackLink = async () => {
+    if ((noteType === "create" && isWriting) || noteType === "edit") {
+      const result = await useWarnning2({
+        title: "노트 연결로 이동하시겠습니까?",
+        fireText: "작성중인 노트는 저장되지 않습니다.",
+      });
 
-  useEffect(() => {
-    if (note?.content == undefined) return;
-    editor?.commands.setContent(note?.content);
-  }, [note]);
+      if (result) {
+        if (!showNote) setShowNote();
+        setNoteType("link");
+      }
+      return;
+    } else if (noteType === "create") {
+      if (!showNote) {
+        setShowNote();
+      }
+      setNoteType("link");
+    } else {
+      if (showNote) {
+        setShowNote();
+        setTimeout(() => {
+          setNoteType("create");
+        }, 1000);
+      }
+    }
+  };
 
   const handleExit = () => {
     navigate("/omegi/allNote");
@@ -149,7 +182,8 @@ const AllNoteDetailPage = () => {
             <img
               src="/public/icons/BacklinkIcon.png"
               alt="백링크"
-              className="h-5 w-5"
+              className="h-5 w-5 hover:cursor-pointer"
+              onClick={hadleBackLink}
             />
             <p className="ml-1 text-base">{note?.backlinkCount}개</p>
           </div>

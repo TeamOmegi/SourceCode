@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import Title from "./Title";
-import Tag from "./Tag";
-import Toolbar from "./Toolbar";
+import Title from "../Editor/Title";
+import Tag from "../Editor/Tag";
+import Toolbar from "../Editor/Toolbar";
 
 //tiptap
 import StarterKit from "@tiptap/starter-kit";
@@ -30,7 +30,6 @@ const NoteEdit = () => {
   const noteId = parseInt(localStorage.getItem("noteId") || "0");
 
   const [noteData, setNoteData] = useState<Note>({
-    noteId: noteId,
     title: "",
     tags: [],
     content: "",

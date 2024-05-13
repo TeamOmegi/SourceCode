@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import Title from "./Title";
-import Tag from "./Tag";
-import Toolbar from "./Toolbar";
+import Title from "../Editor/Title";
+import Tag from "../Editor/Tag";
+import Toolbar from "../Editor/Toolbar";
 
 //tiptap
 import StarterKit from "@tiptap/starter-kit";
