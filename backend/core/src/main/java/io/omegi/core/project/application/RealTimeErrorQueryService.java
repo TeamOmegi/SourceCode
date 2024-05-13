@@ -27,6 +27,8 @@ public class RealTimeErrorQueryService {
 	private final ErrorRepository errorRepository;
 	private final UserRepository userRepository;
 
+	private final String SSE_NAME = "REAL_TIME_ERROR";
+
 	public SseEmitter subscribeErrors(SubscribeErrorsRequestDto requestDto) {
 		User user = userRepository.findById(requestDto.userId())
 			.orElseThrow();
@@ -47,7 +49,7 @@ public class RealTimeErrorQueryService {
 				.time(error.getTime())
 				.build();
 
-			sseEmitterManager.sendEvent(user.getUserId(), user.getUserId().toString(), error.getType(), errorResponse);
+			sseEmitterManager.sendEvent(user.getUserId(), user.getUserId().toString(), SSE_NAME, errorResponse);
 		}
 
 		return sseEmitter;
@@ -74,6 +76,6 @@ public class RealTimeErrorQueryService {
 			.time(error.getTime())
 			.build();
 
-		sseEmitterManager.sendEvent(user.getUserId(), error.getErrorId().toString(), error.getType(), errorResponse);
+		sseEmitterManager.sendEvent(user.getUserId(), error.getErrorId().toString(), SSE_NAME, errorResponse);
 	}
 }
