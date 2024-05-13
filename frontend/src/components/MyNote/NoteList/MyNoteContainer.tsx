@@ -61,19 +61,24 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
       return;
     }
     //노트체크
-    const checked = await linkCheck(linkeSource, linkTarget);
-    console.log(checked, "연결된링크");
-    if (checked) {
+    const checked1 = await linkCheck(linkeSource, linkTarget);
+    const checked2 = await linkCheck(linkTarget, linkeSource);
+    console.log(checked1, checked2, "연결된링크");
+    if (checked1 || checked2) {
       // 이미 연결된 노트입니다.
-
       const result = await useWarnning({
         title: "Link Delete",
         fireText: "Note 연결을 끊겠습니까?",
         resultText: "Note가 연결을 끊었습니다.",
       });
       if (result) {
-        //linkDelete(linkTarget, linkTarget1111);
-      }
+        if (checked1) {
+          linkDelete(linkeSource, linkTarget);
+        }
+        if (checked2) {
+          linkDelete(linkTarget, linkeSource);
+        }
+      } else return;
     } else {
       const result = await useQuestion({
         title: "Link Create",
@@ -81,8 +86,8 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
         resultText: "Note가 연결되었습니다.",
       });
       if (result) {
-        //linkCreate({ source: linkTarget, target: linkTarget1111 });
-      }
+        linkCreate(linkeSource, linkTarget);
+      } else return;
     }
     setShowNote();
     setTimeout(() => {
