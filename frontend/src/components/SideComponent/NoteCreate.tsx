@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import Title from "./Title";
-import Tag from "./Tag";
-import Toolbar from "./Toolbar";
+import Title from "../Editor/Title";
+import Tag from "../Editor/Tag";
+import Toolbar from "../Editor/Toolbar";
 
 //tiptap
 import StarterKit from "@tiptap/starter-kit";
@@ -17,19 +17,16 @@ import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 
-// import { common, createLowlight } from "lowlight";
 import { useQuestion, useWarnning } from "../../hooks/useComfirm";
 import { useError } from "../../hooks/useAlert";
-import { Note, getNoteData, noteEdit } from "../../api/myNoteAxios";
+import { Note, noteCreate } from "../../api/myNoteAxios";
 import useEditorStore from "../../store/useEditorStore";
-import { useNavigate } from "react-router-dom";
 
-const NoteEdit = () => {
-  const { setNoteType, setShowNote } = useEditorStore();
-  const navigate = useNavigate();
-  const noteId = parseInt(localStorage.getItem("noteId") || "0");
+const NoteCreate = () => {
+  const [resetToggle, setResetToggle] = useState<boolean>(false);
+  const { setShowNote, setIsWriting } = useEditorStore();
 
-  const [noteData, setNoteData] = useState<Note>({
+  const [noteData, setNoteDate] = useState<Note>({
     title: "",
     tags: [],
     content: "",
@@ -66,37 +63,15 @@ const NoteEdit = () => {
     },
   });
 
-  useEffect(() => {
-    const getData = async () => {
-      const iniNoteData = await getNoteData(noteId);
-      console.log("히히오쥼발싸", iniNoteData.response);
-      setNoteData({
-        ...noteData,
-        title: iniNoteData.response.title,
-        tags: [...iniNoteData.response.tags],
-        content: iniNoteData.response.content,
-        type: iniNoteData.response.type,
-        visibility: iniNoteData.response.visibility,
-      });
-    };
-    getData();
-  }, []);
-
-  useEffect(() => {
-    editor?.commands.setContent(noteData.content);
-  }, [noteData]);
-
   const handleChangeData = (data: string | string[]): void => {
     if (typeof data === "string") {
-      console.log({ ...noteData, title: data });
-      setNoteData({ ...noteData, title: data });
+      setNoteDate({ ...noteData, title: data });
     } else if (typeof data === "object") {
-      console.log({ ...noteData, tag: [...data] });
-      setNoteData({ ...noteData, tags: [...data] });
+      setNoteDate({ ...noteData, tags: data });
     }
   };
 
-  const handleNoteUpdate = async () => {
+  const handleNoteCreate = async () => {
     if (noteData.title === "") {
       useError({
         title: "Create Error",
@@ -104,43 +79,75 @@ const NoteEdit = () => {
       });
       return;
     }
-    console.log(noteData);
+
     const result = await useQuestion({
-      title: "Note Update",
-      fireText: "변경사항을 저장하시겠습니까?",
-      resultText: "Note가 수정되었습니다.",
+      title: "Note Create",
+      fireText: "Note를 생성하시겠습니까?",
+      resultText: "Note가 생성되었습니다.",
     });
 
     if (result) {
-      await noteEdit(noteId, noteData);
+      await noteCreate(noteData);
+      handleNoteReset();
       setShowNote();
-      navigate("/omegi/myNote");
-      setTimeout(() => {
-        setNoteType("create");
-      }, 500);
     }
   };
 
-  const handleNoteLeave = async () => {
+  const handleNoteDelete = async () => {
     const result = await useWarnning({
-      title: "NoteEdit Leave",
+      title: "Note Initialization",
+      fireText: "Note를 초기화하시겠습니까?",
+      resultText: "Note가 초기화되었습니다.",
+    });
+
+    if (result) {
+      handleNoteReset();
+    } else console.log("취소");
+  };
+
+  const handleNoteReset = () => {
+    setResetToggle(!resetToggle);
+    editor?.commands.setContent("");
+  };
+
+  const handleNoteLeave = async () => {
+    if (
+      noteData.title === "" &&
+      noteData.tags.length === 0 &&
+      (noteData.content == "<p></p>" || noteData.content == "")
+    ) {
+      handleNoteReset();
+      setShowNote();
+      return;
+    }
+
+    const result = await useQuestion({
+      title: "NoteCreate Leave",
       fireText: "Note를 저장하시겠습니까?",
       resultText: "Note가 저장되었습니다.",
     });
 
     if (result) {
-      await noteEdit(noteId, noteData);
+      await noteCreate(noteData);
+      handleNoteReset();
       setShowNote();
-      setTimeout(() => {
-        setNoteType("create");
-      }, 500);
     } else {
+      handleNoteReset();
       setShowNote();
-      setTimeout(() => {
-        setNoteType("create");
-      }, 500);
     }
   };
+
+  useEffect(() => {
+    if (
+      noteData.title === "" &&
+      noteData.tags.length === 0 &&
+      (noteData.content == "<p></p>" || noteData.content == "")
+    ) {
+      setIsWriting(false);
+    } else {
+      setIsWriting(true);
+    }
+  }, [noteData]);
 
   return (
     <div className="box-border flex h-full w-full flex-col items-center pb-4 pt-5">
@@ -152,25 +159,41 @@ const NoteEdit = () => {
           onClick={handleNoteLeave}
         />
       </div>
-      <Title iniTitle={noteData.title} handleChangeData={handleChangeData} />
-      <Tag iniTag={noteData.tags || []} handleChangeData={handleChangeData} />
+      <Title
+        iniTitle=""
+        resetToggle={resetToggle}
+        handleChangeData={handleChangeData}
+      />
+      <Tag
+        iniTag={[]}
+        resetToggle={resetToggle}
+        handleChangeData={handleChangeData}
+      />
       <Toolbar editor={editor} />
       <EditorContent
         className="my-4 box-border w-full flex-1 overflow-y-scroll px-8 scrollbar-webkit"
         editor={editor}
         onBlur={() => {
           console.log("성공!!");
-          setNoteData({ ...noteData, content: editor?.getHTML() || "" });
+          setNoteDate({ ...noteData, content: editor?.getHTML() || "" });
         }}
       />
 
       <div className="flex h-12 w-full items-center justify-end pr-4">
         <div className="flex h-12 w-24 items-center justify-center">
           <div
-            className="flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#77af9c] bg-main-200 text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#77af9c] hover:text-base hover:text-main-200 hover:duration-200"
-            onClick={handleNoteUpdate}
+            className="flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#F2527D] bg-main-200 text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#F2527D] hover:text-base hover:text-main-200 hover:duration-200"
+            onClick={handleNoteDelete}
           >
-            <div>노트 수정</div>
+            <div>초기화</div>
+          </div>
+        </div>
+        <div className="flex h-12 w-24 items-center justify-center">
+          <div
+            className="flex h-10 w-20 select-none items-center justify-center rounded-2xl border-[2px] border-[#77af9c] bg-main-200 text-sm font-extrabold text-[#868E96] shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:h-12 hover:w-24 hover:cursor-pointer hover:bg-[#77af9c] hover:text-base hover:text-main-200 hover:duration-200"
+            onClick={handleNoteCreate}
+          >
+            <div>노트 작성</div>
           </div>
         </div>
       </div>
@@ -178,4 +201,4 @@ const NoteEdit = () => {
   );
 };
 
-export default NoteEdit;
+export default NoteCreate;

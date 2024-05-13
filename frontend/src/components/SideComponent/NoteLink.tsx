@@ -22,9 +22,13 @@ const NoteLink = () => {
   }, []);
 
   return (
-    <div>
-      <div></div>
-      <div className="scrollBar h-[70%] w-[90%] overflow-y-scroll">
+    <div className="flex h-full w-full flex-col items-center justify-center">
+      <div className="flex h-[5%] w-full items-center justify-center whitespace-nowrap">
+        <div className="h-full overflow-visible text-2xl font-bold">
+          연결할 노트를 선택하세요.
+        </div>
+      </div>
+      <div className="scrollBar h-[80%] w-[90%] overflow-hidden whitespace-nowrap">
         <MyNoteContainer notes={noteList} type="link" />
       </div>
     </div>

@@ -2,9 +2,9 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useEditorStore from "../store/useEditorStore";
 import NavBar from "../components/Common/NavBar";
-import NoteCreate from "../components/Editor/NoteCreate";
-import NoteEdit from "../components/Editor/NoteEdit";
-import NoteLink from "../components/NoteLink/NoteLink";
+import NoteCreate from "../components/SideComponent/NoteCreate";
+import NoteEdit from "../components/SideComponent/NoteEdit";
+import NoteLink from "../components/SideComponent/NoteLink";
 
 const MainPage = () => {
   const { showNote, noteType, setShowNote, setNoteType } = useEditorStore();
