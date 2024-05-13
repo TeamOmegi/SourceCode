@@ -45,8 +45,9 @@ public class ReissueController {
         }
 //        String username = jwtUtil.getUsername(refresh);
 //        RefreshEntity storedToken = refreshTokenService.getRefreshToken(username);
-        String username = jwtUtil.getUsername(access);
-        RefreshEntity storedToken = refreshTokenService.getRefreshToken(username);
+//        String username = jwtUtil.getUsername(access);
+        Integer userId = jwtUtil.getUserId(access);
+        RefreshEntity storedToken = refreshTokenService.getRefreshToken(userId);
 
         System.out.println(storedToken);
 
@@ -64,13 +65,13 @@ public class ReissueController {
 //        }
 
 //        String username = jwtUtil.getUsername(refresh);
-        String newAccess = jwtUtil.createJwt("access", username, 24 * 60 * 60 * 1000L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, 2 * 24 * 60 * 60 * 1000L);
+        String newAccess = jwtUtil.createJwt("access", userId, 24 * 60 * 60 * 1000L);
+        String newRefresh = jwtUtil.createJwt("refresh", userId, 2 * 24 * 60 * 60 * 1000L);
 //
-        refreshTokenService.deleteRefreshToken(username); // 기존 토큰 삭제
+        refreshTokenService.deleteRefreshToken(userId); // 기존 토큰 삭제
         System.out.println("삭제되니");
         System.out.println(newAccess);
-        refreshTokenService.storeRefreshToken(username, newRefresh, 300L); // 새 토큰 저장
+        refreshTokenService.storeRefreshToken(userId, newRefresh, 300L); // 새 토큰 저장
         response.addCookie(createCookie("access", newAccess));
 //        response.addCookie(createCookie("refresh", newRefresh));
 

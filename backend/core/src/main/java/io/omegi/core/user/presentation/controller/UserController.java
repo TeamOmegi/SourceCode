@@ -1,11 +1,10 @@
-package io.omegi.core.user.persistence.controller;
+package io.omegi.core.user.presentation.controller;
 
 import io.omegi.core.auth.application.refresh.RefreshTokenService;
 import io.omegi.core.auth.jwt.JwtUtil;
 import io.omegi.core.common.annotation.ResponseWrapping;
 import io.omegi.core.user.application.UserService;
-import io.omegi.core.user.domain.User;
-import io.omegi.core.user.presentat.model.response.DrawUserProfileResponse;
+import io.omegi.core.user.presentation.model.response.DrawUserProfileResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,8 +42,8 @@ public class UserController {
         if (accessToken == null) {
             throw new RuntimeException("Authorization token is missing or malformed");
         }
-        String username = jwtUtil.getUsername(accessToken);
-        return userService.drawUserProfile(username);
+        Integer userId = jwtUtil.getUserId(accessToken);
+        return userService.drawUserProfile(userId);
     }
 
     @DeleteMapping("/logout")
@@ -62,8 +61,8 @@ public class UserController {
         }
 
         if (accessToken != null) {
-            String username = jwtUtil.getUsername(accessToken);
-            refreshTokenService.deleteRefreshToken(username);
+            Integer userId = jwtUtil.getUserId(accessToken);
+            refreshTokenService.deleteRefreshToken(userId);
         }
         System.out.println("로그아웃됨");
 

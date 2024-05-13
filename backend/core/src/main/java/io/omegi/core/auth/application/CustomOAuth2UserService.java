@@ -40,8 +40,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             return null;
         }
-        String username = oAuth2Response.getUsername();
-        String profileImageUrl = oAuth2Response.getProfileImageUrl();
+//        String username = oAuth2Response.getUsername();
+        String username = oAuth2User.getAttribute("login");
+        String profileImageUrl = oAuth2User.getAttribute("avatar_url");
+//        String profileImageUrl = oAuth2Response.getProfileImageUrl();
         User existData = userRepository.findByUsername(username);
 
         if (existData == null) {
@@ -50,19 +52,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .profileImageUrl(profileImageUrl)
                     .build();
             userRepository.save(user);
-
-            GetGithubInfoRequestDto getGithubInfoRequestDto = new GetGithubInfoRequestDto();
-            getGithubInfoRequestDto.setUsername(username);
-            getGithubInfoRequestDto.setProfileImageUrl(profileImageUrl);
+//
+//            GetGithubInfoRequestDto getGithubInfoRequestDto = new GetGithubInfoRequestDto();
+//            getGithubInfoRequestDto.setUsername(username);
+//            getGithubInfoRequestDto.setProfileImageUrl(profileImageUrl);
+//            return new CustomOAuth2User(getGithubInfoRequestDto);
+            GetGithubInfoRequestDto getGithubInfoRequestDto = new GetGithubInfoRequestDto(user.getUserId());
             return new CustomOAuth2User(getGithubInfoRequestDto);
         }
         else {
-            userRepository.save(existData);
-
-            GetGithubInfoRequestDto getGithubInfoRequestDto = new GetGithubInfoRequestDto();
-            getGithubInfoRequestDto.setUsername(existData.getUsername());
-            getGithubInfoRequestDto.setProfileImageUrl(existData.getProfileImageUrl());
-
+            GetGithubInfoRequestDto getGithubInfoRequestDto = new GetGithubInfoRequestDto(existData.getUserId());
             return new CustomOAuth2User(getGithubInfoRequestDto);
         }
     }

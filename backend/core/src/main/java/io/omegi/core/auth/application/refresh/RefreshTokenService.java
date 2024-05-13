@@ -18,27 +18,29 @@ public class RefreshTokenService {
     @Autowired
     private RedisTemplate<String, RefreshEntity> redisTemplate;
 
-    public void storeRefreshToken(String username, String refreshToken, long durationInMillis) {
+    public void storeRefreshToken(Integer userId, String refreshToken, long durationInMillis) {
+        String userKey = String.valueOf(userId); // Integer to String conversion
         long expirationTimestamp = System.currentTimeMillis() + durationInMillis;
 
         RefreshEntity refreshEntity = RefreshEntity.builder()
-                .username(username)
+                .userId(userId)
                 .refresh(refreshToken)
                 .expiration(expirationTimestamp)
                 .build();
 
-        redisTemplate.opsForValue().set(username, refreshEntity, durationInMillis, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(userKey, refreshEntity, durationInMillis, TimeUnit.MILLISECONDS);
 
-        logger.debug("Stored refresh token for user: {}, token: {}, expires at: {}", username, refreshToken, expirationTimestamp);
+        logger.debug("Stored refresh token for user: {}, token: {}, expires at: {}", userId, refreshToken, expirationTimestamp);
     }
-    public RefreshEntity getRefreshToken(String username) {
-        RefreshEntity refreshEntity = redisTemplate.opsForValue().get(username);
+    public RefreshEntity getRefreshToken(Integer userId) {
+        String userKey = String.valueOf(userId);
+        RefreshEntity refreshEntity = redisTemplate.opsForValue().get(userKey);
 
         return refreshEntity;
     }
 
-    public void deleteRefreshToken(String username) {
-
-        redisTemplate.delete(username);
+    public void deleteRefreshToken(Integer userId) {
+        String userKey = String.valueOf(userId);
+        redisTemplate.delete(userKey);
     }
 }

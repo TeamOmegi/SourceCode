@@ -27,11 +27,11 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return getGithubInfoRequestDto.getUsername();
+        return String.valueOf(getGithubInfoRequestDto.userId());
     }
 
-    public String getProfileImageUrl() {
-        return getGithubInfoRequestDto.getProfileImageUrl();
-    }
+//    public String getProfileImageUrl() {
+//        return getGithubInfoRequestDto.getProfileImageUrl();
+//    }
 }
 

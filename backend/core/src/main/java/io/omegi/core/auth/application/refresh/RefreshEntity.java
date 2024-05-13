@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public class RefreshEntity {
 
     @Id
-    private String username;
+    private Integer userId;
 
     private String refresh;
 

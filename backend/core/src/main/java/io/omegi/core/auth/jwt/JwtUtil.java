@@ -24,9 +24,9 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("category", String.class);
     }
 
-    public String getUsername(String token) {
 
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("username", String.class);
+    public Integer getUserId(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("userId", Integer.class);
     }
 
     public Boolean isExpired(String token) {
@@ -34,10 +34,9 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
-    public String createJwt(String category, String username, Long expiredMs) {
-
+    public String createJwt(String category, Integer userId, Long expiredMs) {
         Claims claims = Jwts.claims();
-        claims.put("username", username);
+        claims.put("userId", userId);
         claims.put("category", category);
 
         return Jwts.builder()

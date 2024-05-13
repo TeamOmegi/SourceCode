@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,8 @@ import java.util.Iterator;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    @Value("${front-url}")
+    private String frontUrl;
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
@@ -31,23 +34,23 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        String username = customUserDetails.getName();
-
+//        String username = customUserDetails.getName();
+        Integer userId = Integer.parseInt(customUserDetails.getName());
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         System.out.println("여기까지 옴");
 
 
-        String access = jwtUtil.createJwt("access", username, 24 * 60 * 60 * 1000L);
-        String refresh = jwtUtil.createJwt("refresh", username, 2 * 24 * 60 * 60 * 1000L);
-        refreshTokenService.deleteRefreshToken(username);
+        String access = jwtUtil.createJwt("access", userId, 24 * 60 * 60 * 1000L);
+        String refresh = jwtUtil.createJwt("refresh", userId, 2 * 24 * 60 * 60 * 1000L);
+        refreshTokenService.deleteRefreshToken(userId);
         System.out.println(access);
         System.out.println(refresh);
-        refreshTokenService.storeRefreshToken(username, refresh, 2 * 24 * 60 * 60 * 1000L);  // Store refresh token in Redis
+        refreshTokenService.storeRefreshToken(userId, refresh, 2 * 24 * 60 * 60 * 1000L);  // Store refresh token in Redis
         response.addCookie(createCookie("access", access));
 //        response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
-        response.sendRedirect("http://localhost:5173");
+        response.sendRedirect(frontUrl);
     }
 
     private Cookie createCookie(String key, String value) {

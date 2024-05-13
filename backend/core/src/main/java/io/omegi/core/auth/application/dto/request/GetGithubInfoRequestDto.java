@@ -3,10 +3,8 @@ package io.omegi.core.auth.application.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class GetGithubInfoRequestDto {
-    private String username;
-    private String profileImageUrl;
+public record GetGithubInfoRequestDto (
+        Integer userId
+){
 }
 

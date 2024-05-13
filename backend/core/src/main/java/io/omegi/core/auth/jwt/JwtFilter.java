@@ -63,10 +63,9 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtUtil.getUsername(accessToken);
+        Integer userId = jwtUtil.getUserId(accessToken);
 
-        GetGithubInfoRequestDto githubInfoRequestDto = new GetGithubInfoRequestDto();
-        githubInfoRequestDto.setUsername(username);
+        GetGithubInfoRequestDto githubInfoRequestDto = new GetGithubInfoRequestDto(userId);
 
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(githubInfoRequestDto);
 

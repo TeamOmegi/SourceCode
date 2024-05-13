@@ -1,4 +1,4 @@
-package io.omegi.core.user.presentat.model.response;
+package io.omegi.core.user.presentation.model.response;
 
 import lombok.Builder;
 import java.util.List;
