@@ -33,6 +33,10 @@ public class SseEmitterManager {
 	}
 
 	private SseEmitter get(Integer sseEmitterId) {
+		if (!sseEmitterStore.containsKey(sseEmitterId)) {
+			throw new SseFailedException("No SSE connection");
+		}
+
 		return sseEmitterStore.get(sseEmitterId);
 	}
 
