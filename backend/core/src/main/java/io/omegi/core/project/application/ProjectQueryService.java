@@ -67,8 +67,8 @@ public class ProjectQueryService {
 			for (ServiceLink serviceLink : serviceLinks) {
 				io.omegi.core.project.domain.Service linkedService = serviceLink.getLinkedService();
 				DrawProjectDiagramResponse.EdgeResponse edge = DrawProjectDiagramResponse.EdgeResponse.builder()
-					.sourceId(service.getServiceId())
-					.targetId(linkedService.getServiceId())
+					.source(service.getServiceId())
+					.target(linkedService.getServiceId())
 					.build();
 
 				edges.add(edge);
