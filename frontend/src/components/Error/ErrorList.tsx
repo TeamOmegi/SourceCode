@@ -25,6 +25,8 @@ const ErrorList = ({ selectedProject }: Props) => {
   };
 
   useEffect(() => {
+    console.log("ERRORLIST", selectedProject);
+    if (selectedProject === null || selectedProject === "") return;
     const getErrors = async () => {
       try {
         const response = await getErrorList(selectedProject, "", false);

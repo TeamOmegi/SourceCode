@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ErrorList from "../components/Error/ErrorList";
-import { getErrorList, getProjectList } from "../api/errorAxios";
+import { getProjectList } from "../api/errorAxios";
 import CustomPjtSelect from "../components/Error/CustomPjtSelect";
 
 interface Project {
@@ -30,9 +30,8 @@ const ErrorListPage = () => {
         setAllProject(projectData.map((project: Project) => project.name));
         if (projectData.length > 0) {
           const firstProjectName = projectData[0].name;
+          console.log("!!!!!!!!!!!!!firstProjectName", firstProjectName);
           setSelectedProject(firstProjectName);
-          const errorData = await getErrorList(selectedProject, "", false);
-          setErrorList(errorData.errors);
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -44,12 +43,6 @@ const ErrorListPage = () => {
 
   const handleSelectProject = async (project: string) => {
     setSelectedProject(project);
-    try {
-      const errorData = await getErrorList(project, "", false);
-      setErrorList(errorData.errors);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    }
   };
 
   return (
