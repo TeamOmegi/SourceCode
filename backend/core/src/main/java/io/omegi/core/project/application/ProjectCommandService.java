@@ -42,7 +42,11 @@ public class ProjectCommandService {
 
 	public CreateProjectResponseDto createProject(CreateProjectRequestDto requestDto) {
 		User user = userRepository.findById(requestDto.userId())
-				.orElseThrow(RuntimeException::new);// todo
+				.orElseThrow(RuntimeException::new);
+
+		if (projectRepository.existsByUserAndName(user, requestDto.projectName())) {
+			throw new RuntimeException();
+		}
 
 		Project project = Project.builder()
 				.user(user)
