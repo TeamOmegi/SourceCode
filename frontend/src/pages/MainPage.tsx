@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useEditorStore from "../store/useEditorStore";
 import NavBar from "../components/Common/NavBar";
 import NoteCreate from "../components/SideComponent/NoteCreate";
@@ -16,7 +16,7 @@ interface Error {
 }
 const MainPage = () => {
   const { showNote, noteType, setShowNote } = useEditorStore();
-  const { setErrorList } = useErrorStore();
+  const { setErrorCreate, setIsNewError, setErrorMap } = useErrorStore();
   const location = useLocation();
 
   useEffect(() => {
@@ -27,8 +27,14 @@ const MainPage = () => {
 
     eventSource.addEventListener("REAL_TIME_ERROR", (event) => {
       const errorData: Error = JSON.parse(event.data); // 서버에서 받은 데이터 파싱
-      setErrorList(errorData);
-      console.log("쨘:", errorData);
+      setErrorCreate(errorData);
+      setErrorMap(errorData.serviceId, "up");
+      console.log(12);
+      if (location.pathname !== "/omegi") {
+        setIsNewError(true);
+      } else {
+        setIsNewError(false);
+      }
     });
 
     eventSource.onerror = () => {
@@ -41,9 +47,11 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(location.pathname);
     if (["/omegi", "/omegi/setting"].includes(location.pathname)) {
       if (showNote) setShowNote();
+    }
+    if (location.pathname === "/omegi") {
+      setIsNewError(false);
     }
   }, [location.pathname]);
 
