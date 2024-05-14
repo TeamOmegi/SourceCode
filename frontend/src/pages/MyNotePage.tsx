@@ -16,10 +16,16 @@ const MyNotePage = () => {
           <ToggleContainer setViewType={setViewType} viewType={viewType} />
         </div>
       </div>
-      <div className="flex h-5/6 w-full  justify-center rounded-xl">
-        <div className="border-1 flex h-full w-11/12 items-center justify-center rounded-lg border-primary-100 text-black">
-          {viewType === "list" ? <NoteList /> : <NoteGraph />}
-        </div>
+      <div className="flex h-5/6 w-full items-center justify-center rounded-xl">
+        {viewType === "list" ? (
+          <div className="border-1 flex h-full w-11/12 items-center justify-center rounded-lg border-primary-100 text-black">
+            <NoteList />
+          </div>
+        ) : (
+          <div className="border-1 h-11/12 mb-5 mt-5 flex w-11/12 items-center justify-center rounded-lg border-primary-100 text-black">
+            <NoteGraph />
+          </div>
+        )}
       </div>
     </div>
   );
