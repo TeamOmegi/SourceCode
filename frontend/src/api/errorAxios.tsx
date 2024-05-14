@@ -38,6 +38,7 @@ export const getErrorList = async (
         project: project,
       },
     });
+    console.log(response.data.response);
     return response.data.response;
   } catch (error) {
     console.error("Error getErrorList", error);
@@ -46,20 +47,22 @@ export const getErrorList = async (
 
 // 에러 상세 조회
 interface ErrorDetail {
-  traces: string[];
+  type: string;
   summary: string;
   log: string;
+  trace: string[];
+  time: string;
+  projectId: number;
+  serviceId: number;
   noteId: number;
 }
 
 export const getErrorDetail = async (errorId: number): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/errors/`, {
-      params: {
-        errorId: errorId,
-      },
-    });
-    return response.data.result;
+    console.log("들어와따리또~~~", errorId);
+    const response = await axios.get(`${BASE_URL}/errors/${errorId}`);
+    console.log("!!!!!!!!!!!!!!!", response);
+    return response.data.response;
   } catch (error) {
     console.error(error, "Fail getErrorDetail");
   }

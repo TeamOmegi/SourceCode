@@ -43,9 +43,9 @@ const NoteList = () => {
 
   return (
     <div className="box-border flex h-full w-full flex-col items-center justify-center rounded-xl p-5 text-xl text-black">
-      <div className="flex h-[10%] w-full items-center justify-between">
+      <div className="flex h-[10%] w-full items-center justify-between ">
         <CustomSelect options={allTag} handleSelectTag={handleSelectTag} />
-        <div className=" mr-10 mt-2 flex h-10 w-1/3 rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
+        <div className=" ml-5 mt-2 flex h-10 w-1/3 rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
           <input
             type="text"
             placeholder="내 노트를 검색하세요!"
@@ -64,7 +64,7 @@ const NoteList = () => {
           />
         </div>
       </div>
-      <div className="h-[90%] w-full">
+      <div className="flex h-[90%] w-full">
         <MyNoteContainer notes={noteList} selectedTag={selectedTag} />
       </div>
     </div>

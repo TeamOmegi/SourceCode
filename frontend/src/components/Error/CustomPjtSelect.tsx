@@ -1,8 +1,6 @@
-// CustomPjtSelect.tsx
-
 import { useState, useEffect } from "react";
 
-interface Project {
+interface ProjectList {
   options: string[];
   selectedOption: string;
   handleSelectProject: (project: string) => void;
@@ -12,14 +10,17 @@ const CustomPjtSelect = ({
   options,
   selectedOption,
   handleSelectProject,
-}: Project) => {
+}: ProjectList) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    console.log(options, "이거는 옵션,,");
     // 아무것도 선택되지 않았을 때 자동으로 맨 처음 프로젝트 선택
     if (!selectedOption && options.length > 0) {
       handleSelectProject(options[0]);
+      console.log("이거는 useEffect", options[0]);
     }
+    console.log("이거는 useEffect", selectedOption);
   }, [selectedOption, options, handleSelectProject]);
 
   const toggleDropdown = () => {
@@ -33,7 +34,8 @@ const CustomPjtSelect = ({
   };
 
   const handleOptionClick = (option: string) => {
-    handleSelectProject(option); // 선택한 프로젝트를 부모 컴포넌트로 전달
+    console.log("이거는 handleOptionClick", option);
+    handleSelectProject(option);
     setIsOpen(false);
   };
 
