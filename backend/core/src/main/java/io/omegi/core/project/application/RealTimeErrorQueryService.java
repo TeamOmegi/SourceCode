@@ -44,6 +44,8 @@ public class RealTimeErrorQueryService {
 				.errorId(error.getErrorId())
 				.serviceId(service.getServiceId())
 				.projectId(project.getProjectId())
+				.serviceName(service.getName())
+				.projectName(project.getName())
 				.solved(error.isSolved())
 				.type(error.getType())
 				.time(error.getTime())
