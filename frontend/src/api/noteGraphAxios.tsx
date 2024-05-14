@@ -84,16 +84,17 @@ export const linkDelete = async (noteId: number, targetNoteId: number) => {
 
   try {
     const response = await axios.delete(`${BASE_URL}/notes/link`, {
-      noteId: noteId,
-      targetNoteId: targetNoteId,
+      data: {
+        noteId: noteId,
+        targetNoteId: targetNoteId,
+      },
     });
-    console.log("링크 삭제 개열받네");
-    console.log("링크삭제완료됨요 ~~~~~ ", response.data);
     return response.data;
   } catch (error) {
     console.error("Fail linkDelete", error);
   }
 };
+
 // 링크 연결확인
 export const linkCheck = async (sourceNode: number, targetNode: number) => {
   console.log("소스:", sourceNode, "타켓:", targetNode);

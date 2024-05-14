@@ -84,7 +84,7 @@ const NoteGraph = () => {
   }, []);
 
   // ================== 노트 연결  ==================
-  const handleNodeDoubleClick = (nodeIdx: number) => {
+  const handleNodeDoubleClick = (nodeIdx: number, graph: Graph) => {
     const selectedNode = nodes.find((node) => node.idx === nodeIdx);
     if (!selectedNode) return;
 
@@ -118,7 +118,7 @@ const NoteGraph = () => {
         });
         setSelectedNodes([]);
       } else {
-        handleConnect(firstNode.idx, selectedNode.idx);
+        handleConnect(firstNode.nodeId, selectedNode.nodeId);
       }
     } else {
       setSelectedNodes([]);
@@ -136,6 +136,7 @@ const NoteGraph = () => {
     if (result) {
       try {
         await linkCreate(noteId, targetNodeId);
+        getGraph();
       } catch (error) {
         console.error("Failed to create link:", error);
       }
@@ -205,8 +206,8 @@ const NoteGraph = () => {
   };
 
   useEffect(() => {
-    const width = 1212;
-    const height = 830;
+    const width = 804;
+    const height = 484;
 
     const graph = { nodes, links };
     // getGraph();
@@ -227,7 +228,7 @@ const NoteGraph = () => {
           .distance(50), // 링크의 길이
       )
       .force("charge", d3.forceManyBody().strength(-300))
-      .force("center", d3.forceCenter(width / 3, height / 3))
+      .force("center", d3.forceCenter(width / 2, height / 2))
 
       .force("x", d3.forceX(width).strength(0.1)) // x축 위치 제한
       .force("y", d3.forceY(height).strength(0.1)); // y축 위치 제한
@@ -324,7 +325,12 @@ const NoteGraph = () => {
       className="flex h-full w-full items-center justify-center"
     >
       {/* 그래프 컨텐츠 */}
-      <svg ref={svgRef} width={1000} height={800} className="h-5/6 w-5/6"></svg>
+      <svg
+        ref={svgRef}
+        width={1300}
+        height={900}
+        className=" h-5/6 w-5/6"
+      ></svg>
     </div>
   );
 };
