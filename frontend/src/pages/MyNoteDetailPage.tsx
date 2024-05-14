@@ -99,7 +99,7 @@ const MyNoteDetailPage = () => {
 
     if (result) {
       noteDelete(noteId);
-      navigate("/omegi/myNote");
+      navigate("-1");
     }
   };
 
