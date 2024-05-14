@@ -18,8 +18,8 @@ public record DrawProjectDiagramResponse(
 
 	@Builder
 	public record EdgeResponse(
-		Integer sourceId,
-		Integer targetId
+		Integer source,
+		Integer target
 	) {
 	}
 }
