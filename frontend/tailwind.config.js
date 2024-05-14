@@ -38,6 +38,16 @@ module.exports = {
           200: "#F5F5F5",
         },
       },
+      animation: {
+        fade: "fadeIn .75s ease-in",
+      },
+
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+      },
       fontFamily: {
         sans: ["Pretendard-Regular", "sans-serif"],
       },
