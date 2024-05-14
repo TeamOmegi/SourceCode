@@ -26,7 +26,7 @@ public class SseEmitterManager {
 		sseEmitter.onCompletion(callback);
 		// sseEmitter.onError();
 
-		sendEvent(sseEmitter, "temp id", initialEventName, initialEventData);
+		sendEvent(sseEmitter, sseEmitterId.toString(), initialEventName, initialEventData);
 		sseEmitterStore.put(sseEmitterId, sseEmitter);
 
 		return sseEmitter;

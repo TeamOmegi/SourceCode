@@ -37,9 +37,13 @@ public class ProjectController {
 	@ResponseStatus(CREATED)
 	@ResponseWrapping(status = SAVE_PROJECT_SUCCESS)
 	public CreateProjectResponse createProject(@Login Integer userId, @RequestBody CreateProjectRequest request) {
-		CreateProjectRequestDto requestDto = new CreateProjectRequestDto(userId, request.name());
+		CreateProjectRequestDto requestDto = new CreateProjectRequestDto(
+			userId, request.projectName(),
+			request.services().stream()
+			.map(serviceRequest -> new CreateProjectRequestDto.ServiceRequestDto(serviceRequest.serviceTypeId(), serviceRequest.serviceName()))
+			.toList());
 		CreateProjectResponseDto responseDto = projectCommandService.createProject(requestDto);
-		return new CreateProjectResponse(responseDto.projectId());
+		return new CreateProjectResponse(responseDto.projectId(), responseDto.serviceIds());
 	}
 
 	@PatchMapping("/{projectId}")
@@ -53,7 +57,7 @@ public class ProjectController {
 	}
 
 	@DeleteMapping("/{projectId}")
-	@ResponseStatus(NO_CONTENT)
+	@ResponseStatus(OK)
 	@ResponseWrapping(status = DELETE_PROJECT_SUCCESS)
 	public DeleteProjectResponse deleteProject(@Login Integer userId, @PathVariable Integer projectId) {
 		DeleteProjectRequestDto requestDto = new DeleteProjectRequestDto(userId, projectId);
@@ -70,7 +74,7 @@ public class ProjectController {
 		return new CreateServiceTokenResponse(responseDto.serviceToken());
 	}
 	@DeleteMapping("/{projectId}/services/{serviceId}/tokens")
-	@ResponseStatus(NO_CONTENT)
+	@ResponseStatus(OK)
 	public DeleteServiceTokenResponse DeleteServiceToken(@Login Integer userId, @PathVariable Integer projectId, @PathVariable Integer serviceId) {
 		DeleteServiceTokenRequestDto requestDto = new DeleteServiceTokenRequestDto(userId, projectId, serviceId);
 		DeleteServiceTokenResponseDto responseDto = projectCommandService.deleteServiceToken(requestDto);
