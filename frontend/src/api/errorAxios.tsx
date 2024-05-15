@@ -33,11 +33,11 @@ export const getErrorList = async (
   solved: boolean,
 ) => {
   try {
-    const response = await axios.get(`${BASE_URL}/errors`, {
-      params: {
-        project: project,
-      },
-    });
+    const params = { project: project, solved: solved };
+    if (solved !== null) {
+      params.solved = solved;
+    }
+    const response = await axios.get(`${BASE_URL}/errors`, { params });
     console.log(response.data.response);
     return response.data.response;
   } catch (error) {
