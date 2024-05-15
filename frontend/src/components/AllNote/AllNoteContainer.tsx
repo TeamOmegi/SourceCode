@@ -58,7 +58,7 @@ const AllNoteContainer = ({ notes }: Props) => {
         {allNotes.map((note) => (
           <div
             key={note.noteId}
-            className="mb-3 mr-3 box-border flex w-[530px] items-center justify-between rounded-xl border-[1px] border-gray-300 bg-white py-3 pb-2 pl-3 shadow-lg"
+            className="mb-3 mr-3 box-border flex w-[500px] items-center justify-between rounded-xl border-[1px] border-gray-300 bg-white py-3 pb-2 pl-3 shadow-lg"
             onClick={() => handleNoteClick(note)}
             style={{ cursor: "pointer" }}
           >
