@@ -9,7 +9,8 @@ export interface Note {
   content: string;
   type: string;
   visibility: string;
-  links: number[];
+  links?: number[];
+  createdAt?: string;
 }
 
 // 노트 전체조회 ("")

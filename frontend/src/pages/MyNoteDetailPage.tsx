@@ -99,7 +99,7 @@ const MyNoteDetailPage = () => {
 
     if (result) {
       noteDelete(noteId);
-      navigate("-1");
+      navigate(-1);
     }
   };
 
