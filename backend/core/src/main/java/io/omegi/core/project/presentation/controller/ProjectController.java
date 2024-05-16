@@ -10,14 +10,7 @@ import io.omegi.core.project.application.dto.response.*;
 import io.omegi.core.project.application.dto.response.DeleteServiceTokenResponseDto;
 import io.omegi.core.project.presentation.model.request.CreateServiceTokenRequest;
 import io.omegi.core.project.presentation.model.response.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.omegi.core.common.annotation.Login;
 import io.omegi.core.common.annotation.ResponseWrapping;
@@ -25,6 +18,8 @@ import io.omegi.core.project.application.ProjectCommandService;
 import io.omegi.core.project.presentation.model.request.CreateProjectRequest;
 import io.omegi.core.project.presentation.model.request.EditProjectRequest;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
@@ -78,5 +73,11 @@ public class ProjectController {
 		DeleteServiceTokenRequestDto requestDto = new DeleteServiceTokenRequestDto(userId, projectId, serviceId);
 		DeleteServiceTokenResponseDto responseDto = projectCommandService.deleteServiceToken(requestDto);
 		return new DeleteServiceTokenResponse(responseDto.serviceId());
+	}
+
+	@GetMapping("/{projectId}/serviceTokens")
+	@ResponseStatus(OK)
+	public GetAllServiceTokenFromProjectResponse getAllServiceTokenFromProject(@Login Integer userId, @PathVariable Integer projectId) {
+		return projectCommandService.getAllServiceTokenFromProject(userId, projectId);
 	}
 }
