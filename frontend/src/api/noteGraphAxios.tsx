@@ -25,7 +25,7 @@ export const getGraphData = async (): Promise<{
   links: Link[];
 } | null> => {
   try {
-    const response = await axios.get<GraphData>(`${BASE_URL}/notes/graph`);
+    const response = await axiosInstance.get<GraphData>(`/notes/graph`);
     const Nodes: Node[] = response.data.response.nodes.map(
       (node: {
         nodeId: number;
