@@ -1,7 +1,10 @@
 package io.omegi.core.project.application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import io.omegi.core.project.application.dto.response.*;
+import io.omegi.core.project.presentation.model.response.GetAllServiceTokenFromProjectResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,11 +15,6 @@ import io.omegi.core.project.application.dto.request.CreateServiceTokenRequestDt
 import io.omegi.core.project.application.dto.request.DeleteProjectRequestDto;
 import io.omegi.core.project.application.dto.request.DeleteServiceTokenRequestDto;
 import io.omegi.core.project.application.dto.request.EditProjectRequestDto;
-import io.omegi.core.project.application.dto.response.CreateProjectResponseDto;
-import io.omegi.core.project.application.dto.response.CreateServiceTokenResponseDto;
-import io.omegi.core.project.application.dto.response.DeleteProjectResponseDto;
-import io.omegi.core.project.application.dto.response.DeleteServiceTokenResponseDto;
-import io.omegi.core.project.application.dto.response.EditProjectResponseDto;
 import io.omegi.core.project.domain.Project;
 import io.omegi.core.project.domain.ServiceToken;
 import io.omegi.core.project.domain.ServiceType;
@@ -135,4 +133,23 @@ public class ProjectCommandService {
 		serviceTokenRepository.delete(serviceToken);
 		return new DeleteServiceTokenResponseDto(requestDto.serviceId());
 	}
+
+	public GetAllServiceTokenFromProjectResponse getAllServiceTokenFromProject(Integer userId, Integer projectId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found"));
+
+		Project project = projectRepository.findByUserAndProjectId(user, projectId)
+				.orElseThrow(() -> new RuntimeException("Project not found"));
+
+		List<GetAllServiceTokenFromProjectResponse.ServiceTokenResponse> serviceTokenResponses = project.getServices().stream()
+				.filter(service -> service.getServiceToken() != null)
+				.map(service -> new GetAllServiceTokenFromProjectResponse.ServiceTokenResponse(
+						service.getServiceId(),
+						service.getServiceToken().getToken()
+				))
+				.collect(Collectors.toList());
+
+		return new GetAllServiceTokenFromProjectResponse(serviceTokenResponses);
+	}
+
 }
