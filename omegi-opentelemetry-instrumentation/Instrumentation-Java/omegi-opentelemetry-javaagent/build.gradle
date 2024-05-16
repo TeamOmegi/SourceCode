@@ -9,7 +9,7 @@ archivesBaseName = 'omegi-opentelemetry-extension'
 
 ext {
     versions = [
-            opentelemetrySdk           : "1.37.0",
+            opentelemetrySdk           : "1.38.0",
             opentelemetryJavaagent     : "2.4.0-SNAPSHOT",
             opentelemetryJavaagentAlpha: "2.4.0-alpha-SNAPSHOT",
     ]
@@ -48,6 +48,7 @@ dependencies {
     annotationProcessor deps.autoservice
 
     otel("io.opentelemetry.javaagent:opentelemetry-javaagent:${versions.opentelemetryJavaagent}")
+    implementation "io.opentelemetry:opentelemetry-exporter-logging:${versions.opentelemetrySdk}"
 
     //auto-service
     implementation 'com.google.auto.service:auto-service:1.1.1'

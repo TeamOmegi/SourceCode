@@ -74,7 +74,7 @@ public class SampleOmegiTraceSpanExporter implements SpanExporter {
 
 			String traceId = firstSpan.getTraceId();
 			int hashCode = traceId.hashCode();
-			if (hashCode % 5 != 0) {
+			if (hashCode % OmegiUtil.getOmegiFlowRate() != 0) {
 				return CompletableResultCode.ofSuccess();
 			}
 		}
@@ -99,10 +99,8 @@ public class SampleOmegiTraceSpanExporter implements SpanExporter {
 		outerJson.addProperty("spanEnterTime", OmegiUtil.getFormattedTime(span.getStartEpochNanos()));
 		outerJson.addProperty("spanExitTime", OmegiUtil.getFormattedTime(span.getEndEpochNanos()));
 
-		ProducerRecord<String, byte[]> record = new ProducerRecord<>("flow",
+		ProducerRecord<String, byte[]> record = new ProducerRecord<>(OmegiUtil.getOmegiKafkaTopicFlow(),
 			outerJson.toString().getBytes(StandardCharsets.UTF_8));
-
-		logger.info(outerJson.toString());
 
 		try {
 			RecordMetadata recordMetadata = kafkaProducer.send(record).get();

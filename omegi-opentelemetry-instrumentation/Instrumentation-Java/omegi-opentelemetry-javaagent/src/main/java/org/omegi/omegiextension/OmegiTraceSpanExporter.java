@@ -136,8 +136,10 @@ public class OmegiTraceSpanExporter implements SpanExporter {
         /*
         카프카 전송
          */
-		ProducerRecord<String, byte[]> record = new ProducerRecord<>("error",
+		System.out.println(OmegiUtil.getOmegiKafkaTopicError());
+		ProducerRecord<String, byte[]> record = new ProducerRecord<>(OmegiUtil.getOmegiKafkaTopicError(),
 			outerJson.toString().getBytes(StandardCharsets.UTF_8));
+
 		try {
 			RecordMetadata recordMetadata = kafkaProducer.send(record).get();
 			logger.info(recordMetadata.toString());
