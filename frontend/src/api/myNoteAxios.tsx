@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
@@ -20,8 +21,9 @@ export const getAllMyNoteData = async (keyword: string): Promise<any> => {
     if (keyword.trim() !== "") {
       params = { keyword: keyword };
     }
-    const response = await axios.get(`${BASE_URL}/notes/list`, {
+    const response = await axiosInstance.get(`/notes/list`, {
       params,
+      withCredentials: true,
     });
 
     return response.data;
@@ -34,7 +36,7 @@ export const getAllMyNoteData = async (keyword: string): Promise<any> => {
 export const getNoteData = async (noteId: number): Promise<any> => {
   console.log("전달완료: ", noteId);
   try {
-    const response = await axios.get(`${BASE_URL}/notes/${noteId}`);
+    const response = await axiosInstance.get(`/notes/${noteId}`);
     return response.data;
   } catch (error) {
     console.error(error, "Fail getNoteData");
@@ -44,7 +46,7 @@ export const getNoteData = async (noteId: number): Promise<any> => {
 // 사용자가 사용한 모든 Tag
 export const getAllTags = async (): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/tags`);
+    const response = await axiosInstance.get(`/tags`);
     console.log(response, "Success AllTags");
     return response.data;
   } catch (error) {
@@ -56,7 +58,7 @@ export const getAllTags = async (): Promise<any> => {
 export const noteCreate = async (noteData: Note) => {
   console.log("전달완료: ", noteData);
   try {
-    const response = await axios.post(`${BASE_URL}/notes`, noteData);
+    const response = await axiosInstance.post(`/notes`, noteData);
     console.log(response, "Success NoteCreate");
   } catch (error) {
     console.error(error, "Fail NoteCreate");
@@ -67,7 +69,7 @@ export const noteCreate = async (noteData: Note) => {
 export const noteEdit = async (noteId: number, noteData: Note) => {
   console.log("전달완료:@!@!@ ", noteData);
   try {
-    const response = await axios.patch(`${BASE_URL}/notes/${noteId}`, noteData);
+    const response = await axiosInstance.patch(`/notes/${noteId}`, noteData);
     console.log(response, "Success NoteEdit");
   } catch (error) {
     console.error(error, "Fail NoteEdit");
@@ -78,7 +80,7 @@ export const noteEdit = async (noteId: number, noteData: Note) => {
 export const noteDelete = async (noteId: number) => {
   console.log("전달완료: ", typeof noteId);
   try {
-    const response = await axios.delete(`${BASE_URL}/notes/${noteId}`);
+    const response = await axiosInstance.delete(`/notes/${noteId}`);
     console.log(response, "Success NoteDelete");
   } catch (error) {
     console.error(error, "Fail NoteDelete");
