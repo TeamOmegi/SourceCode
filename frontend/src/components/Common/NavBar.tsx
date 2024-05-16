@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useWarnning2 } from "../../hooks/useComfirm";
 import useEditorStore from "../../store/useEditorStore";
 import useErrorStore from "../../store/useErrorStore";
+import axiosInstance from "../../api/axiosInstance";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const [isClick, setIsClick] = useState<string>("");
@@ -40,6 +42,18 @@ const NavBar = () => {
   const handleSettingClick = () => {
     setIsClick("/omegi/setting");
     navigate("/omegi/setting");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.delete("/users/logout");
+      Cookies.remove("access");
+      Cookies.remove("refresh");
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const hadleNoteClick = async () => {
@@ -214,6 +228,7 @@ const NavBar = () => {
                 className="h-8 w-8 hover:cursor-pointer"
                 alt="Signout_Icon"
                 src="/icons/SignoutIcon.png"
+                onClick={handleLogout}
               />
             </div>
           </div>

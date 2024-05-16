@@ -20,6 +20,7 @@ const MainPage = () => {
   const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname != "/omegi") return;
     //SSE연결 로직
     const eventSource = new EventSource(
       "http://k10a308.p.ssafy.io:8081/errors/real-time/subscription",
