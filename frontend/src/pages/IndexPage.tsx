@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const GITHUB_LOGIN_URL = "http://localhost:8080/oauth2/authorization/github";
+const GITHUB_LOGIN_URL = "http://core:8081/oauth2/authorization/github";
 const IndexPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
