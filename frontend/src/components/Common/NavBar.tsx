@@ -5,6 +5,7 @@ import useEditorStore from "../../store/useEditorStore";
 import useErrorStore from "../../store/useErrorStore";
 import axiosInstance from "../../api/axiosInstance";
 import Cookies from "js-cookie";
+import { fetchUserProfile } from "../../api/userAxios";
 
 const NavBar = () => {
   const [isClick, setIsClick] = useState<string>("");
@@ -70,6 +71,7 @@ const NavBar = () => {
 
   useEffect(() => {
     setIsClick(location.pathname);
+    console.log("유저 프로필 데이터", fetchUserProfile());
   }, []);
 
   useEffect(() => {
