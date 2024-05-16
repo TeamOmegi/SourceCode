@@ -10,6 +10,7 @@ import io.omegi.core.common.exception.AccessDeniedException;
 import io.omegi.core.project.domain.Project;
 import io.omegi.core.project.domain.ServiceLink;
 import io.omegi.core.project.persistence.ProjectRepository;
+import io.omegi.core.project.presentation.model.response.DrawProjectDetailViewResponse;
 import io.omegi.core.project.presentation.model.response.DrawProjectDiagramResponse;
 import io.omegi.core.project.presentation.model.response.DrawProjectsViewResponse;
 import io.omegi.core.user.domain.User;
@@ -38,6 +39,25 @@ public class ProjectQueryService {
 			.toList();
 
 		return new DrawProjectsViewResponse(projectResponses);
+	}
+
+	public DrawProjectDetailViewResponse drawProjectDetailView(Integer userId, Integer projectId) {
+		Project project = projectRepository.findById(projectId)
+			.orElseThrow(RuntimeException::new);
+
+		User user = project.getUser();
+		if (!user.getUserId().equals(userId)) {
+			throw new AccessDeniedException(userId, null);
+		}
+
+		List<DrawProjectDetailViewResponse.ServiceResponse> serviceResponses = project.getServices().stream()
+			.map(service -> DrawProjectDetailViewResponse.ServiceResponse.builder()
+				.serviceId(service.getServiceId())
+				.serviceName(service.getName())
+				.build())
+			.toList();
+
+		return new DrawProjectDetailViewResponse(projectId, project.getName(), serviceResponses);
 	}
 
 	public DrawProjectDiagramResponse drawProjectDiagramView(Integer userId, Integer projectId) {

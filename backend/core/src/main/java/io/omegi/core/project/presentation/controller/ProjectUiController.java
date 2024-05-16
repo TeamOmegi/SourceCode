@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.omegi.core.common.annotation.Login;
 import io.omegi.core.common.annotation.ResponseWrapping;
 import io.omegi.core.project.application.ProjectQueryService;
+import io.omegi.core.project.presentation.model.response.DrawProjectDetailViewResponse;
 import io.omegi.core.project.presentation.model.response.DrawProjectDiagramResponse;
 import io.omegi.core.project.presentation.model.response.DrawProjectsViewResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,14 @@ public class ProjectUiController {
 	public DrawProjectsViewResponse drawProjectsView(@Login Integer userId) {
 		return projectQueryService.drawProjectsView(userId);
 	}
+
+	@GetMapping("/{projectId}")
+	@ResponseStatus(OK)
+	@ResponseWrapping(status = DRAW_PROJECT_DETAIL_VIEW_SUCCESS)
+	public DrawProjectDetailViewResponse drawProjectDetailView(@Login Integer userId, @PathVariable Integer projectId) {
+		return projectQueryService.drawProjectDetailView(userId, projectId);
+	}
+
 	@GetMapping("/{projectId}/diagram")
 	@ResponseStatus(OK)
 	@ResponseWrapping(status = DRAW_PROJECT_DIAGRAM_VIEW_SUCCESS)

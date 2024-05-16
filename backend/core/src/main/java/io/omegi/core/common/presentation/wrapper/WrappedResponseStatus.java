@@ -28,6 +28,7 @@ public enum WrappedResponseStatus {
 	DRAW_PROJECTS_VIEW_SUCCESS(2013, "projects view is successfully drawn"),
 	DRAW_PROJECT_DIAGRAM_VIEW_SUCCESS(2013, "project diagram view is successfully drawn"),
 	DRAW_SUPPORTED_SERVICE_TYPE_VIEW_SUCCESS(2014, "supported service type view is successfully drawn"),
+	DRAW_PROJECT_DETAIL_VIEW_SUCCESS(2015, "project detail view is successfully drawn"),
 
 	SAVE_NOTE_SUCCESS(2101, "note is successfully saved"),
 	EDIT_NOTE_SUCCESS(2102, "note is successfully edited"),
