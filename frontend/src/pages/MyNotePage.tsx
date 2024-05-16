@@ -22,7 +22,7 @@ const MyNotePage = () => {
             <NoteList />
           </div>
         ) : (
-          <div className="border-1 h-11/12 mb-5 mt-5 flex w-11/12 items-center justify-center rounded-lg border-primary-100 text-black">
+          <div className="border-1   flex h-full w-full items-center justify-center rounded-lg border-primary-100 bg-main-100 text-white">
             <NoteGraph />
           </div>
         )}

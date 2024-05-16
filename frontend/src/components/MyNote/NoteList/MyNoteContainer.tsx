@@ -107,7 +107,7 @@ const MyNoteContainer = ({ type, selectedTag }: Props) => {
           return (
             <div
               key={index}
-              className="m-2 box-border flex h-[350px] w-[220px] flex-col justify-between rounded-xl border-[1px] bg-white p-2 shadow-lg hover:cursor-pointer"
+              className="m-2 box-border flex h-[350px] w-[208px] flex-col justify-between rounded-xl border-[1px] bg-white p-2 shadow-lg hover:cursor-pointer"
               onClick={
                 type === "link"
                   ? () => {

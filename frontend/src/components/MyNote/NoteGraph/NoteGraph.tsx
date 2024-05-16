@@ -206,8 +206,9 @@ const NoteGraph = () => {
   };
 
   useEffect(() => {
-    const width = 804;
-    const height = 484;
+    const width = 1200;
+    const height = 600;
+    const margin = 100;
 
     const graph = { nodes, links };
     // getGraph();
@@ -225,16 +226,25 @@ const NoteGraph = () => {
             // console.log("d.idx", d.idx);
             return d.idx;
           })
-          .distance(50), // 링크의 길이
+          .distance(40), // 링크의 길이
       )
-      .force("charge", d3.forceManyBody().strength(-300))
+      .force("charge", d3.forceManyBody().strength(-900))
       .force("center", d3.forceCenter(width / 2, height / 2))
 
-      .force("x", d3.forceX(width).strength(0.1)) // x축 위치 제한
-      .force("y", d3.forceY(height).strength(0.1)); // y축 위치 제한
+      .force(
+        "x",
+        d3.forceX().x((d) => Math.max(margin, Math.min(width - margin, d.x!))),
+      )
+      .force(
+        "y",
+        d3.forceY().y((d) => Math.max(margin, Math.min(height - margin, d.y!))),
+      )
+
+      .force("x", d3.forceX(width).strength(0.25)) // x축 위치 제한
+      .force("y", d3.forceY(height).strength(0.5)); // y축 위치 제한
 
     const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // Clear previous content
+    svg.selectAll("*").remove();
 
     const link = svg
       .append("g")
@@ -243,9 +253,9 @@ const NoteGraph = () => {
       .enter()
       .append("line")
       .attr("class", "link")
-      .attr("stroke", "#999")
+      .attr("stroke", "#ffffff")
       .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", (d) => Math.sqrt(10)) // 링크의 두께
+      .attr("stroke-width", (d) => Math.sqrt(15)) // 링크의 두께
       .on("click", (event, d: Link) => handleLinkClick(event, d, graph)); // 그래프 객체 전달
 
     const node = svg
@@ -259,7 +269,7 @@ const NoteGraph = () => {
         d3
           .drag<SVGGElement, Node, SVGGElement>()
           .on("start", (event, d: Node) => {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
+            if (!event.active) simulation.alphaTarget(0.3);
             d.fx = d.x;
             d.fy = d.y;
           })
@@ -276,14 +286,14 @@ const NoteGraph = () => {
 
     node
       .append("circle")
-      .attr("r", 10)
+      .attr("r", 7)
       .attr("fill", (d) => {
         if (d.type === "MY_NOTE") {
-          return "#A9DFD8";
+          return "#ffcaa2";
         } else if (d.type === "OTHERS_NOTE") {
-          return "#B6B1EC";
+          return "#c9c4ff";
         } else {
-          return "orange";
+          return "#baffa1";
         }
       })
       .attr("id", "drop-shadow")
@@ -294,10 +304,11 @@ const NoteGraph = () => {
       .attr("text-anchor", "middle")
       .attr("dy", 21)
       .style("font-size", "12px") // 글자 크기 설정
+      .attr("fill", "white")
       .text((d) => d.value);
 
-    node.on("dblclick", (event, d) => {
-      handleNodeDoubleClick(d.idx);
+    node.on("dblclick", (event, d, graph) => {
+      handleNodeDoubleClick(d.idx, graph);
       d3.select(this)
         .select("circle")
         .attr(
@@ -325,12 +336,7 @@ const NoteGraph = () => {
       className="flex h-full w-full items-center justify-center"
     >
       {/* 그래프 컨텐츠 */}
-      <svg
-        ref={svgRef}
-        width={1300}
-        height={900}
-        className=" h-5/6 w-5/6"
-      ></svg>
+      <svg ref={svgRef} className=" h-full w-full"></svg>
     </div>
   );
 };

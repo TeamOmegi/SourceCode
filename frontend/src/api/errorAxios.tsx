@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
@@ -9,7 +10,7 @@ interface Project {
 
 export const getProjectList = async (): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/projects`);
+    const response = await axiosInstance.get(`/projects`);
     return response.data.response.projects;
   } catch (error) {
     console.error(error, "Fail getProjectList");
@@ -33,11 +34,11 @@ export const getErrorList = async (
   solved: boolean,
 ) => {
   try {
-    const response = await axios.get(`${BASE_URL}/errors`, {
-      params: {
-        project: project,
-      },
-    });
+    const params = { project: project, solved: solved };
+    if (solved !== null) {
+      params.solved = solved;
+    }
+    const response = await axios.get(`${BASE_URL}/errors`, { params });
     console.log(response.data.response);
     return response.data.response;
   } catch (error) {
@@ -60,7 +61,7 @@ interface ErrorDetail {
 export const getErrorDetail = async (errorId: number): Promise<any> => {
   try {
     console.log("들어와따리또~~~", errorId);
-    const response = await axios.get(`${BASE_URL}/errors/${errorId}`);
+    const response = await axiosInstance.get(`/errors/${errorId}`);
     console.log("!!!!!!!!!!!!!!!", response);
     return response.data.response;
   } catch (error) {

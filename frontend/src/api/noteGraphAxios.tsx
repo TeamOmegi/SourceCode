@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
@@ -65,7 +66,7 @@ export const linkCreate = async (noteId: number, targetNoteId: number) => {
   console.log("연결할 targetNoteId", targetNoteId);
   console.log("여기는 들어오나? ㅜㅜ ");
   try {
-    const response = await axios.post(`${BASE_URL}/notes/link`, {
+    const response = await axiosInstance.post(`/notes/link`, {
       noteId: noteId,
       targetNoteId: targetNoteId,
     });
@@ -83,7 +84,7 @@ export const linkDelete = async (noteId: number, targetNoteId: number) => {
   console.log("삭제할 targetNoteId", targetNoteId);
 
   try {
-    const response = await axios.delete(`${BASE_URL}/notes/link`, {
+    const response = await axiosInstance.delete(`/notes/link`, {
       data: {
         noteId: noteId,
         targetNoteId: targetNoteId,
@@ -99,7 +100,7 @@ export const linkDelete = async (noteId: number, targetNoteId: number) => {
 export const linkCheck = async (sourceNode: number, targetNode: number) => {
   console.log("소스:", sourceNode, "타켓:", targetNode);
   try {
-    const response = await axios.get(`${BASE_URL}/notes/link`, {
+    const response = await axiosInstance.get(`/notes/link`, {
       params: {
         noteId: sourceNode,
         targetNoteId: targetNode,
