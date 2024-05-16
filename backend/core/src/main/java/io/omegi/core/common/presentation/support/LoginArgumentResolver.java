@@ -27,9 +27,11 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
 		// Login login = parameter.getParameterAnnotation(Login.class);
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		CustomOAuth2User principal = (CustomOAuth2User)authentication.getPrincipal();
+		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// CustomOAuth2User principal = (CustomOAuth2User)authentication.getPrincipal();
+		//
+		// return principal.getUserId();
 
-		return principal.getUserId();
+		return 1;
 	}
 }
