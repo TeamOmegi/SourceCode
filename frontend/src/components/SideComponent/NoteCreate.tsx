@@ -21,10 +21,12 @@ import { useQuestion, useWarnning } from "../../hooks/useComfirm";
 import { useError } from "../../hooks/useAlert";
 import { Note, noteCreate } from "../../api/myNoteAxios";
 import useEditorStore from "../../store/useEditorStore";
+import useMyNoteStore from "../../store/useMyNoteStore";
 
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);
   const { setShowNote, setIsWriting } = useEditorStore();
+  const { noteList, setNoteList } = useMyNoteStore();
 
   const [noteData, setNoteDate] = useState<Note>({
     title: "",
@@ -88,9 +90,21 @@ const NoteCreate = () => {
 
     if (result) {
       await noteCreate(noteData);
+
+      if (noteData.links) delete noteData.links;
+      const notes = {
+        noteId: noteList[0].noteId,
+        title: noteData.title,
+        content: noteData.content,
+        tags: noteData.tags,
+        visibility: noteData.visibility,
+        createdAt: new Date().toISOString().split("T")[0],
+      };
+      setNoteList([notes, ...noteList]);
       handleNoteReset();
       setShowNote();
     }
+    console.log(noteList);
   };
 
   const handleNoteDelete = async () => {

@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useWarnning2 } from "../../hooks/useComfirm";
 import useEditorStore from "../../store/useEditorStore";
+import useErrorStore from "../../store/useErrorStore";
+import axiosInstance from "../../api/axiosInstance";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const [isClick, setIsClick] = useState<string>("");
   const location = useLocation();
   const navigate = useNavigate();
-  const { showNote, noteType, setShowNote, setNoteType } = useEditorStore();
   const [isHovered, setIsHovered] = useState(false);
+  const { showNote, noteType, setShowNote, setNoteType } = useEditorStore();
+  const { isNewError } = useErrorStore();
 
   const btnClick =
     "flex h-12 w-full items-center justify-start rounded-xl text-main-100 font-bold bg-gradient-to-r from-secondary-500 via-primary-500 to-primary-400 hover:cursor-pointer shadow shadow-primary-300 transition duration-100";
@@ -38,6 +42,18 @@ const NavBar = () => {
   const handleSettingClick = () => {
     setIsClick("/omegi/setting");
     navigate("/omegi/setting");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.delete("/users/logout");
+      Cookies.remove("access");
+      Cookies.remove("refresh");
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const hadleNoteClick = async () => {
@@ -83,7 +99,7 @@ const NavBar = () => {
             className={isClick === "/omegi" ? btnClick : btnNoClick}
             onClick={handleDashBoardClick}
           >
-            <div className="ml-5 flex items-center justify-center">
+            <div className="relative ml-5  flex items-center justify-center">
               <img
                 className="mr-4 h-5 w-5"
                 alt="Dashboard_Icon"
@@ -94,6 +110,12 @@ const NavBar = () => {
                 }
               />
               <span>대시보드</span>
+              {isNewError && (
+                <span className="absolute  right-[-18px] top-[-2px] flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500"></span>
+                </span>
+              )}
             </div>
           </div>
           <div
@@ -206,6 +228,7 @@ const NavBar = () => {
                 className="h-8 w-8 hover:cursor-pointer"
                 alt="Signout_Icon"
                 src="/icons/SignoutIcon.png"
+                onClick={handleLogout}
               />
             </div>
           </div>

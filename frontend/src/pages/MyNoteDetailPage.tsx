@@ -31,6 +31,7 @@ interface ErrorInfo {
 interface NoteDetail {
   noteId: number;
   title: string;
+  tags: string[];
   content: string;
   type: "ERROR" | "NORMAL";
   backlinkCount: number;
@@ -49,6 +50,7 @@ const MyNoteDetailPage = () => {
 
   useEffect(() => {
     if (noteId === -1) return;
+    localStorage.setItem("noteId", `${noteId}`);
     setLinkTarget(noteId);
     getNoteDetail();
   }, [noteId]);
@@ -98,7 +100,7 @@ const MyNoteDetailPage = () => {
 
     if (result) {
       noteDelete(noteId);
-      navigate("/omegi/myNote");
+      navigate(-1);
     }
   };
 
@@ -175,20 +177,32 @@ const MyNoteDetailPage = () => {
           <div className="ml-3 mt-7 flex items-center justify-start text-3xl font-bold">
             <h2>{note?.title}</h2>
           </div>
-          <div className="text-md mr-5 box-border flex justify-end p-2 ">
-            <p className="mx-2">{note?.createdAt.split("T")[0]}</p>
-            <p
-              className="mx-2 text-gray-500 hover:cursor-pointer"
-              onClick={handleNoteEdit}
-            >
-              수정
-            </p>
-            <p
-              className="hover:cusor-pointer mx-2 text-red-400"
-              onClick={handleNoteDelete}
-            >
-              삭제
-            </p>
+          <div className="text-md ml-3 mr-5 mt-1 box-border flex justify-between p-2 ">
+            <div className="flex items-center">
+              {note?.tags.map((tag, index) => (
+                <div
+                  key={index}
+                  className="mr-3 rounded-3xl bg-green-100 px-4 py-1 font-light text-green-600 "
+                >
+                  {tag}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-end">
+              <p className="mx-2">{note?.createdAt.split("T")[0]}</p>
+              <p
+                className="mx-2 text-gray-500 hover:cursor-pointer"
+                onClick={handleNoteEdit}
+              >
+                수정
+              </p>
+              <p
+                className="hover:cusor-pointer mx-2 text-red-400"
+                onClick={handleNoteDelete}
+              >
+                삭제
+              </p>
+            </div>
           </div>
         </div>
         <hr />

@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContentParser } from "../../../hooks/useContentParser";
 import { noteDelete } from "../../../api/myNoteAxios";
 import { useDanger, useQuestion, useWarnning } from "../../../hooks/useComfirm";
 import { linkCheck, linkCreate, linkDelete } from "../../../api/noteGraphAxios";
 import useLinkStore from "../../../store/useLinkStore";
 import { useError } from "../../../hooks/useAlert";
 import useEditorStore from "../../../store/useEditorStore";
+import useMyNoteStore from "../../../store/useMyNoteStore";
 
 interface Props {
   type?: string;
-  notes: MyNote[];
   selectedTag?: string;
 }
 
@@ -19,37 +17,34 @@ interface MyNote {
   title: string;
   content: string;
   tags: string[];
-  visibility: boolean;
+  visibility: string;
   createdAt: string;
 }
 
-const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
+const MyNoteContainer = ({ type, selectedTag }: Props) => {
   const { setShowNote, setNoteType } = useEditorStore();
   const { linkTarget } = useLinkStore();
+  const { noteList, setNoteDelete } = useMyNoteStore();
   const navigate = useNavigate();
-  const [noteList, setNoteList] = useState<MyNote[]>([]);
   const handleNoteClick = (note: MyNote) => {
     navigate(`/omegi/myNote/${note.noteId}`);
   };
 
-  useEffect(() => {
-    if (notes.length === 0) return;
-    notes.map((note) => {
-      note.content = useContentParser(note.content);
-      return note;
-    });
-
-    setNoteList([...notes]);
-  }, [notes]);
-
-  const handleNoteDelete = async (e: React.MouseEvent, noteId: number) => {
+  const handleNoteDelete = async (
+    e: React.MouseEvent,
+    noteId: number,
+    index: number,
+  ) => {
     e.stopPropagation();
     const result = await useDanger({
       title: "노트를 삭제하시겠습니까?",
       fireText: "영구적으로 삭제됩니다.",
     });
 
-    if (result) noteDelete(noteId);
+    if (result) {
+      noteDelete(noteId);
+      setNoteDelete(index);
+    }
   };
 
   const handleNoteLink = async (linkeSource: number) => {
@@ -61,19 +56,24 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
       return;
     }
     //노트체크
-    const checked = await linkCheck(linkeSource, linkTarget);
-    console.log(checked, "연결된링크");
-    if (checked) {
+    const checked1 = await linkCheck(linkeSource, linkTarget);
+    const checked2 = await linkCheck(linkTarget, linkeSource);
+    console.log(checked1, checked2, "연결된링크");
+    if (checked1 || checked2) {
       // 이미 연결된 노트입니다.
-
       const result = await useWarnning({
         title: "Link Delete",
         fireText: "Note 연결을 끊겠습니까?",
         resultText: "Note가 연결을 끊었습니다.",
       });
       if (result) {
-        //linkDelete(linkTarget, linkTarget1111);
-      }
+        if (checked1) {
+          linkDelete(linkeSource, linkTarget);
+        }
+        if (checked2) {
+          linkDelete(linkTarget, linkeSource);
+        }
+      } else return;
     } else {
       const result = await useQuestion({
         title: "Link Create",
@@ -81,8 +81,8 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
         resultText: "Note가 연결되었습니다.",
       });
       if (result) {
-        //linkCreate({ source: linkTarget, target: linkTarget1111 });
-      }
+        linkCreate(linkeSource, linkTarget);
+      } else return;
     }
     setShowNote();
     setTimeout(() => {
@@ -151,7 +151,7 @@ const MyNoteContainer = ({ type, notes, selectedTag }: Props) => {
                       src="/icons/DeleteIcon1.png"
                       alt="삭제 아이콘"
                       className="mx-3 h-4 w-4"
-                      onClick={(e) => handleNoteDelete(e, note.noteId)}
+                      onClick={(e) => handleNoteDelete(e, note.noteId, index)}
                     />
                   </div>
                 </div>

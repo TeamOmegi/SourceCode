@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContentParser } from "../../hooks/useContentParser";
 import { useDanger } from "../../hooks/useComfirm";
 import { noteDelete } from "../../api/myNoteAxios";
+import useALLNoteStore from "../../store/useAllNoteStore";
 
 interface AllNote {
   noteId: number;
@@ -17,22 +16,9 @@ interface AllNote {
   };
 }
 
-interface Props {
-  notes: AllNote[];
-}
-
-const AllNoteContainer = ({ notes }: Props) => {
+const AllNoteContainer = () => {
   const navigate = useNavigate();
-  const [allNotes, setAllNotes] = useState<AllNote[]>([]);
-
-  useEffect(() => {
-    if (notes.length === 0) return;
-    notes.map((note) => {
-      note.content = useContentParser(note.content);
-      return note;
-    });
-    setAllNotes(notes);
-  }, [notes]);
+  const { allNoteList } = useALLNoteStore();
 
   const handleNoteDelete = async (e: React.MouseEvent, noteId: number) => {
     e.stopPropagation();
@@ -55,7 +41,7 @@ const AllNoteContainer = ({ notes }: Props) => {
   return (
     <div className="mx-3 mt-5 flex h-full w-full flex-shrink-0 flex-col overflow-y-scroll scrollbar-webkit">
       <div className="flex flex-wrap justify-between">
-        {allNotes.map((note) => (
+        {allNoteList.map((note) => (
           <div
             key={note.noteId}
             className="mb-3 mr-3 box-border flex w-[500px] items-center justify-between rounded-xl border-[1px] border-gray-300 bg-white py-3 pb-2 pl-3 shadow-lg"

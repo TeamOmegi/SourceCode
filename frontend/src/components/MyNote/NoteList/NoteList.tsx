@@ -2,18 +2,10 @@ import { useEffect, useState } from "react";
 import { getAllMyNoteData, getAllTags } from "../../../api/myNoteAxios";
 import MyNoteContainer from "./MyNoteContainer";
 import CustomSelect from "./CustomSelect";
-
-interface MyNote {
-  noteId: number;
-  title: string;
-  content: string;
-  tags: string[];
-  visibility: boolean;
-  createdAt: string;
-}
+import useMyNoteStore from "../../../store/useMyNoteStore";
 
 const NoteList = () => {
-  const [noteList, setNoteList] = useState<MyNote[]>([]);
+  const { setNoteList } = useMyNoteStore();
   const [allTag, setAllTag] = useState<string[]>([]);
   const [searchKeyWord, setSearchKeyWord] = useState<string>("");
   const [selectedTag, setSelectedTag] = useState<string>("");
@@ -65,7 +57,7 @@ const NoteList = () => {
         </div>
       </div>
       <div className="flex h-[90%] w-full">
-        <MyNoteContainer notes={noteList} selectedTag={selectedTag} />
+        <MyNoteContainer selectedTag={selectedTag} />
       </div>
     </div>
   );

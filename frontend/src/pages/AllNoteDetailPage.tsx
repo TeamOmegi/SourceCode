@@ -65,6 +65,7 @@ const AllNoteDetailPage = () => {
 
   useEffect(() => {
     if (noteId === -1) return;
+    localStorage.setItem("noteId", `${noteId}`);
     setLinkTarget(noteId);
     getNoteDetail(noteId);
   }, [noteId]);

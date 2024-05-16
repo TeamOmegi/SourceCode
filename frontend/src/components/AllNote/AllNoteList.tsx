@@ -1,22 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAllNoteList } from "../../api/allNoteAxios";
 import AllNoteContainer from "./AllNoteContainer";
-
-interface AllNote {
-  noteId: number;
-  title: string;
-  content: string;
-  createdAt: string;
-  isMine: boolean;
-  user: {
-    userId: number;
-    profileImageUrl: string;
-    username: string;
-  };
-}
+import useALLNoteStore from "../../store/useAllNoteStore";
 
 const AllNoteList = () => {
-  const [allNoteList, setAllNoteList] = useState<AllNote[]>([]);
+  const { setAllNoteList } = useALLNoteStore();
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   useEffect(() => {
@@ -56,7 +44,7 @@ const AllNoteList = () => {
         </div>
       </div>
       <div className="flex h-[90%] w-full items-center justify-center">
-        <AllNoteContainer notes={allNoteList} />
+        <AllNoteContainer />
       </div>
     </div>
   );

@@ -1,10 +1,24 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
+const GITHUB_LOGIN_URL = "http://localhost:8080/oauth2/authorization/github";
 const IndexPage = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    // 로그인 상태 확인
+    const checkLogin = () => {
+      const accessToken = Cookies.get("access");
+      if (accessToken) {
+        navigate("/omegi"); // access 토큰이 존재하면 메인 페이지로 이동
+      }
+    };
+
+    checkLogin();
+  }, [navigate]);
 
   const handleLoginClick = () => {
-    navigate(`/login`);
+    window.location.href = GITHUB_LOGIN_URL;
   };
 
   return (
