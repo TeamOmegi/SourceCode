@@ -21,7 +21,7 @@ import { useQuestion, useWarnning } from "../../hooks/useComfirm";
 import { useError } from "../../hooks/useAlert";
 import { Note, noteCreate } from "../../api/myNoteAxios";
 import useEditorStore from "../../store/useEditorStore";
-import useMyNoteStore, { MyNote } from "../../store/useMyNoteStore";
+import useMyNoteStore from "../../store/useMyNoteStore";
 
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);

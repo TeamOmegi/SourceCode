@@ -4,15 +4,6 @@ import MyNoteContainer from "./MyNoteContainer";
 import CustomSelect from "./CustomSelect";
 import useMyNoteStore from "../../../store/useMyNoteStore";
 
-interface MyNote {
-  noteId: number;
-  title: string;
-  content: string;
-  tags: string[];
-  visibility: boolean;
-  createdAt: string;
-}
-
 const NoteList = () => {
   const { setNoteList } = useMyNoteStore();
   const [allTag, setAllTag] = useState<string[]>([]);
