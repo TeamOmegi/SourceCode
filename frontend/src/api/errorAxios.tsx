@@ -38,7 +38,7 @@ export const getErrorList = async (
     if (solved !== null) {
       params.solved = solved;
     }
-    const response = await axios.get(`${BASE_URL}/errors`, { params });
+    const response = await axiosInstance.get(`/errors`, { params });
     console.log(response.data.response);
     return response.data.response;
   } catch (error) {

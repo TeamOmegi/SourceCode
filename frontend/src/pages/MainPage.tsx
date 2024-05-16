@@ -23,7 +23,7 @@ const MainPage = () => {
     if (location.pathname != "/omegi") return;
     //SSE연결 로직
     const eventSource = new EventSource(
-      "http://k10a308.p.ssafy.io:8081/errors/real-time/subscription",
+      "https://k10a308.p.ssafy.io:8081/api/errors/real-time/subscription",
     );
 
     eventSource.addEventListener("REAL_TIME_ERROR", (event) => {
