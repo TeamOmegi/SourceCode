@@ -15,9 +15,14 @@ interface Error {
 }
 
 interface ErrorLog {
+  type: string;
+  trace: string[];
   summary: string;
   log: string;
   noteId: number;
+  time: string;
+  serviceId: number;
+  projectId: number;
 }
 
 interface Props {
@@ -105,9 +110,11 @@ const ErrorDetailPage = () => {
       try {
         if (error) {
           const errorLog = await getErrorDetail(error.errorId);
-          console.log(errorLog);
+          console.log("이거다!!!!!!!!!!!!", errorLog);
           setErrorDetail(error);
+          console.log("이건 뭔데?", errorDetail);
           setErrorLog(errorLog);
+          console.log(errorLog, " 으 개빡쳐");
         }
       } catch (error) {
         console.error("Failed to fetch error detail:", error);
@@ -139,7 +146,7 @@ const ErrorDetailPage = () => {
             onClick={handelBackButtonClick}
           />
           <Header
-            title={errorDetail?.type || "java.lang.ArrayIndexOutOfBounds"}
+            title={error?.errorType || "java.lang.ArrayIndexOutOfBounds"}
           />
         </div>
         <div className="box-border flex h-fit w-full justify-between px-5">
