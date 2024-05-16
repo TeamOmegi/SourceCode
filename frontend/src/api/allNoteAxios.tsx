@@ -25,7 +25,7 @@ export const getAllNoteList = async (keyword: string): Promise<any> => {
     if (keyword.trim() !== "") {
       params = { keyword: keyword };
     }
-    const response = await axios.get(`${BASE_URL}/notes/others`, {
+    const response = await axiosInstance.get(`/notes/others`, {
       params,
     });
     console.log(response.data.response, "Success getAllNoteList");
