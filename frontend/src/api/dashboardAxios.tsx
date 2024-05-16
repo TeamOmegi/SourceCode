@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
@@ -12,7 +13,7 @@ interface ErrorSummary {
 // 에러 한눈에 보기
 export const getErrorSummary = async (): Promise<ErrorSummary | undefined> => {
   try {
-    const response = await axios.get(`${BASE_URL}/errors/summary`);
+    const response = await axiosInstance.get(`/errors/summary`);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getErrorSummary");
@@ -29,7 +30,7 @@ interface NoteSummary {
 // 노트 한눈에 보기
 export const getNoteSummary = async (): Promise<NoteSummary | undefined> => {
   try {
-    const response = await axios.get(`${BASE_URL}/notes/summary`);
+    const response = await axiosInstance.get(`/notes/summary`);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getNoteSummary");
@@ -56,7 +57,7 @@ export const getRecentErrorList = async (): Promise<
 > => {
   try {
     const response =
-      await axios.get<RecentErrorListResponse>("/api/recentErrors");
+      await axiosInstance.get<RecentErrorListResponse>("/api/recentErrors");
     return response.data.result;
   } catch (error) {
     // 오류 처리

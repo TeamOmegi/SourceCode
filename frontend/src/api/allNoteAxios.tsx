@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
@@ -55,7 +56,7 @@ interface NoteDetail {
 
 export const getAllNoteDetail = async (noteId: number): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/notes/others/${noteId}`);
+    const response = await axiosInstance.get(`/notes/others/${noteId}`);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getAllNoteDetail");
