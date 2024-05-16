@@ -10,8 +10,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import io.omegi.core.auth.Oauth2.CustomOAuth2User;
 import io.omegi.core.common.annotation.Login;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
+
+	private final Integer userId;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -32,6 +36,6 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 		//
 		// return principal.getUserId();
 
-		return 1;
+		return userId;
 	}
 }
