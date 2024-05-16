@@ -15,6 +15,7 @@ interface Error {
 
 interface Props {
   selectedProject: string;
+  error: Error[];
 }
 
 // [UPDATED] 수정 사항 있음
@@ -23,7 +24,7 @@ interface Props {
 // 복불 될것 같음
 // TODO 확인 필요
 
-const ErrorList = ({ selectedProject }: Props) => {
+const ErrorList = ({ selectedProject, error }: Props) => {
   const navigate = useNavigate();
   const [errorList, setErrorList] = useState<Error[]>([]);
 

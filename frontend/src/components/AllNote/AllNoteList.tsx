@@ -22,9 +22,9 @@ const AllNoteList = () => {
   };
 
   return (
-    <div className="box-border flex h-full w-full flex-col items-center justify-center rounded-xl p-7 text-xl text-black">
-      <div className="flex h-[10%] w-full items-center justify-start">
-        <div className="ml-5 mt-2 flex h-10 w-1/3 rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
+    <div className="box-border flex h-full w-full flex-col items-center justify-center  text-xl text-black">
+      <div className="mr-5 flex h-[10%] w-full items-center justify-end">
+        <div className="flex h-10 w-1/3 rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
           <input
             type="text"
             placeholder="여기에 검색해보세요!"

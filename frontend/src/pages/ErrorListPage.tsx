@@ -65,10 +65,10 @@ const ErrorListPage = () => {
   return (
     <div className="bg-default box-border flex h-full w-full flex-col justify-between px-8 pb-8 pt-12">
       <div className="flex h-[20%] w-full flex-col justify-start">
-        <Header title="에러 리스트"></Header>
-        <div className="ml-2 flex h-full w-full items-center justify-between">
+        <Header title="🐛 에러 리스트"></Header>
+        <div className="mx-2 flex h-full w-full items-center justify-between">
           <div className="flex h-full w-full items-center">
-            <div className="mr-2 flex text-base font-medium text-main-100 text-opacity-40">
+            <div className="mx-2 flex text-base font-medium text-main-100 text-opacity-40">
               PROJECT
             </div>
             <CustomPjtSelect
@@ -80,7 +80,7 @@ const ErrorListPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex h-[80%] w-full items-start justify-center rounded-2xl bg-white p-3 shadow-md">
+      <div className=" flex h-[80%] w-full items-start justify-center rounded-2xl bg-white p-3 shadow-md">
         <ErrorList selectedProject={selectedProject} errorList={errorList} />
       </div>
     </div>
