@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 const GITHUB_LOGIN_URL =
-  "https://k10a308.p.ssafy.io:8081/oauth2/authorization/github/api";
+  "https://k10a308.p.ssafy.io/oauth2/authorization/github/api";
 
 const IndexPage = () => {
   const navigate = useNavigate();
