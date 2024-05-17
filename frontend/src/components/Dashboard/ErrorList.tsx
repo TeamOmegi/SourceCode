@@ -29,8 +29,6 @@ const ErrorList = () => {
     // 2. setErrorList에서 해당 배열지우기
   };
 
-  console.log("@@@@@@@@@@", errorList);
-
   return (
     <table className="box-border flex h-full w-full flex-col items-center justify-between whitespace-normal">
       <thead className=" flex h-[15%] w-full flex-col">

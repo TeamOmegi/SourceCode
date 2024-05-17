@@ -62,7 +62,6 @@ export const getErrorDetail = async (errorId: number): Promise<any> => {
   try {
     console.log("들어와따리또~~~", errorId);
     const response = await axiosInstance.get(`/errors/${errorId}`);
-    console.log("!!!!!!!!!!!!!!!", response.data.response);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getErrorDetail");

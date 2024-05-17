@@ -58,8 +58,6 @@ const ErrorDetailPage = () => {
       }
     };
     getErrorLog();
-
-    console.log("errorlog.type!!!!!!!!!!!!", errorLog?.type);
   }, [error]);
 
   const handleNoteClick = ({ noteId }: Props) => {
@@ -68,7 +66,6 @@ const ErrorDetailPage = () => {
     }
   };
 
-  // TODO 뒤로가기 버튼 로직 구현
   const handelBackButtonClick = () => {
     navigate(-1);
   };

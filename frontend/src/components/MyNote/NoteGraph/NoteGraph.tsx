@@ -95,9 +95,7 @@ const NoteGraph = () => {
     } else if (selectedNodes.length === 1) {
       console.log("노드 두번째 더블클릭");
       const firstSelectedNode = selectedNodes[0];
-      console.log("firstSelectedNode", firstSelectedNode);
       console.log("selectedNode 두번째다.", selectedNode);
-      console.log("selectedNodes??????", selectedNodes);
       const firstNode = nodes.find(
         (node) => node.idx === firstSelectedNode.idx,
       );
@@ -151,8 +149,8 @@ const NoteGraph = () => {
     // source와 target 노드의 idx를 가져옵니다.
     const sourceNode = d.source;
     const targetNode = d.target;
-    console.log("sourceNode ???", sourceNode);
-    console.log("targetNode ???", targetNode);
+    console.log("sourceNode", sourceNode);
+    console.log("targetNode", targetNode);
 
     // source나 target 중에 type이 TAG인 것이 있는지 확인
     const isTagInLink =

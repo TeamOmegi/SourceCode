@@ -31,8 +31,8 @@ const NoteUnlink = ({
     // source와 target 노드의 idx를 가져옵니다.
     const sourceNode = graph.nodes.find((node) => node.nodeId === d.source);
     const targetNode = graph.nodes.find((node) => node.nodeId === d.target);
-    console.log("sourceNode:???", sourceNode);
-    console.log("targetNode:????", targetNode);
+    console.log("sourceNode:", sourceNode);
+    console.log("targetNode:", targetNode);
 
     // source나 target 중에 type이 TAG인 것이 있는지 확인
     const isTagInLink =
@@ -57,7 +57,6 @@ const NoteUnlink = ({
           (link) => !(link.source === d.source && link.target === d.target),
         );
         setLinks(updatedLinks);
-        console.log("updatedLinks:", updatedLinks);
 
         // 연결을 끊은 후에 로컬 상태를 업데이트합니다.
         const updatedNodes = graph.nodes.filter(
@@ -66,7 +65,6 @@ const NoteUnlink = ({
             node.nodeId !== targetNode!.nodeId,
         );
         setNodes(updatedNodes);
-        console.log("updatedNodes:", updatedNodes);
         console.log("링크 연결 해제 완료");
       } catch (error) {
         console.error("Failed to disconnect link:", error);

@@ -10,7 +10,6 @@ const AllNoteList = () => {
   useEffect(() => {
     const getAllNotes = async () => {
       const allNotes = await getAllNoteList("");
-      console.log(allNotes.notes, "????????????????????");
       setAllNoteList([...allNotes.notes]);
     };
     getAllNotes();
