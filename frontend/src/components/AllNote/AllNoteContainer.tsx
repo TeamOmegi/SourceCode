@@ -40,11 +40,11 @@ const AllNoteContainer = () => {
 
   return (
     <div className="mx-3 mt-5 flex h-full w-full flex-shrink-0 flex-col overflow-y-scroll scrollbar-webkit">
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap ">
         {allNoteList.map((note) => (
           <div
             key={note.noteId}
-            className="mb-3 mr-3 box-border flex w-[500px] items-center justify-between rounded-xl border-[1px] border-gray-300 bg-white py-3 pb-2 pl-3 shadow-lg"
+            className="mx-10 mb-3 mr-3 box-border flex w-[500px] items-center rounded-xl border-[1px] border-gray-300 bg-white py-3 pb-2 pl-3 shadow-lg"
             onClick={() => handleNoteClick(note)}
             style={{ cursor: "pointer" }}
           >
