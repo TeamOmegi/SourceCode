@@ -2,11 +2,11 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes/route";
 import "./App.css";
 import { useEffect } from "react";
-import { useAutoAccessToken } from "./api/userAxios";
+// import { useAutoAccessToken } from "./api/userAxios";
 
 const App = () => {
   useEffect(() => {
-    useAutoAccessToken();
+    // useAutoAccessToken();
   }, []);
   return (
     <div>

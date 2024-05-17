@@ -14,6 +14,8 @@ const NavBar = () => {
   const [isHovered, setIsHovered] = useState(false);
   const { showNote, noteType, setShowNote, setNoteType } = useEditorStore();
   const { isNewError } = useErrorStore();
+  const [profileName, setProfileName] = useState("");
+  const [profileImage, setProfileImage] = useState("");
 
   const btnClick =
     "flex h-12 w-full items-center justify-start rounded-xl text-main-100 font-bold bg-gradient-to-r from-secondary-500 via-primary-500 to-primary-400 hover:cursor-pointer shadow shadow-primary-300 transition duration-100";
@@ -69,6 +71,22 @@ const NavBar = () => {
     setShowNote();
   };
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const user = await fetchUserProfile();
+        setProfileName(user.username);
+        setProfileImage(user.profileImageUrl);
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+        // 에러 발생 시 프로필 정보를 초기화하거나 기본값으로 설정할 수 있습니다.
+        setProfileName("");
+        setProfileImage("");
+      }
+    };
+
+    fetchProfile();
+  }, []);
   useEffect(() => {
     setIsClick(location.pathname);
   }, []);
@@ -215,15 +233,23 @@ const NavBar = () => {
           </div>
           <div className="ml-3 flex h-2/3 w-full items-center justify-center pb-3">
             <div className="mr-1 flex h-11 w-11 items-center justify-center rounded-full bg-slate-300">
-              <img
-                className="h-9 w-9"
-                src={"/icons/ProfileDefault.png"}
-                alt="Profile"
-              />
+              {profileImage ? (
+                <img
+                  className="h-9 w-9 rounded-full"
+                  src={profileImage}
+                  alt="Profile"
+                />
+              ) : (
+                <img
+                  className="h-9 w-9"
+                  src={"/icons/ProfileDefault.png"}
+                  alt="Profile"
+                />
+              )}
             </div>
 
             {/* <div className="flex-1">{profileName}</div> */}
-            <div className="ml-3 flex-1">도하이사용자</div>
+            <div className="ml-3 flex-1">{profileName}</div>
             <div className="mr-2 flex justify-end">
               <img
                 className="h-8 w-8 hover:cursor-pointer"
