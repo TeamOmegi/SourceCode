@@ -117,10 +117,10 @@ const MyNoteContainer = ({ type, selectedTag }: Props) => {
                     }
               }
             >
-              <div className="box-border flex h-full w-full flex-col justify-start rounded-lg  border-gray-300">
+              <div className="box-border flex h-full w-full flex-col justify-center rounded-lg  border-gray-300">
                 <div className="h-2/3">
                   <img
-                    src="../public/tempImg.png"
+                    src="../icons/tempImg.png"
                     alt="임시 이미지"
                     className="h-full w-full rounded-lg object-cover"
                   />

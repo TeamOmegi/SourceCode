@@ -231,7 +231,7 @@ const MyNoteDetailPage = () => {
           <hr />
           <div className="box-border flex h-auto w-full p-3">
             <img
-              src="/public/icons/BacklinkIcon.png"
+              src="/icons/BacklinkIcon.png"
               alt="백링크"
               className="h-5 w-5 hover:cursor-pointer"
               onClick={hadleBackLink}
