@@ -90,11 +90,7 @@ const ErrorList = ({ selectedProject }: Props) => {
             onClick={() => handleErrorClick(error)}
           >
             <td className="box-border flex h-full w-[7%] items-center justify-center whitespace-nowrap">
-              {error.isSolved ? (
-                <SolvedErrorMark></SolvedErrorMark>
-              ) : (
-                <ErrorMark></ErrorMark>
-              )}
+              {error.isSolved ? <SolvedErrorMark /> : <ErrorMark />}
             </td>
             <td className="box-border flex h-full w-[30%] items-center justify-center whitespace-nowrap">
               ... {getLastErrorType(error.errorType)}
