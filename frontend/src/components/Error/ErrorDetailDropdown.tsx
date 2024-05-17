@@ -58,26 +58,23 @@ const ErrorDropdown = ({ span }: { span: Span }) => {
           aria-labelledby="listbox-label"
         >
           <div className="flex w-[98%]">
-            <div className="mr-5 flex w-fit items-center justify-center">
+            <div className="mr-5 flex w-fit items-center justify-center text-gray-500">
               SERVICE
             </div>
-            <div className="mr-10 flex w-[10%] min-w-32 items-center justify-start">
+            <div className="mr-10 flex w-[10%] min-w-32 items-center justify-start font-bold">
               {span.serviceName}
             </div>
-            <div className="mr-5 flex w-fit items-center justify-center">
+            <div className="mr-5 flex w-fit items-center justify-center text-gray-500">
               MESSAGE
             </div>
-            <div className="mr-10 flex w-[40%] items-center justify-start truncate whitespace-nowrap">
+            <div className="mr-10 flex w-[40%] items-center justify-start truncate whitespace-nowrap font-bold">
               {span.name}
             </div>
-            <div className="mr-5 flex w-fit items-center justify-center">
+            <div className="mr-5 flex w-fit items-center justify-center text-gray-500">
               TIME
             </div>
             <div className="mr-3 flex w-[20%] items-center justify-center">
               {formatDateTime(span.enterTime)}
-            </div>
-            <div className="flex w-[20%] items-center justify-center">
-              {formatDateTime(span.exitTime)}
             </div>
           </div>
           <img

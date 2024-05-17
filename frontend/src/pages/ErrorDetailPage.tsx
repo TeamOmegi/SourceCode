@@ -86,7 +86,7 @@ const ErrorDetailPage = () => {
           />
           <Header title={errorLog?.type || "java.lang.ArrayIndexOutOfBounds"} />
         </div>
-        <div className="box-border flex h-fit w-full justify-between px-5">
+        <div className="box-border flex h-fit w-full justify-between px-5 pt-2">
           <div className="flex h-fit w-fit">
             <div className="mr-3 flex h-fit w-fit items-center justify-center rounded-xl bg-[#98B9E8FF] px-5 py-2 text-white shadow-md">
               {error?.project}
@@ -115,17 +115,15 @@ const ErrorDetailPage = () => {
       <div className="flex-grow overflow-y-scroll scrollbar-webkit">
         {/* 로그 Trace */}
         <div className="mb-7 box-border flex h-fit w-full flex-col justify-between">
-          <div className="my-2 ml-2 flex items-center justify-start text-lg font-medium text-gray-600">
+          <div className="my-1 ml-2 flex items-center justify-start text-lg font-bold text-gray-600">
             Trace
           </div>
-          {errorLog?.trace.map((span) => (
-            <ErrorDetailDropdown span={span}></ErrorDetailDropdown>
-          ))}
+          {errorLog?.trace.map((span) => <ErrorDetailDropdown span={span} />)}
         </div>
 
         {/* 로그 요약 */}
         <div className="mb-7 box-border flex h-fit w-full flex-col justify-between">
-          <div className="my-2 ml-2 flex items-center justify-start text-lg font-medium text-gray-600">
+          <div className="my-2 ml-2 flex items-center justify-start text-lg font-bold text-gray-600">
             Summary
           </div>
           <div className="w-full rounded-md border-[1px] border-gray-200 bg-gray-100 p-4 shadow-md">
@@ -135,7 +133,7 @@ const ErrorDetailPage = () => {
 
         {/* 로그 원문 */}
         <div className="box-border flex h-fit w-full flex-col justify-between pb-7">
-          <div className="my-2 ml-2 flex items-center justify-start text-lg font-medium text-gray-600">
+          <div className="my-2 ml-2 flex items-center justify-start text-lg font-bold text-gray-600">
             Log
           </div>
           <div className="w-full rounded-md bg-gray-200 p-4 shadow-md">
