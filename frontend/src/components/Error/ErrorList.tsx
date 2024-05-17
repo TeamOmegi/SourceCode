@@ -15,7 +15,6 @@ interface Error {
 
 interface Props {
   selectedProject: string;
-  error: Error[];
 }
 
 // [UPDATED] 수정 사항 있음
@@ -24,7 +23,7 @@ interface Props {
 // 복불 될것 같음
 // TODO 확인 필요
 
-const ErrorList = ({ selectedProject, error }: Props) => {
+const ErrorList = ({ selectedProject }: Props) => {
   const navigate = useNavigate();
   const [errorList, setErrorList] = useState<Error[]>([]);
 
@@ -91,11 +90,7 @@ const ErrorList = ({ selectedProject, error }: Props) => {
             onClick={() => handleErrorClick(error)}
           >
             <td className="box-border flex h-full w-[7%] items-center justify-center whitespace-nowrap">
-              {error.isSolved ? (
-                <SolvedErrorMark></SolvedErrorMark>
-              ) : (
-                <ErrorMark></ErrorMark>
-              )}
+              {error.isSolved ? <SolvedErrorMark /> : <ErrorMark />}
             </td>
             <td className="box-border flex h-full w-[30%] items-center justify-center whitespace-nowrap">
               ... {getLastErrorType(error.errorType)}

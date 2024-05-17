@@ -70,7 +70,7 @@ const ErrorDetailPage = () => {
 
   // TODO 뒤로가기 버튼 로직 구현
   const handelBackButtonClick = () => {
-    console.log("CLICKED!");
+    navigate(-1);
   };
 
   return (
@@ -81,7 +81,7 @@ const ErrorDetailPage = () => {
           <img
             className="mr-3 mt-2 aspect-square h-10 opacity-30 hover:cursor-pointer"
             alt="Dropdown_Icon"
-            src={"/icons/BackLink.svg"}
+            src={"/icons/PageBackIcon2.png"}
             onClick={handelBackButtonClick}
           />
           <Header title={errorLog?.type || "java.lang.ArrayIndexOutOfBounds"} />
