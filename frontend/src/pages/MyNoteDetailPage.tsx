@@ -63,7 +63,6 @@ const MyNoteDetailPage = () => {
   const getNoteDetail = async () => {
     try {
       const noteDetailData = await getNoteData(noteId);
-      console.log("잘들어옴", noteDetailData);
       setNote({ ...noteDetailData.response });
     } catch (error) {
       console.error("노트 상세 정보를 불러오는 중 오류가 발생했습니다:", error);

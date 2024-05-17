@@ -58,7 +58,6 @@ const MyNoteContainer = ({ type, selectedTag }: Props) => {
     //노트체크
     const checked1 = await linkCheck(linkeSource, linkTarget);
     const checked2 = await linkCheck(linkTarget, linkeSource);
-    console.log(checked1, checked2, "연결된링크");
     if (checked1 || checked2) {
       // 이미 연결된 노트입니다.
       const result = await useWarnning({

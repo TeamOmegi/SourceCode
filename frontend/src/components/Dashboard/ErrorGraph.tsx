@@ -36,7 +36,6 @@ const ErrorGraph = ({ projectId }: Props) => {
     if (nodes.length != 0 && links.length != 0) {
       draw();
       errorCheck();
-      console.log(nodes);
     }
   }, [nodes, errorMap]);
 

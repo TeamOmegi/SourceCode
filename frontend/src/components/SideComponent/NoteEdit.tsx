@@ -69,7 +69,6 @@ const NoteEdit = () => {
   useEffect(() => {
     const getData = async () => {
       const iniNoteData = await getNoteData(noteId);
-      console.log("히히오쥼발싸", iniNoteData.response);
       setNoteData({
         ...noteData,
         title: iniNoteData.response.title,
@@ -88,10 +87,8 @@ const NoteEdit = () => {
 
   const handleChangeData = (data: string | string[]): void => {
     if (typeof data === "string") {
-      console.log({ ...noteData, title: data });
       setNoteData({ ...noteData, title: data });
     } else if (typeof data === "object") {
-      console.log({ ...noteData, tag: [...data] });
       setNoteData({ ...noteData, tags: [...data] });
     }
   };

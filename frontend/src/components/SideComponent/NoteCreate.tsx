@@ -104,7 +104,6 @@ const NoteCreate = () => {
       handleNoteReset();
       setShowNote();
     }
-    console.log(noteList);
   };
 
   const handleNoteDelete = async () => {
@@ -188,7 +187,6 @@ const NoteCreate = () => {
         className="my-4 box-border w-full flex-1 overflow-y-scroll px-8 scrollbar-webkit"
         editor={editor}
         onBlur={() => {
-          console.log("성공!!");
           setNoteDate({ ...noteData, content: editor?.getHTML() || "" });
         }}
       />

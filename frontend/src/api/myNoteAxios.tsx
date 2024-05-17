@@ -1,4 +1,3 @@
-import axios from "axios";
 import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "http://k10a308.p.ssafy.io:8081";
@@ -34,7 +33,6 @@ export const getAllMyNoteData = async (keyword: string): Promise<any> => {
 
 // 노트 상세조회
 export const getNoteData = async (noteId: number): Promise<any> => {
-  console.log("전달완료: ", noteId);
   try {
     const response = await axiosInstance.get(`/notes/${noteId}`);
     return response.data;
@@ -47,7 +45,7 @@ export const getNoteData = async (noteId: number): Promise<any> => {
 export const getAllTags = async (): Promise<any> => {
   try {
     const response = await axiosInstance.get(`/tags`);
-    console.log(response, "Success AllTags");
+    //console.log(response, "Success AllTags");
     return response.data;
   } catch (error) {
     console.error(error, "Fail AllTags");
@@ -56,10 +54,9 @@ export const getAllTags = async (): Promise<any> => {
 
 // 노트 작성
 export const noteCreate = async (noteData: Note) => {
-  console.log("전달완료: ", noteData);
   try {
     const response = await axiosInstance.post(`/notes`, noteData);
-    console.log(response, "Success NoteCreate");
+    // console.log(response, "Success NoteCreate");
   } catch (error) {
     console.error(error, "Fail NoteCreate");
   }
@@ -67,10 +64,9 @@ export const noteCreate = async (noteData: Note) => {
 
 // 노트 수정
 export const noteEdit = async (noteId: number, noteData: Note) => {
-  console.log("전달완료:@!@!@ ", noteData);
   try {
     const response = await axiosInstance.patch(`/notes/${noteId}`, noteData);
-    console.log(response, "Success NoteEdit");
+    // console.log(response, "Success NoteEdit");
   } catch (error) {
     console.error(error, "Fail NoteEdit");
   }
@@ -78,10 +74,9 @@ export const noteEdit = async (noteId: number, noteData: Note) => {
 
 // 노트 삭제
 export const noteDelete = async (noteId: number) => {
-  console.log("전달완료: ", typeof noteId);
   try {
     const response = await axiosInstance.delete(`/notes/${noteId}`);
-    console.log(response, "Success NoteDelete");
+    //console.log(response, "Success NoteDelete");
   } catch (error) {
     console.error(error, "Fail NoteDelete");
   }

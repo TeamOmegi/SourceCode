@@ -49,7 +49,6 @@ export const getGraphData = async (): Promise<{
         };
       },
     );
-    console.log("getGraphData axios 잘 들어옴~~~~");
     return {
       nodes: Nodes,
       links: Links,
@@ -62,15 +61,12 @@ export const getGraphData = async (): Promise<{
 
 // 노트 연결
 export const linkCreate = async (noteId: number, targetNoteId: number) => {
-  console.log("연결할 noteId", noteId);
   console.log("연결할 targetNoteId", targetNoteId);
-  console.log("여기는 들어오나? ㅜㅜ ");
   try {
     const response = await axiosInstance.post(`/notes/link`, {
       noteId: noteId,
       targetNoteId: targetNoteId,
     });
-    console.log("링크 생성 개열받네");
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -80,9 +76,6 @@ export const linkCreate = async (noteId: number, targetNoteId: number) => {
 
 // 링크 삭제
 export const linkDelete = async (noteId: number, targetNoteId: number) => {
-  console.log("삭제할 noteId", noteId);
-  console.log("삭제할 targetNoteId", targetNoteId);
-
   try {
     const response = await axiosInstance.delete(`/notes/link`, {
       data: {
@@ -98,7 +91,6 @@ export const linkDelete = async (noteId: number, targetNoteId: number) => {
 
 // 링크 연결확인
 export const linkCheck = async (sourceNode: number, targetNode: number) => {
-  console.log("소스:", sourceNode, "타켓:", targetNode);
   try {
     const response = await axiosInstance.get(`/notes/link`, {
       params: {

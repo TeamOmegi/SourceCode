@@ -18,13 +18,9 @@ const CustomPjtSelect = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(options, "이거는 옵션,,");
-    // 아무것도 선택되지 않았을 때 자동으로 맨 처음 프로젝트 선택
     if (!selectedOption && options.length > 0) {
       handleSelectProject(options[0]);
-      console.log("이거는 useEffect", options[0]);
     }
-    console.log("이거는 useEffect", selectedOption);
   }, [selectedOption, options, handleSelectProject]);
 
   const toggleDropdown = () => {
@@ -38,7 +34,6 @@ const CustomPjtSelect = ({
   };
 
   const handleOptionClick = (option: string) => {
-    console.log("이거는 handleOptionClick", option);
     handleSelectProject(option);
     setIsOpen(false);
   };

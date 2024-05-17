@@ -48,7 +48,7 @@ const AllNoteDetailPage = () => {
   const navigate = useNavigate();
   const noteId = parseInt(useParams().noteId || "-1");
   const userId = parseInt(useParams().userId || "-1");
-  console.log("userId?!!??!?!?!?!?", userId);
+
   const [note, setNote] = useState<NoteDetail | undefined>();
   const { showNote, noteType, isWriting, setShowNote, setNoteType } =
     useEditorStore();
@@ -56,7 +56,6 @@ const AllNoteDetailPage = () => {
   const getNoteDetail = async (noteId: number) => {
     try {
       const response = await getAllNoteDetail(noteId);
-      console.log("노트 상세 정보:", response);
       setNote({ ...response });
     } catch (error) {
       console.error("노트 상세 정보를 불러오는 중 오류가 발생했습니다", error);

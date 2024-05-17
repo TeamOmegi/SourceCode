@@ -14,8 +14,6 @@ const NoteList = () => {
     const getData = async () => {
       const allMyNoteData = await getAllMyNoteData("");
       const allTagData = await getAllTags();
-      console.log("성공", allMyNoteData.response);
-      console.log("성공", allTagData);
 
       setNoteList(allMyNoteData.response.notes);
       setAllTag([...allTagData.response.tags]);

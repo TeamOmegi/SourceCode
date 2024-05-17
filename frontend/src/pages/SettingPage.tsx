@@ -119,11 +119,9 @@ const SettingPage = () => {
   const handleServiceDelete = (index: number) => {
     const newServiceNames = serviceNames.filter((_, i) => i !== index);
     setServiceNames(newServiceNames);
-    console.log("names", newServiceNames);
 
     const newSelectedTypes = selectedTypes.filter((_, i) => i !== index);
     setSelectedTypes(newSelectedTypes);
-    console.log("types", newSelectedTypes);
   };
 
   // 프로젝트 셀렉트
@@ -166,7 +164,7 @@ const SettingPage = () => {
       name: serviceName,
     };
     const token = await getServiceTokens(selectedProject, serviceId, tokenName);
-    console.log(token);
+    setToken(token.serviceToken);
   };
   return (
     <div className="bg-default flex items-center justify-center">
@@ -244,7 +242,7 @@ const SettingPage = () => {
             </div>
           );
         })}
-        {token !== "" && token}
+        <div className="w-40 ">{token !== "" && token}</div>
       </div>
     </div>
   );

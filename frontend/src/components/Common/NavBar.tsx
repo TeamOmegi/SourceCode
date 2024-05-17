@@ -71,7 +71,6 @@ const NavBar = () => {
 
   useEffect(() => {
     setIsClick(location.pathname);
-    console.log("유저 프로필 데이터", fetchUserProfile());
   }, []);
 
   useEffect(() => {

@@ -28,7 +28,6 @@ export const getAllNoteList = async (keyword: string): Promise<any> => {
     const response = await axiosInstance.get(`/notes/others`, {
       params,
     });
-    console.log(response.data.response, "Success getAllNoteList");
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getAllNoteList");

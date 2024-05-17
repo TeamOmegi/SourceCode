@@ -30,7 +30,6 @@ const MainPage = () => {
       const errorData: Error = JSON.parse(event.data); // 서버에서 받은 데이터 파싱
       setErrorCreate(errorData);
       setErrorMap(errorData.serviceId, "up");
-      console.log(12);
       if (location.pathname !== "/omegi") {
         setIsNewError(true);
       } else {

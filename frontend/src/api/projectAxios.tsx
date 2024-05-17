@@ -30,7 +30,7 @@ export const getDiagram = async (projectId: number): Promise<any> => {
 // 에러 한눈에 보기
 export const getErrorSolved = async (errorId: number): Promise<any> => {
   try {
-    const response = await axiosInstance.get(`/errors/${errorId}/solved`);
+    const response = await axiosInstance.post(`/errors/${errorId}/solved`);
     return response;
   } catch (error) {
     console.error(error, "Fail getDiagram");
@@ -39,7 +39,6 @@ export const getErrorSolved = async (errorId: number): Promise<any> => {
 
 // 프로젝트 생성하기
 export const projectCreate = async (projectData: Project) => {
-  console.log("전달완료: ", projectData);
   try {
     const response = await axiosInstance.post(`/projects`, projectData);
     console.log(response, "Success PjtCreate");
@@ -52,7 +51,6 @@ export const projectCreate = async (projectData: Project) => {
 export const getProjectNames = async (): Promise<any> => {
   try {
     const response = await axiosInstance.get(`/projects`);
-    console.log(response);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getDiagram");
@@ -63,7 +61,6 @@ export const getProjectNames = async (): Promise<any> => {
 export const getServices = async (projectId: number): Promise<any> => {
   try {
     const response = await axiosInstance.get(`/projects/${projectId}`);
-    console.log(response);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getDiagram");
@@ -74,7 +71,6 @@ export const getServices = async (projectId: number): Promise<any> => {
 export const getServicesType = async (): Promise<any> => {
   try {
     const response = await axiosInstance.get(`/services/supported-types`);
-    console.log(response);
     return response.data.response;
   } catch (error) {
     console.error(error, "Fail getDiagram");
@@ -92,8 +88,7 @@ export const getServiceTokens = async (
       `/projects/${projectId}/services/${serviceId}/tokens`,
       nameData,
     );
-    console.log(response);
-    return response.data.response;
+    return response.data;
   } catch (error) {
     console.error(error, "Fail getDiagram");
   }
