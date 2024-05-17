@@ -147,7 +147,12 @@ const AllNoteDetailPage = () => {
           <div className="ml-3 mt-7 flex items-center justify-start text-3xl font-bold">
             <h2>{note?.title}</h2>
           </div>
-          <div className="text-md mr-5 box-border flex justify-end p-2">
+          <div className="text-md mr-5 box-border flex items-center justify-end p-2">
+            <img
+              src={note?.user.profileImageUrl}
+              alt="프로필 이미지"
+              className="mr-1 h-5 w-5 rounded-full"
+            />
             <p className="mr-5">{note?.user.username}</p>
             <p className="mr-2">{note?.createdAt.split("T")[0]}</p>
           </div>

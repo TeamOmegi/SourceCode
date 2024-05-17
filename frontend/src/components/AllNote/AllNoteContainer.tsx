@@ -66,7 +66,9 @@ const AllNoteContainer = () => {
                 <div className="mb-1 flex items-end justify-between">
                   <div className="ml-1 flex items-center">
                     <img
-                      src="../public/icons/ProfileDefault.png"
+                      src={
+                        note.user.profileImageUrl || "/icons/ProfileDefault.png"
+                      }
                       alt="프로필 이미지"
                       className="mr-1 h-4 w-4 rounded-full"
                     />

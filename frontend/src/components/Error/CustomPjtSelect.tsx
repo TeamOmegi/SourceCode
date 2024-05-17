@@ -40,12 +40,12 @@ const CustomPjtSelect = ({
 
   return (
     <div className="flex h-full w-full">
-      <span className="mt-3 h-full w-full">
+      <span className="mt-3 h-full w-full ">
         <button
           type="button"
           onClick={toggleDropdown}
           onBlur={closeDropdown}
-          className="box-border inline-flex w-72 justify-between rounded-xl border-[1px] border-gray-400 border-opacity-50 bg-white p-2 text-base font-medium text-gray-700 shadow-md hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
+          className="box-border inline-flex w-72 justify-between rounded-xl border-[1px] border-gray-400 border-opacity-50 bg-white p-2 pl-3 text-base font-medium text-gray-700 shadow-md hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
           aria-haspopup="listbox"
           aria-expanded="true"
           aria-labelledby="listbox-label"

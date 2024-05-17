@@ -231,8 +231,8 @@ const NavBar = () => {
               onMouseLeave={() => setIsHovered(false)}
             />
           </div>
-          <div className="ml-3 flex h-2/3 w-full items-center justify-center pb-3">
-            <div className="mr-1 flex h-11 w-11 items-center justify-center rounded-full bg-slate-300">
+          <div className="ml-5 flex h-2/3 w-full items-center justify-center pb-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full">
               {profileImage ? (
                 <img
                   className="h-9 w-9 rounded-full"
@@ -248,9 +248,8 @@ const NavBar = () => {
               )}
             </div>
 
-            {/* <div className="flex-1">{profileName}</div> */}
             <div className="ml-3 flex-1">{profileName}</div>
-            <div className="mr-2 flex justify-end">
+            <div className="mr-5 flex justify-end">
               <img
                 className="h-8 w-8 hover:cursor-pointer"
                 alt="Signout_Icon"

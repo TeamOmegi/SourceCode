@@ -55,9 +55,12 @@ const CommentList = ({ commentList, currentUserId }: Props) => {
             <div className="flex flex-col">
               <div className="flex">
                 <img
-                  src={comment.writer.profileImageUrl}
+                  src={
+                    comment.writer.profileImageUrl ||
+                    "/icons/ProfileDefault.png"
+                  }
                   alt="Profile"
-                  className="mr-1 h-5 w-5"
+                  className="mr-1 h-5 w-5 rounded-full"
                 />
                 <span>{comment.writer.username}</span>
               </div>
