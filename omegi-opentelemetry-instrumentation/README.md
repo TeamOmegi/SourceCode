@@ -14,10 +14,10 @@ Java 애플리케이션을 위한 Omegi Instrumentation은 Omegi OpenTelemetry J
 
 #### 주요 기능:
 
-메소드 단위의 세분화된 계측
-Apache Kafka를 통한 원격 측정 데이터 전송
-분산 시스템에서의 에러 발생 경로 파악
-유연한 구성 옵션 제공
+- 메소드 단위의 세분화된 계측
+- Apache Kafka를 통한 원격 측정 데이터 전송
+- 분산 시스템에서의 에러 발생 경로 파악
+- 유연한 구성 옵션 제공
 
 자세한 내용은 Java Instrumentation README를 참조하세요.
 
@@ -27,10 +27,10 @@ Python 애플리케이션을 위한 Omegi Instrumentation은 Python 패키지 �
 
 #### 주요 기능:
 
-함수 단위의 세분화된 계측
-Kafka 또는 콘솔을 통한 원격 측정 데이터 전송
-분산 시스템에서의 에러 발생 경로 파악
-다양한 Python 웹 프레임워크 및 라이브러리 지원 (FastAPI, Django, Flask 등)
+- 함수 단위의 세분화된 계측
+- Kafka 또는 콘솔을 통한 원격 측정 데이터 전송
+- 분산 시스템에서의 에러 발생 경로 파악
+- 다양한 Python 웹 프레임워크 및 라이브러리 지원 (FastAPI, Django, Flask 등)
 
 자세한 내용은 Python Instrumentation README를 참조하세요.
 
