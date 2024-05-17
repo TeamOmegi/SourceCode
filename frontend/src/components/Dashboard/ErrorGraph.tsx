@@ -12,8 +12,10 @@ import useErrorStore from "../../store/useErrorStore";
 //   source: number;
 //   target: number;
 // }
-
-const ErrorGraph = () => {
+interface Props {
+  projectId: number;
+}
+const ErrorGraph = ({ projectId }: Props) => {
   const svgRef = useRef<any>();
   const pjtRef = useRef<any[]>([]);
   const [nodes, setNodes] = useState<any>([]);
@@ -21,18 +23,20 @@ const ErrorGraph = () => {
   const { errorMap } = useErrorStore();
 
   const getDiagramData = async () => {
-    const diagramData = await getDiagram(12);
+    if (projectId == -1) return;
+    const diagramData = await getDiagram(projectId);
     setNodes([...diagramData.nodes]);
     setLinks([...diagramData.edges]);
   };
   useEffect(() => {
     getDiagramData();
-  }, []);
+  }, [projectId]);
 
   useEffect(() => {
     if (nodes.length != 0 && links.length != 0) {
       draw();
       errorCheck();
+      console.log(nodes);
     }
   }, [nodes, errorMap]);
 
@@ -49,9 +53,10 @@ const ErrorGraph = () => {
   };
 
   const draw = () => {
-    const width = 650;
+    const width = 660;
     const height = 240;
     const radius = 20;
+    const margin = 100;
 
     const svg = d3
       .select(svgRef.current)
@@ -63,7 +68,7 @@ const ErrorGraph = () => {
       .append("clipPath")
       .attr("id", "circleClip")
       .append("circle")
-      .attr("r", radius);
+      .attr("r", radius + 4);
 
     //svg에 정의하는 코드 (svg 내에서 사용가능한 기능 만들어놓는다 생각하면됨)
     var defs = svg.append("defs");
@@ -165,22 +170,30 @@ const ErrorGraph = () => {
       .data(nodes)
       .join("g")
       .each(function (d: any) {
+        d3.select(this).selectAll("circle").remove();
         d3.select(this).selectAll("image").remove(); // 기존 이미지 삭제
         d3.select(this).selectAll("text").remove(); // 기존 텍스트 삭제
+
         d3.select(this)
-          .append("image")
-          .attr("xlink:href", "/icons/진짜루돌프.png")
-          .attr("clip-path", "url(#circleClip)") //이미지 오리기 (위에 정의해놓음)
-          .attr("width", 2 * radius) // 이미지의 크기
-          .attr("height", 2 * radius) // 이미지의 크기
+          .append("circle")
+          .attr("r", radius)
           .attr("pjt", `${d.serviceId}`)
-          .attr("x", -radius)
-          .attr("y", -radius)
+          .attr("clip-path", "url(#circleClip)")
+          .attr("fill", "white")
           .style("filter", "url(#default-shadow)");
 
         d3.select(this)
+          .append("image")
+          .attr("xlink:href", `${d.serviceImageUrl}`)
+          //.attr("clip-path", "url(#circleClip)") //이미지 오리기 (위에 정의해놓음)
+          .attr("width", 2 * radius) // 이미지의 크기
+          .attr("height", 2 * radius) // 이미지의 크기
+          .attr("x", -radius)
+          .attr("y", -radius);
+
+        d3.select(this)
           .append("text")
-          .text((d: any) => d.serviceId)
+          .text((d: any) => d.serviceName)
           .attr("x", -25)
           .attr("y", -5);
       });
@@ -206,7 +219,17 @@ const ErrorGraph = () => {
           return d.target.y - offsetY;
         });
       node.attr("transform", (d: any) => `translate(${d.x}, ${d.y})`);
-      node.attr("cx", (d: any) => d.x).attr("cy", (d: any) => d.y);
+      node
+        .attr("cx", (d: any) => d.x)
+        .attr("cy", (d: any) => d.y)
+        .attr(
+          "cx",
+          (d: any) => (d.x = Math.max(radius, Math.min(width - radius, d.x!))),
+        )
+        .attr(
+          "cy",
+          (d: any) => (d.y = Math.max(radius, Math.min(height - radius, d.y!))),
+        );
     };
 
     const simulation = d3
@@ -215,8 +238,18 @@ const ErrorGraph = () => {
         "link",
         d3.forceLink(links).id((d: any) => d.serviceId),
       )
-      .force("charge", d3.forceManyBody().strength(-1500))
+      .force("charge", d3.forceManyBody().strength(-5000))
       .force("center", d3.forceCenter(width / 2, height / 2))
+      .force(
+        "x",
+        d3.forceX().x((d) => Math.max(margin, Math.min(width - radius, d.x!))),
+      )
+      .force(
+        "y",
+        d3.forceY().y((d) => Math.max(margin, Math.min(height - radius, d.y!))),
+      )
+      .force("x", d3.forceX(width).strength(0.1)) // x축 위치 제한
+      .force("y", d3.forceY(height).strength(0.1)) // y축 위치 제한
       .on("tick", ticked);
 
     const dragstarted = (event: any) => {
@@ -243,28 +276,13 @@ const ErrorGraph = () => {
         .on("end", dragended),
     );
 
-    const arr = svgRef?.current?.querySelectorAll("g image");
+    const arr = svgRef?.current?.querySelectorAll("g circle");
     pjtRef.current = [...arr];
   };
 
   return (
     <div className="flex h-full w-full">
       <svg ref={svgRef} className="h-full w-full" />
-      {/* <div className="flex flex-col justify-center bg-red-100">
-        <div className="text-xl font-extrabold">
-          "input에 입력한 루돌프에서 에러가 발생!!"
-        </div>
-        <input
-          value={serviceName}
-          onChange={(e) => setServiceName(e.target.value)}
-          onKeyUp={(e) => {
-            enterEvent(e);
-          }}
-        />
-        <div className="rounded-lg bg-blue-500" onClick={submit}>
-          버튼!!!
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -19,7 +19,7 @@ const ErrorList = () => {
     );
 
     setErrorDelete([...updatedErrorList]);
-    //await getErrorSolved(errorId);
+    await getErrorSolved(errorId);
 
     setErrorMap(serviceId, "down");
 
@@ -39,7 +39,7 @@ const ErrorList = () => {
         {errorList.map((error) => (
           <div
             key={error.errorId}
-            className="animate-fade box-border flex w-full p-1"
+            className="box-border flex w-full animate-fade p-1"
           >
             <div className="ml-5 flex h-full w-[30%]">{error.type}</div>
             <div className="flex h-full w-[20%]">{error.projectId}</div>
