@@ -105,10 +105,7 @@ public class SampleOmegiTraceSpanExporter implements SpanExporter {
 		try {
 			RecordMetadata recordMetadata = kafkaProducer.send(record).get();
 			logger.info(recordMetadata.toString());
-		} catch (InterruptedException e) {
-			logger.warning(e.getLocalizedMessage());
-			throw new RuntimeException(e);
-		} catch (ExecutionException e) {
+		} catch (InterruptedException | ExecutionException e) {
 			logger.warning(e.getLocalizedMessage());
 			throw new RuntimeException(e);
 		}
