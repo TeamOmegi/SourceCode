@@ -143,7 +143,7 @@ const NoteEdit = () => {
     <div className="box-border flex h-full w-full flex-col items-center pb-4 pt-5">
       <div className="flex w-full items-center justify-end px-5">
         <img
-          src="/public/icons/Close.png"
+          src="/icons/Close.png"
           alt="닫기버튼"
           className="h-6 w-6 hover:cursor-pointer"
           onClick={handleNoteLeave}
