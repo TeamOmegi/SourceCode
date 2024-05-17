@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import useErrorStore from "../../store/useErrorStore";
 import { getErrorSolved } from "../../api/projectAxios";
 
@@ -6,10 +5,13 @@ interface Error {
   errorId: number;
   serviceId: number;
   projectId: number;
+  serviceName: string;
+  projectName: string;
   solved: boolean;
   type: string;
   time: string;
 }
+
 const ErrorList = () => {
   const { errorList, setErrorDelete, setErrorMap } = useErrorStore();
 
@@ -26,43 +28,62 @@ const ErrorList = () => {
     // 1.  ~~ 에러를 완료하시겠습니까?
     // 2. setErrorList에서 해당 배열지우기
   };
+
+  console.log("@@@@@@@@@@", errorList);
+
   return (
-    <div className=" flex h-full w-full flex-col">
-      <div className="flex h-1/6 w-full items-center justify-center rounded-t-lg bg-slate-300 text-base">
-        <div className="ml-5 flex h-full w-[30%]">에러 종류</div>
-        <div className="flex h-full w-[20%]">프로젝트</div>
-        <div className="flex h-full w-[20%]">서비스</div>
-        <div className="flex h-full w-[20%]">날짜</div>
-        <div className="flex h-full w-[10%]">상세</div>
-      </div>
-      <div className="flex h-5/6 w-full flex-col overflow-y-scroll rounded-b-lg bg-slate-200 text-sm scrollbar-webkit">
+    <table className="box-border flex h-full w-full flex-col items-center justify-between whitespace-normal">
+      <thead className=" flex h-[15%] w-full flex-col">
+        <tr className="mr-3 flex h-full w-full items-center justify-start rounded-t-lg bg-primary-200 text-base text-gray-800">
+          <td className="flex h-full w-[30%] items-center justify-center font-medium">
+            에러 종류
+          </td>
+          <td className="flex h-full w-[20%] items-center justify-center font-medium">
+            프로젝트
+          </td>
+          <td className="flex h-full w-[20%] items-center justify-center font-medium">
+            서비스
+          </td>
+          <td className="flex h-full w-[20%] items-center justify-center font-medium">
+            날짜
+          </td>
+          <td className="mr-6 flex h-full w-[10%] items-center justify-center font-medium">
+            상세
+          </td>
+        </tr>
+      </thead>
+      <tbody className="flex h-[85%] w-full flex-col overflow-y-scroll rounded-b-lg bg-primary-50 text-sm scrollbar-webkit">
         {errorList.map((error) => (
-          <div
+          <tr
             key={error.errorId}
-            className="box-border flex w-full animate-fade justify-center p-1"
+            className="flex w-full animate-fade justify-center px-1 py-1"
           >
-            <div className="ml-5 flex h-full w-[30%]">{error.type}</div>
-            <div className="flex h-full w-[20%]">{error.projectId}</div>
-            <div className="flex h-full w-[20%]">
-              {error.serviceId} {error.errorId}
-            </div>
-            <div className="flex h-full w-[20%]">
+            <td className="mr-1 flex h-full w-[30%] items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap font-medium">
+              {error.type}
+            </td>
+            <td className="mr-1 flex h-full w-[20%] items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap font-medium">
+              {error.projectName}
+            </td>
+            <td className="whitespace-nowrapoverflow-hidden mr-1 flex h-full w-[20%] items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap font-medium">
+              {error.serviceName}
+            </td>
+            <td className="flex h-full w-[20%] items-center justify-center font-medium">
               {error.time.split("T")[0]}
-            </div>
-            <div className="flex h-full w-[10%]">
+            </td>
+            <td className="flex h-full w-[10%] items-center justify-center font-medium">
               <button
-                className="box-border rounded-2xl bg-secondary-200 pl-2 pr-2"
+                className="box-border rounded-2xl bg-primary-400 pl-2 pr-2"
                 onClick={() =>
                   handleSolvedError(error.serviceId, error.errorId)
                 }
               >
                 완료
               </button>
-            </div>
-          </div>
+            </td>
+          </tr>
         ))}
-      </div>
-    </div>
+      </tbody>
+    </table>
   );
 };
 

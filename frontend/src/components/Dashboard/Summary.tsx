@@ -50,24 +50,24 @@ const Summary = () => {
         </div>
         <div className="box-border flex h-4/6 px-3 pb-3">
           <div className="mr-3 box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
-            <img src="/icons/SolvedIcon.svg" alt="SolvedIcon" />
+            <img src="/icons/SmileIcon.svg" alt="SolvedIcon" />
             <div className="mt-2 text-sm font-bold">해결 에러</div>
 
-            <div className="animate-fade mt-1 text-xs">
+            <div className="mt-1 animate-fade text-xs">
               {errorSummary ? errorSummary.solvedErrorCount : "-"} 개
             </div>
           </div>
           <div className="mr-3 box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
-            <img src="/icons/UnsolvedIcon.svg" alt="UnsolvedIcon" />
+            <img src="/icons/SadIcon.svg" alt="UnsolvedIcon" />
             <div className="mt-2 text-sm font-bold">미해결 에러</div>
-            <div className="animate-fade mt-1 text-xs">
+            <div className="mt-1 animate-fade text-xs">
               {errorSummary ? errorSummary.unsolvedErrorCount : "-"} 개
             </div>
           </div>
           <div className=" box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
             <img src="/icons/RecentErrorIcon.svg" alt="RecentErrorIcon" />
             <div className="mt-2 text-sm font-bold">최근 에러 발생일</div>
-            <div className="animate-fade mt-1 text-xs">
+            <div className="mt-1 animate-fade text-xs">
               {errorSummary
                 ? errorSummary.recentlyErrorOccurredAt.split("T")[0]
                 : "-"}
@@ -83,21 +83,21 @@ const Summary = () => {
           <div className="mr-3 box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
             <img src="/icons/NoteCountIcon.svg" alt="NoteCountIcon" />
             <div className="mt-2 text-sm font-bold ">작성한 노트 수</div>
-            <div className="animate-fade mt-1 text-xs">
+            <div className="mt-1 animate-fade text-xs">
               {noteSummary ? noteSummary.noteCount : "-"} 개
             </div>
           </div>
           <div className="mr-3 box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
             <img src="/icons/MyToAllIcon.svg" alt="MyToAllICon" />
             <div className="mt-2 text-sm font-bold">내가 연결한 노트</div>
-            <div className="animate-fade mt-1 text-xs">
+            <div className="mt-1 animate-fade text-xs">
               {noteSummary ? noteSummary.linkCount : "-"} 개
             </div>
           </div>
           <div className="box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
             <img src="/icons/AllToMyIcon.svg" alt="AllToMyIcon" />
             <div className="mt-2 text-sm font-bold">나를 연결한 노트</div>
-            <div className="animate-fade mt-1 text-xs">
+            <div className="mt-1 animate-fade text-xs">
               {noteSummary ? noteSummary.backlinkCount : "-"} 개
             </div>
           </div>
