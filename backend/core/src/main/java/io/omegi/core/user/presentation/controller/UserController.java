@@ -30,19 +30,21 @@ public class UserController {
     @ResponseStatus(OK)
     @ResponseWrapping(status = DRAW_MY_PROFILE_VIEW_SUCCESS)
     public DrawUserProfileResponse drawUserProfileResponse(HttpServletRequest request) {
-        String accessToken = null;
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("access".equals(cookie.getName())) {
-                    accessToken = cookie.getValue();
-                    break;
-                }
-            }
-        }
-        if (accessToken == null) {
-            throw new RuntimeException("Authorization token is missing or malformed");
-        }
-        Integer userId = jwtUtil.getUserId(accessToken);
+//        String accessToken = null;
+//        if (request.getCookies() != null) {
+//            for (Cookie cookie : request.getCookies()) {
+//                if ("access".equals(cookie.getName())) {
+//                    accessToken = cookie.getValue();
+//                    break;
+//                }
+//            }
+//        }
+//        if (accessToken == null) {
+//            throw new RuntimeException("Authorization token is missing or malformed");
+//        }
+//        Integer userId = jwtUtil.getUserId(accessToken);
+//        return userService.drawUserProfile(userId);
+        Integer userId = 1; // 임시로 userId를 1로 고정
         return userService.drawUserProfile(userId);
     }
 
