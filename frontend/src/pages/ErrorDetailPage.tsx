@@ -32,11 +32,6 @@ interface Props {
 // [UPDATED] 변경
 // 중요!!!
 // 인터페이스 ErrorDetail 형식 수정함
-// 더미데이터 예시로 보고 지우면 됨
-// axios 꺼놔서 다시 살리고 테스트 필요
-// 안중요
-// 뒤로가기 아이콘 넣어서 onClick 함수 내용 채워야 함
-// 대충 navigate 시켜줘
 
 const ErrorDetailPage = () => {
   const location = useLocation();
@@ -97,16 +92,14 @@ const ErrorDetailPage = () => {
                 errorDetail?.time.split("T")[1]}
             </div>
           </div>
-          <div className="flex h-fit w-fit">
-            {/*TODO 관련 노트 보기 뭔가요>*/}
+          {/* <div className="flex h-fit w-fit">
             <div className="mr-3 box-border flex h-fit w-fit items-center justify-center rounded-xl bg-fuchsia-100 px-5 py-2">
               관련 노트 보기
             </div>
-            {/*TODO 노트 작성 / 조회 버튼 있나요?*/}
             <div className="box-border flex h-fit w-fit items-center justify-center rounded-xl bg-fuchsia-100 px-5 py-2">
               노트 작성
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex-grow overflow-y-scroll scrollbar-webkit">

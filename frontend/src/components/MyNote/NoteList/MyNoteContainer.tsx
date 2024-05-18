@@ -8,24 +8,27 @@ import useEditorStore from "../../../store/useEditorStore";
 import useMyNoteStore from "../../../store/useMyNoteStore";
 
 interface Props {
-  type?: string;
   selectedTag?: string;
+  showErrorOnly: boolean;
+  type?: string;
 }
 
 interface MyNote {
   noteId: number;
   title: string;
   content: string;
+  type: string;
   tags: string[];
   visibility: string;
   createdAt: string;
 }
 
-const MyNoteContainer = ({ type, selectedTag }: Props) => {
+const MyNoteContainer = ({ selectedTag, showErrorOnly, type }: Props) => {
   const { setShowNote, setNoteType } = useEditorStore();
   const { linkTarget } = useLinkStore();
   const { noteList, setNoteDelete } = useMyNoteStore();
   const navigate = useNavigate();
+
   const handleNoteClick = (note: MyNote) => {
     navigate(`/omegi/myNote/${note.noteId}`);
   };
@@ -96,12 +99,13 @@ const MyNoteContainer = ({ type, selectedTag }: Props) => {
         style={{ maxWidth: "calc(100% - 16px)" }}
       >
         {noteList.map((note, index) => {
+          if (showErrorOnly && note.type !== "ERROR") return null;
           if (
             selectedTag &&
             selectedTag !== "" &&
             !note.tags.includes(selectedTag)
           )
-            return;
+            return null;
 
           return (
             <div
@@ -117,7 +121,7 @@ const MyNoteContainer = ({ type, selectedTag }: Props) => {
                     }
               }
             >
-              <div className="box-border flex h-full w-full flex-col justify-center rounded-lg  border-gray-300">
+              <div className="box-border flex h-full w-full flex-col justify-between rounded-lg border-gray-300">
                 <div className="h-2/3">
                   <img
                     src="../icons/tempImg.png"
@@ -125,34 +129,36 @@ const MyNoteContainer = ({ type, selectedTag }: Props) => {
                     className="h-full w-full rounded-lg object-cover"
                   />
                 </div>
-                <div className="ml-1 mt-2 box-border h-1/3 flex-col flex-wrap">
+                <div className="ml-1 mt-2 box-border flex h-1/3 flex-col justify-between">
                   <h3 className="text-lg font-semibold">{note.title}</h3>
                   <p className="box-border line-clamp-2 text-ellipsis whitespace-normal pl-1 text-sm">
                     {note.content}
                   </p>
+                  <div className="flex flex-wrap">
+                    {note.tags.length > 0 ? (
+                      note.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="m-1 flex w-auto bg-green-100 text-xs font-light text-green-600"
+                        >
+                          {tag.length > 7 ? `${tag.slice(0, 7)}..` : tag}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="m-1 flex w-auto bg-transparent text-xs font-light text-transparent"></span>
+                    )}
+                  </div>
                 </div>
-                <div className=" mt-2 flex flex-col items-center justify-start">
-                  <div className="mb-1 ml-2 flex h-full w-full justify-start">
-                    {note.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="m-1 flex w-auto bg-green-100 text-xs font-light text-green-600"
-                      >
-                        {tag.length > 7 ? tag.slice(0, 7) + ".." : tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="mb-1 flex h-full w-full justify-end ">
-                    <p className="text-xs text-gray-500">
-                      {note.createdAt.split("T")[0]}
-                    </p>
-                    <img
-                      src="/icons/DeleteIcon1.png"
-                      alt="삭제 아이콘"
-                      className="mx-3 h-4 w-4"
-                      onClick={(e) => handleNoteDelete(e, note.noteId, index)}
-                    />
-                  </div>
+                <div className="mt-2 flex justify-end">
+                  <p className="text-xs text-gray-500">
+                    {note.createdAt.split("T")[0]}
+                  </p>
+                  <img
+                    src="/icons/DeleteIcon1.png"
+                    alt="삭제 아이콘"
+                    className="mx-3 h-4 w-4"
+                    onClick={(e) => handleNoteDelete(e, note.noteId, index)}
+                  />
                 </div>
               </div>
             </div>

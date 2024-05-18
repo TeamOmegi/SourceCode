@@ -6,13 +6,13 @@ const ErrorSwitch = ({ onClick }) => {
   const handleClick = () => {
     const newEnabled = !enabled;
     setEnabled(newEnabled);
-    onClick(newEnabled);
+    onClick(newEnabled ? "ERROR" : "");
   };
 
   return (
-    <div className="flex h-full flex-col items-center overflow-hidden">
-      <div className="mt-5 flex h-fit w-fit justify-end">
-        <label className="relative mr-10 inline-flex cursor-pointer items-center">
+    <div className="flex flex-col items-center overflow-hidden">
+      <div className="flex h-fit w-fit justify-end">
+        <label className="relative inline-flex cursor-pointer items-center">
           <input
             type="checkbox"
             className="peer sr-only"

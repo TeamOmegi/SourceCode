@@ -76,7 +76,7 @@ const ErrorListPage = () => {
               selectedOption={selectedProject}
               handleSelectProject={handleSelectProject}
             />
-            <ErrorSwitch onClick={handleErrorClick} />
+            {/* <ErrorSwitch onClick={handleErrorClick} /> */}
           </div>
         </div>
       </div>

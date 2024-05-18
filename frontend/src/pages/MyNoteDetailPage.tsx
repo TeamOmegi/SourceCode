@@ -21,6 +21,12 @@ import CommentContainer from "../components/Comment/CommentContainer";
 import useEditorStore from "../store/useEditorStore";
 import useLinkStore from "../store/useLinkStore";
 
+interface User {
+  userId?: number;
+  profileImageUrl: string;
+  username: string;
+}
+
 interface ErrorInfo {
   errorId: number;
   errorType: string;
@@ -173,7 +179,10 @@ const MyNoteDetailPage = () => {
               className="h-6 w-6"
             />
           </div>
-          <div className="ml-3 mt-7 flex items-center justify-start text-3xl font-bold">
+          <div className="ml-3 mt-4 box-border h-fit w-fit rounded-2xl border-2 border-primary-400 bg-primary-100 p-1 text-sm">
+            {note && note.type === "ERROR" ? <p>에러노트</p> : <p>일반노트</p>}
+          </div>
+          <div className="ml-3 mt-2 flex items-center justify-start text-3xl font-bold">
             <h2>{note?.title}</h2>
           </div>
           <div className="text-md ml-3 mr-5 mt-1 box-border flex justify-between p-2 ">
@@ -213,7 +222,7 @@ const MyNoteDetailPage = () => {
             />
             <br />
 
-            <div className="box-border">
+            {/* <div className="box-border">
               {note && note.type === "ERROR" ? (
                 <>
                   <hr />
@@ -226,7 +235,7 @@ const MyNoteDetailPage = () => {
               ) : (
                 <p></p>
               )}
-            </div>
+            </div> */}
           </div>
           <hr />
           <div className="box-border flex h-auto w-full p-3">
