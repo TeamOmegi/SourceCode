@@ -59,7 +59,8 @@ module.exports = {
         "300%": "300%",
       },
       fontFamily: {
-        sans: ["Pretendard-Regular", "sans-serif"],
+        sans: ["SeoulNamsanM", "ui-sans-serif", "system-ui"],
+        PyeongChang: ["PyeongChangPeace-Bold", "ui-sans-serif", "system-ui"],
       },
     },
   },

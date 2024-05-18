@@ -108,9 +108,9 @@ const NavBar = () => {
   return (
     <div className="flex h-full w-full">
       <div className="flex h-full w-full select-none flex-col bg-main-100">
-        <div className="flex h-1/6 items-center justify-center">
-          <div className=" mt-10 inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-4xl font-extrabold text-transparent">
-            Omegi
+        <div className="h-1/6 w-full ">
+          <div className="font-PyeongChang mt-10 flex h-full w-full items-end justify-center bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-[40px] font-extrabold text-transparent">
+            <div>OMEGI</div>
           </div>
         </div>
         <div className="m-3 mt-28 flex h-4/6 flex-col items-center pl-1 text-base">
