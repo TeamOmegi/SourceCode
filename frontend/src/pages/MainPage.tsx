@@ -20,7 +20,6 @@ const MainPage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname != "/omegi") return;
     //SSE연결 로직
     const eventSource = new EventSource(
       "https://k10a308.p.ssafy.io/api/errors/real-time/subscription",
@@ -30,10 +29,10 @@ const MainPage = () => {
       const errorData: Error = JSON.parse(event.data); // 서버에서 받은 데이터 파싱
       setErrorCreate(errorData);
       setErrorMap(errorData.serviceId, "up");
-      if (location.pathname !== "/omegi") {
-        setIsNewError(true);
-      } else {
+      if (location.pathname === "/omegi/" || location.pathname === "/omegi") {
         setIsNewError(false);
+      } else {
+        setIsNewError(true);
       }
     });
 
@@ -47,10 +46,15 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    if (["/omegi", "/omegi/setting"].includes(location.pathname)) {
+    if (
+      ["/omegi", "/omegi/setting", "/omegi/", "/omegi/setting/"].includes(
+        location.pathname,
+      ) ||
+      /^\/omegi\/myNote\/\d+$/.test(location.pathname)
+    ) {
       if (showNote) setShowNote();
     }
-    if (location.pathname === "/omegi") {
+    if (location.pathname === "/omegi/" || location.pathname === "/omegi") {
       setIsNewError(false);
     }
   }, [location.pathname]);
