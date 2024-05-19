@@ -177,7 +177,7 @@ const ErrorGraph = ({ projectId }: Props) => {
         d3.select(this)
           .append("text")
           .text((d: any) => d.serviceName)
-          .attr("x", -50)
+          .attr("x", -25)
           .attr("y", +50)
           .style("font-size", "12px") // 폰트 크기 설정
           .style("font-weight", "bold");

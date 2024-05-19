@@ -1,5 +1,6 @@
 import useErrorStore from "../../store/useErrorStore";
 import { getErrorSolved } from "../../api/projectAxios";
+import { useQuestion, useWarnning } from "../../hooks/useComfirm";
 
 interface Error {
   errorId: number;
@@ -16,14 +17,22 @@ const ErrorList = () => {
   const { errorList, setErrorDelete, setErrorMap } = useErrorStore();
 
   const handleSolvedError = async (serviceId: number, errorId: number) => {
-    const updatedErrorList = errorList.filter(
-      (error) => error.errorId != errorId,
-    );
+    const result = await useQuestion({
+      title: "Error Solved",
+      fireText: "Error를 완료 상태로 바꾸시겠습니까?",
+      resultText: "Error가 완료 처리되었습니다.",
+    });
 
-    setErrorDelete([...updatedErrorList]);
-    await getErrorSolved(errorId);
+    if (result) {
+      const updatedErrorList = errorList.filter(
+        (error) => error.errorId != errorId,
+      );
 
-    setErrorMap(serviceId, "down");
+      setErrorDelete([...updatedErrorList]);
+      await getErrorSolved(errorId);
+
+      setErrorMap(serviceId, "down");
+    }
 
     // 1.  ~~ 에러를 완료하시겠습니까?
     // 2. setErrorList에서 해당 배열지우기
