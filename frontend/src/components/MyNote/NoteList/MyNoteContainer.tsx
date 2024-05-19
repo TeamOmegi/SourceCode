@@ -21,6 +21,7 @@ interface MyNote {
   tags: string[];
   visibility: string;
   createdAt: string;
+  imageUrl: string;
 }
 
 const MyNoteContainer = ({ selectedTag, showErrorOnly, type }: Props) => {
@@ -92,30 +93,6 @@ const MyNoteContainer = ({ selectedTag, showErrorOnly, type }: Props) => {
     }, 1000);
   };
 
-  const errorImageUrls = [
-    "/icons/randomImg1.avif",
-    "/icons/randomImg2.avif",
-    "/icons/randomImg3.avif",
-    "/icons/randomImg4.avif",
-    "/icons/randomImg5.avif",
-    "/icons/randomImg6.jpeg",
-    "/icons/randomImg7.jpeg",
-    "/icons/randomImg8.jpeg",
-  ];
-
-  const normalImageUrls = ["/icons/tempImg.png", "/mingi.jpg"];
-
-  // 랜덤으로 이미지 보여주기
-  const getRandomImage = (type: string) => {
-    if (type === "ERROR") {
-      return errorImageUrls[Math.floor(Math.random() * errorImageUrls.length)];
-    } else {
-      return normalImageUrls[
-        Math.floor(Math.random() * normalImageUrls.length)
-      ];
-    }
-  };
-
   return (
     <div className="mt-2 flex h-full w-full flex-wrap overflow-y-scroll scrollbar-webkit">
       <div
@@ -134,21 +111,21 @@ const MyNoteContainer = ({ selectedTag, showErrorOnly, type }: Props) => {
           return (
             <div
               key={index}
-              className="m-2 box-border flex h-[350px] w-[208px] flex-col justify-between rounded-xl border-[1px] bg-white p-2 shadow-lg hover:cursor-pointer"
+              className="m-2 box-border flex h-[350px] w-[200px] flex-col justify-between rounded-xl border-[1px] bg-white p-2 shadow-lg hover:cursor-pointer"
               onClick={
                 type === "link"
                   ? () => {
                       handleNoteLink(note.noteId);
                     }
                   : () => {
-                      handleNoteClick(note);
+                      handleNoteClick(음표);
                     }
               }
             >
-              <div className="box-border flex h-[320px] w-[190px] flex-col justify-between rounded-lg border-gray-300">
+              <div className="box-border flex h-[320px] w-full flex-col justify-between rounded-lg border-gray-300">
                 <div className="h-2/3">
                   <img
-                    src={getRandomImage(note.type)}
+                    src={note.imageUrl}
                     alt="임시 이미지"
                     className="h-full w-full rounded-lg"
                   />

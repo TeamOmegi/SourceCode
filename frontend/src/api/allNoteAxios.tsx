@@ -17,6 +17,7 @@ interface Note {
   createdAt: string;
   isMine: boolean;
   user: User;
+  imageUrl: string;
 }
 
 export const getAllNoteList = async (keyword: string): Promise<any> => {

@@ -28,8 +28,8 @@ const IndexPage = () => {
   };
 
   return (
-    <main className="snap scrollbar-hide max-h-screen snap-y snap-mandatory overflow-y-scroll">
-      <div className="animate-gradient bg-300% absolute inset-0 bg-gradient-to-r from-[#000000] via-[#130F40] to-[#000000]"></div>
+    <main className="snap max-h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide">
+      <div className="absolute inset-0 animate-gradient bg-gradient-to-r from-[#000000] via-[#130F40] to-[#000000] bg-300%"></div>
       <section className="relative flex h-screen w-full snap-start flex-col items-center justify-center">
         <img
           className="h-15 w-15 mb-7 flex aspect-square h-36 items-center justify-center"
@@ -88,15 +88,15 @@ const IndexPage = () => {
               OpenSource Project
             </div>
             <div className="flex flex-col items-start pb-[2%]">
-              <div className="mb-2 inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-2xl font-medium text-transparent">
+              <div className="mb-2 inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-[23px] font-medium text-transparent">
                 omegi opentelemetry instrumentation은 오픈소스로 제공되고
                 있습니다.
               </div>
-              <div className="mb-2 inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-2xl font-medium text-transparent">
+              <div className="mb-2 inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-[23px] font-medium text-transparent">
                 Gitlab에서 설치 및 사용 방법을 확인하세요. 에이전트는 사용자가
                 정의할 수 있는 유연한 옵션을 제공합니다.
               </div>
-              <div className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-2xl font-medium text-transparent">
+              <div className="inline-block bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-[23px] font-medium text-transparent">
                 개발자는 오메기의 오픈소스를 자유롭게 사용하고 확장할 수
                 있습니다
               </div>
@@ -132,12 +132,12 @@ const IndexPage = () => {
                   Java 사용 설명서
                 </div>
                 <a
-                  href="http://k10a308.p.ssafy.io"
+                  href="https://lab.ssafy.com/s10-final/S10P31A308/-/tree/develop-ins/omegi-opentelemetry-instrumentation/omegi-instrumentation-java?ref_type=heads"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mb-5 h-fit w-fit rounded-lg bg-white/50 px-5 py-2 text-lg font-medium text-[#171821] shadow-md"
                 >
-                  http://k10a308.p.ssafy.io
+                  바로가기 ⏎
                 </a>
               </div>
             </div>
@@ -155,12 +155,12 @@ const IndexPage = () => {
                   Python 사용 설명서
                 </div>
                 <a
-                  href="http://k10a308.p.ssafy.io"
+                  href="https://lab.ssafy.com/s10-final/S10P31A308/-/tree/develop-ins/omegi-opentelemetry-instrumentation/omegi-instrumentation-python?ref_type=heads"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mb-5 h-fit w-fit rounded-lg bg-white/50 px-5 py-2 text-lg font-medium text-[#171821] shadow-md"
                 >
-                  http://k10a308.p.ssafy.io
+                  바로가기 ⏎
                 </a>
               </div>
             </div>

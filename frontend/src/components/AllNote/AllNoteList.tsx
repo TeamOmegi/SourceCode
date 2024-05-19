@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getAllNoteList } from "../../api/allNoteAxios";
 import AllNoteContainer from "./AllNoteContainer";
 import useALLNoteStore from "../../store/useAllNoteStore";
-import ErrorSwitch from "../Error/ErrorSwitch";
 
 const AllNoteList = () => {
   const { setAllNoteList } = useALLNoteStore();

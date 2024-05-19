@@ -117,7 +117,7 @@ const ErrorDetailPage = () => {
             Summary
           </div>
           <div className="w-full rounded-md border-[1px] border-gray-200 bg-gray-100 p-4 shadow-md">
-            {errorLog?.summary}
+            <pre>{errorLog?.summary}</pre>
           </div>
         </div>
 
