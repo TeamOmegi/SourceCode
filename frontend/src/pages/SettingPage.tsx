@@ -376,7 +376,7 @@ const SettingPage = () => {
             >
               <div className="flex h-full flex-col">
                 <div className=" text-sm font-bold text-primary-600">
-                  Welcom Omegi Service
+                  Welcome Omegi Service
                 </div>
                 <div className="mt-1.5 w-[95%] text-xs text-gray-500">
                   https://lab.ssafy.com/s10-final/S10P31A308/-/tree/develop-ins/omegi-opentelemetry-instrumentation?ref_type=heads
