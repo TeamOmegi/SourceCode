@@ -5,8 +5,8 @@ interface Error {
   serviceId: number;
   projectId: number;
   solved: boolean;
-  serviceName: string;
-  projectName: string;
+  serviceName?: string;
+  projectName?: string;
   type: string;
   time: string;
 }

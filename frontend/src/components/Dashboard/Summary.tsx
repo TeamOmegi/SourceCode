@@ -54,23 +54,23 @@ const Summary = () => {
             <div className="mt-2 text-[13px] font-bold">해결 에러</div>
 
             <div className="mt-1 animate-fade text-xs">
-              {errorSummary ? errorSummary.solvedErrorCount : "-"} 개
+              {errorSummary ? errorSummary?.solvedErrorCount : "-"} 개
             </div>
           </div>
           <div className="mr-3 box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
             <img src="/icons/SadIcon.svg" alt="UnsolvedIcon" />
             <div className="mt-2 text-[13px] font-bold">미해결 에러</div>
             <div className="mt-1 animate-fade text-xs">
-              {errorSummary ? errorSummary.unsolvedErrorCount : "-"} 개
+              {errorSummary ? errorSummary?.unsolvedErrorCount : "-"} 개
             </div>
           </div>
           <div className=" box-border h-full w-1/3 flex-col rounded-xl bg-slate-100 px-3 py-2">
             <img src="/icons/RecentErrorIcon.svg" alt="RecentErrorIcon" />
             <div className="mt-2 text-[13px] font-bold">최근 에러 발생일</div>
             <div className="mt-1 animate-fade text-xs">
-              {errorSummary
-                ? errorSummary.recentlyErrorOccurredAt.split("T")[0]
-                : "-"}
+              {(errorSummary &&
+                errorSummary?.recentlyErrorOccurredAt?.split("T")[0]) ||
+                "-"}
             </div>
           </div>
         </div>

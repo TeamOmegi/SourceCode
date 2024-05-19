@@ -12,6 +12,7 @@ interface AllNote {
     profileImageUrl: string;
     username: string;
   };
+  imageUrl: string;
 }
 
 interface Store {
