@@ -37,7 +37,7 @@ const NoteEdit = () => {
     content: "",
     type: "",
     visibility: "",
-    links: [],
+    imageUrl: "string",
   });
 
   lowlight.registerLanguage("html", html);
@@ -187,7 +187,7 @@ const NoteEdit = () => {
 
       <div className="flex h-12 w-full">
         <div className="box-border flex h-12 w-1/2 items-center justify-start pl-6 font-extrabold text-gray-500">
-          <div className="mx-2 flex h-12 w-24 items-center justify-center">
+          <div className="mlx-2 flex h-12 w-24 items-center justify-center text-sm">
             <div>공개여부</div>
             <img
               src={
@@ -195,11 +195,11 @@ const NoteEdit = () => {
                   ? "/icons/UncheckIcon.png"
                   : "/icons/CheckIcon.png"
               }
-              className="ml-2 h-6 w-6 hover:cursor-pointer"
+              className="ml-2 h-5 w-5  hover:cursor-pointer"
               onClick={handleVisibility}
             />
           </div>
-          <div className="mx-2 flex h-12 w-24 items-center justify-center">
+          <div className="flex h-12 w-24 items-center justify-center text-sm">
             <div>에러노트</div>
             <img
               src={
@@ -207,7 +207,7 @@ const NoteEdit = () => {
                   ? "/icons/UncheckIcon.png"
                   : "/icons/CheckIcon.png"
               }
-              className="ml-2 h-6 w-6 hover:cursor-pointer"
+              className="ml-2 h-5 w-5 hover:cursor-pointer"
               onClick={handleNoteType}
             />
           </div>
