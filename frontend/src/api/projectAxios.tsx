@@ -1,7 +1,4 @@
-import axios from "axios";
 import axiosInstance from "./axiosInstance";
-
-const BASE_URL = "http://k10a308.p.ssafy.io:8081";
 
 interface Project {
   projectName: string;
@@ -33,7 +30,7 @@ export const getErrorSolved = async (errorId: number): Promise<any> => {
     const response = await axiosInstance.post(`/errors/${errorId}/solved`);
     return response;
   } catch (error) {
-    console.error(error, "Fail getDiagram");
+    console.error(error, "Fail getErrorSolved");
   }
 };
 
@@ -43,7 +40,17 @@ export const projectCreate = async (projectData: Project) => {
     const response = await axiosInstance.post(`/projects`, projectData);
     console.log(response, "Success PjtCreate");
   } catch (error) {
-    console.error(error, "Fail PjtCreate");
+    console.error(error, "Fail projectCreate");
+  }
+};
+
+// 프로젝트 삭제하기
+export const projectDelete = async (projectId: number) => {
+  try {
+    const response = await axiosInstance.delete(`/projects/${projectId}`);
+    console.log(response, "Success projectDelete");
+  } catch (error) {
+    console.error(error, "Fail projectCreate");
   }
 };
 
@@ -53,7 +60,7 @@ export const getProjectNames = async (): Promise<any> => {
     const response = await axiosInstance.get(`/projects`);
     return response.data.response;
   } catch (error) {
-    console.error(error, "Fail getDiagram");
+    console.error(error, "Fail getProjectNames");
   }
 };
 
@@ -63,7 +70,7 @@ export const getServices = async (projectId: number): Promise<any> => {
     const response = await axiosInstance.get(`/projects/${projectId}`);
     return response.data.response;
   } catch (error) {
-    console.error(error, "Fail getDiagram");
+    console.error(error, "Fail getServices");
   }
 };
 
@@ -73,11 +80,23 @@ export const getServicesType = async (): Promise<any> => {
     const response = await axiosInstance.get(`/services/supported-types`);
     return response.data.response;
   } catch (error) {
-    console.error(error, "Fail getDiagram");
+    console.error(error, "Fail getServicesType");
   }
 };
 
-// 프로젝트 이름가져오기
+// 프로젝트 토큰 리스트
+export const getProjectTokens = async (projectId: number): Promise<any> => {
+  try {
+    const response = await axiosInstance.get(
+      `/projects/${projectId}/serviceTokens`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error, "Fail getProjectTokens");
+  }
+};
+
+// 서비스 토큰 발급받기.
 export const getServiceTokens = async (
   projectId: number,
   serviceId: number,
@@ -90,6 +109,21 @@ export const getServiceTokens = async (
     );
     return response.data;
   } catch (error) {
-    console.error(error, "Fail getDiagram");
+    console.error(error, "Fail getServiceTokens");
+  }
+};
+
+// 서비스 토큰 삭제
+export const deleteServiceTokens = async (
+  projectId: number,
+  serviceId: number,
+): Promise<any> => {
+  try {
+    const response = await axiosInstance.delete(
+      `/projects/${projectId}/services/${serviceId}/tokens`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error, "Fail deleteServiceTokens");
   }
 };
