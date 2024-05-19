@@ -62,7 +62,6 @@ public class SecurityConfig {
 						.requestMatchers("/reissue").permitAll()
 						.requestMatchers("/users/profile").permitAll()
 						.anyRequest().authenticated());
-		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
 		http
 				.sessionManagement((session) -> session
