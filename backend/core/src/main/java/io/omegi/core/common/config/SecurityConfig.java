@@ -43,25 +43,25 @@ public class SecurityConfig {
 		http
 				.httpBasic((auth) -> auth.disable());
 
-		// http
-		// 		.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
-		//
-		// http
-		// 		.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		http
+				.addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
-		// http
-		// 		.oauth2Login((oauth2) -> oauth2
-		// 				.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-		// 						.userService(customOAuth2UserService))
-		// 				.successHandler(customSuccessHandler)
-		// 		);
-		//
-		// http
-		// 		.authorizeHttpRequests((auth) -> auth
-		// 				.requestMatchers("/").permitAll()
-		// 				.requestMatchers("/reissue").permitAll()
-		// 				.requestMatchers("/users/profile").permitAll()
-		// 				.anyRequest().authenticated());
+		http
+				.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+		http
+				.oauth2Login((oauth2) -> oauth2
+						.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+								.userService(customOAuth2UserService))
+						.successHandler(customSuccessHandler)
+				);
+
+		http
+				.authorizeHttpRequests((auth) -> auth
+						.requestMatchers("/").permitAll()
+						.requestMatchers("/reissue").permitAll()
+						.requestMatchers("/users/profile").permitAll()
+						.anyRequest().authenticated());
 		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
 		http

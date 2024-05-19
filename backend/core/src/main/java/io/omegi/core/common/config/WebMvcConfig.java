@@ -11,12 +11,8 @@ import io.omegi.core.common.presentation.support.LoginArgumentResolver;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-
-	@Value("${test.user-id}")
-	private Integer userId;
-
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-		resolvers.add(new LoginArgumentResolver(userId));
+		resolvers.add(new LoginArgumentResolver());
 	}
 }
