@@ -36,6 +36,7 @@ const NoteCreate = () => {
     type: "NORMAL",
     visibility: "PRIVATE",
     links: [],
+    imageUrl: "",
   });
 
   lowlight.registerLanguage("html", html);
@@ -86,6 +87,23 @@ const NoteCreate = () => {
     }
   };
 
+  const noteImageUrls = [
+    "/icons/randomImg1.avif",
+    "/icons/randomImg2.avif",
+    "/icons/randomImg3.avif",
+    "/icons/randomImg4.avif",
+    "/icons/randomImg5.avif",
+    "/icons/randomImg6.jpeg",
+    "/icons/randomImg7.jpeg",
+    "/icons/randomImg8.jpeg",
+    "/icons/tempImg.png",
+    "/icons/tempImg2.avif",
+  ];
+
+  const getRandomImageUrl = () => {
+    return noteImageUrls[Math.floor(Math.random() * noteImageUrls.length)];
+  };
+
   const handleNoteCreate = async () => {
     if (noteData.title === "") {
       useError({
@@ -102,7 +120,12 @@ const NoteCreate = () => {
     });
 
     if (result) {
-      await noteCreate(noteData);
+      const noteDataWithImage = {
+        ...noteData,
+        imageUrl: getRandomImageUrl(),
+      };
+
+      await noteCreate(noteDataWithImage);
 
       if (noteData.links) delete noteData.links;
       const notes = {
