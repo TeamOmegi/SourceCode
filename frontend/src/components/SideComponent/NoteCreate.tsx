@@ -22,10 +22,12 @@ import { useError } from "../../hooks/useAlert";
 import { Note, noteCreate } from "../../api/myNoteAxios";
 import useEditorStore from "../../store/useEditorStore";
 import useMyNoteStore from "../../store/useMyNoteStore";
+import useALLNoteStore from "../../store/useAllNoteStore";
 
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);
   const { setShowNote, setIsWriting } = useEditorStore();
+  const { allNoteList } = useALLNoteStore();
   const { noteList, setNoteList } = useMyNoteStore();
   const [noteCategory, setNoteCategory] = useState<string>("NORMAL"); //ERROR
   const [noteVisibility, setNoteVisibility] = useState<string>("PRIVATE"); //PUBLIC
@@ -129,7 +131,7 @@ const NoteCreate = () => {
 
       if (noteData.links) delete noteData.links;
       const notes = {
-        noteId: noteList[0].noteId + 1,
+        noteId: allNoteList[0].noteId + 1,
         title: noteData.title,
         content: noteData.content,
         tags: noteData.tags,
@@ -139,7 +141,6 @@ const NoteCreate = () => {
         imageUrl: "",
       };
 
-      console.log(notes);
       setNoteList([notes, ...noteList]);
       handleNoteReset();
       setShowNote();
@@ -159,7 +160,6 @@ const NoteCreate = () => {
   };
 
   const handleNoteReset = () => {
-    console.log("들어옴");
     setResetToggle(!resetToggle);
     editor?.commands.setContent("");
   };
