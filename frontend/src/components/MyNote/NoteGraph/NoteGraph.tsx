@@ -236,7 +236,7 @@ const NoteGraph = () => {
             // console.log("d.idx", d.idx);
             return d.idx;
           })
-          .distance(40), // 링크의 길이
+          .distance(55), // 링크의 길이
       )
       .force("charge", d3.forceManyBody().strength(-900))
       .force("center", d3.forceCenter(width / 2, height / 2))
