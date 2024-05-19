@@ -80,7 +80,7 @@ public class ErrorQueryService {
 		Project project = projectRepository.findByUserAndName(user, requestDto.projectName())
 			.orElseThrow(RuntimeException::new);
 
-		List<Error> errors = errorRepository.searchErrors(requestDto.projectName(), requestDto.serviceName(),
+		List<Error> errors = errorRepository.searchErrors(user.getUserId(), requestDto.projectName(), requestDto.serviceName(),
 			requestDto.solved(), requestDto.errorType());
 
 		List<DrawErrorsViewResponse.ErrorResponse> errorResponses = errors.stream()

@@ -9,6 +9,7 @@ import io.omegi.core.project.domain.Error;
 import io.omegi.core.project.domain.QError;
 import io.omegi.core.project.domain.QProject;
 import io.omegi.core.project.domain.QService;
+import io.omegi.core.user.domain.QUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -17,10 +18,11 @@ public class ErrorRepositoryImpl implements CustomErrorRepository{
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public List<Error> searchErrors(String projectName, String serviceName, Boolean solved, String errorType) {
+	public List<Error> searchErrors(Integer userId, String projectName, String serviceName, Boolean solved, String errorType) {
 		QError error = QError.error;
 		QService service = QService.service;
 		QProject project = QProject.project;
+		QUser user = QUser.user;
 
 		BooleanExpression serviceNameEq = serviceName == null ? null : error.service.name.eq(serviceName);
 		BooleanExpression solvedEq = solved == null ? null : error.solved.eq(solved);
@@ -30,7 +32,7 @@ public class ErrorRepositoryImpl implements CustomErrorRepository{
 			.join(error.service, service)
 			.join(service.project, project)
 			.on(project.name.eq(projectName))
-			.where(serviceNameEq, solvedEq, errorTypeEq)
+			.where(project.user.userId.eq(userId), serviceNameEq, solvedEq, errorTypeEq)
 			.orderBy(error.createdAt.desc())
 			.fetch();
 	}

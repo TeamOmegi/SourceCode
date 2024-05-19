@@ -6,5 +6,5 @@ import io.omegi.core.project.domain.Error;
 
 public interface CustomErrorRepository {
 
-	List<Error> searchErrors(String projectName, String serviceName, Boolean solved, String errorType);
+	List<Error> searchErrors(Integer userId, String projectName, String serviceName, Boolean solved, String errorType);
 }
