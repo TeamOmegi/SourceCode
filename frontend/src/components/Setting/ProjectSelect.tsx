@@ -35,27 +35,25 @@ const ProjectSelect = ({ options, handleSelectProject }: Props) => {
   };
 
   return (
-    <div className="relative ml-5 inline-block">
-      <div>
-        <span className="rounded-md shadow-sm">
-          <button
-            type="button"
-            onClick={toggleDropdown}
-            onBlur={closeDropdown}
-            className="inline-flex w-52 justify-between rounded-2xl border-[1px] border-gray-400 bg-white px-5 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
-            aria-haspopup="listbox"
-            aria-expanded="true"
-            aria-labelledby="listbox-label"
-          >
-            {selectedOption ? selectedOption : "프로젝트 선택"}
-            <img
-              className="h-6 w-6"
-              alt="Dashboard_Icon"
-              src={isOpen ? "/icons/SelectUp.png" : "/icons/SelectDown.png"}
-            />
-          </button>
-        </span>
-      </div>
+    <div className="relative inline-block ">
+      <span className="rounded-md shadow-sm ">
+        <button
+          type="button"
+          onClick={toggleDropdown}
+          onBlur={closeDropdown}
+          className="inline-flex h-10 w-60  justify-between rounded-lg border-[3px] border-gray-200 bg-white px-5 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
+          aria-haspopup="listbox"
+          aria-expanded="true"
+          aria-labelledby="listbox-label"
+        >
+          {selectedOption ? selectedOption : "프로젝트 선택"}
+          <img
+            className="h-6 w-6"
+            alt="Dashboard_Icon"
+            src={isOpen ? "/icons/SelectUp.png" : "/icons/SelectDown.png"}
+          />
+        </button>
+      </span>
 
       {isOpen && (
         <div className="absolute mt-3 w-56 origin-top-left rounded-2xl bg-white shadow-lg ring-1 ring-black ring-opacity-5">
@@ -65,7 +63,7 @@ const ProjectSelect = ({ options, handleSelectProject }: Props) => {
             aria-orientation="vertical"
             aria-labelledby="options-menu"
           >
-            {options.map((option, index) => (
+            {options.map((option) => (
               <div
                 key={option.projectId}
                 className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
