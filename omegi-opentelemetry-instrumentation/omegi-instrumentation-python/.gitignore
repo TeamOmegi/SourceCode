@@ -1,0 +1,6 @@
+/python-instrumentation/.eggs/
+/python-instrumentation/.venv/
+/python-instrumentation/.build/
+/python-instrumentation/.dist/
+/python-instrumentation/omegi_instrumentation_python.egg-info/
+/python-instrumentation/.idea
