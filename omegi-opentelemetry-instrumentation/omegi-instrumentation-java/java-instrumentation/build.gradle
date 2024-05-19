@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+group = 'org.omegi'
+version = '1.0.0'
+archivesBaseName = 'omegi-opentelemetry-extension'
+
+ext {
+    versions = [
+            opentelemetrySdk           : "1.38.0",
+            opentelemetryJavaagent     : "2.4.0-SNAPSHOT",
+            opentelemetryJavaagentAlpha: "2.4.0-alpha-SNAPSHOT",
+    ]
+
+    deps = [
+            autoservice: dependencies.create(group: 'com.google.auto.service', name: 'auto-service', version: '1.1.1')
+    ]
+}
+
+
+java {
+    sourceCompatibility = '17'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "sonatype"
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+}
+
+configurations {
+    otel
+}
+
+dependencies {
+    implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${versions.opentelemetryJavaagentAlpha}"))
+    compileOnly("io.opentelemetry.javaagent:opentelemetry-javaagent-extension-api")
+
+    compileOnly deps.autoservice
+    annotationProcessor deps.autoservice
+
+    otel("io.opentelemetry.javaagent:opentelemetry-javaagent:${versions.opentelemetryJavaagent}")
+    implementation "io.opentelemetry:opentelemetry-exporter-logging:${versions.opentelemetrySdk}"
+
+    //auto-service
+    implementation 'com.google.auto.service:auto-service:1.1.1'
+
+    // byte-buddy
+    implementation 'net.bytebuddy:byte-buddy:1.14.14'
+
+    // kakfa
+    implementation 'org.apache.kafka:kafka-clients:3.4.0'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+task extendedAgent(type: Jar) {
+    dependsOn(configurations.otel)
+    archiveFileName = "omegi-opentelemetry-javaagent.jar"
+    from zipTree(configurations.otel.singleFile)
+    from(tasks.shadowJar.archiveFile) {
+        into "extensions"
+    }
+
+    doFirst {
+        manifest.from(
+                zipTree(configurations.otel.singleFile).matching {
+                    include 'META-INF/MANIFEST.MF'
+                }.singleFile
+        )
+    }
+}
+
