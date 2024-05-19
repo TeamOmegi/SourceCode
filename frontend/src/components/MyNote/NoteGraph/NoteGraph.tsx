@@ -7,6 +7,7 @@ import {
   linkDelete,
 } from "../../../api/noteGraphAxios";
 import { useError2 } from "../../../hooks/useAlert";
+import { useNavigate } from "react-router-dom";
 
 interface Node {
   nodeId: number;
@@ -64,6 +65,8 @@ const NoteGraph = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [links, setLinks] = useState<Link[]>([]);
   let simulation: d3.Simulation<Node, Link>;
+
+  const navigate = useNavigate();
 
   // 그래프 그리기
   const getGraph = async () => {
@@ -203,6 +206,15 @@ const NoteGraph = () => {
     handleDisconnectAlert();
   };
 
+  // ================== 노드 클릭 ==================
+  const handleNodeClick = (node: Node) => {
+    if (node.type === "MY_NOTE") {
+      navigate(`/omegi/myNote/${node.nodeId}`);
+    } else if (node.type === "OTHERS_NOTE") {
+      navigate(`/omegi/allNote/${node.nodeId}`);
+    }
+  };
+
   useEffect(() => {
     const width = 1200;
     const height = 600;
@@ -263,6 +275,7 @@ const NoteGraph = () => {
       .enter()
       .append("g")
       .attr("class", "circle")
+      .on("click", (event, d: Node) => handleNodeClick(d))
       .call(
         d3
           .drag<SVGGElement, Node, SVGGElement>()
