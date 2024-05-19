@@ -19,7 +19,7 @@ interface AllNote {
 
 const AllNoteContainer = () => {
   const navigate = useNavigate();
-  const { allNoteList } = useALLNoteStore();
+  const { allNoteList, setAllNoteDelete } = useALLNoteStore();
 
   const handleNoteDelete = async (
     e: React.MouseEvent,
@@ -34,6 +34,7 @@ const AllNoteContainer = () => {
 
     if (result) {
       noteDelete(noteId);
+      setAllNoteDelete(index);
     }
   };
 
