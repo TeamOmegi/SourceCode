@@ -135,8 +135,6 @@ const NoteCreate = () => {
 
       await noteCreate(noteDataWithImage);
 
-      if (noteData.links) delete noteData.links;
-
       const getData = async () => {
         const allMyNoteData = await getAllMyNoteData("");
         setNoteList(allMyNoteData.response.notes);
@@ -146,8 +144,8 @@ const NoteCreate = () => {
         const allNotes = await getAllNoteList("");
         setAllNoteList([...allNotes.notes]);
       };
-      getData();
-      getAllNotes();
+      await getData();
+      await getAllNotes();
 
       handleNoteReset();
       setShowNote();
