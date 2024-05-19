@@ -35,7 +35,7 @@ const ProjectSelect = ({ options, handleSelectProject }: Props) => {
   };
 
   return (
-    <div className="relative ml-5 inline-block">
+    <div className="">
       <div>
         <span className="rounded-md shadow-sm">
           <button

@@ -32,14 +32,17 @@ const LogTree = () => {
 
   return (
     <div className="mb-1 mr-1 mt-2 flex h-auto w-[65%] flex-col rounded-xl bg-white p-1 shadow-md">
-      <div className="flex h-[15%] w-full justify-between">
+      <div className="flex h-[15%] w-full">
         <div className="ml-3 box-border flex h-full w-1/2 pt-3 text-base font-bold">
           로그 트리
         </div>
-        <ProjectSelect
-          options={pjtNames}
-          handleSelectProject={handleSelectProject}
-        />
+        <div className="mr-2 flex h-full w-1/2 justify-end pt-2">
+          <ProjectSelect
+            options={pjtNames}
+            handleSelectProject={handleSelectProject}
+          />
+        </div>
+
         <div className=" mr-7 box-border flex h-5/6 w-1/3 items-center pt-3"></div>
       </div>
 
