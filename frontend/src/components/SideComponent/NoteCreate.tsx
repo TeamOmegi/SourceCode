@@ -129,7 +129,7 @@ const NoteCreate = () => {
 
       if (noteData.links) delete noteData.links;
       const notes = {
-        noteId: noteList[0].noteId,
+        noteId: noteList[0].noteId + 1,
         title: noteData.title,
         content: noteData.content,
         tags: noteData.tags,
