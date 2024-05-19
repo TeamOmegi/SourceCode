@@ -130,8 +130,10 @@ const MyNoteContainer = ({ selectedTag, showErrorOnly, type }: Props) => {
                     className="h-full w-full rounded-lg"
                   />
                 </div>
-                <div className="ml-1 mt-2 box-border flex h-1/3 flex-col justify-between">
-                  <h3 className="text-lg font-semibold">{note.title}</h3>
+                <div className="ml-1 mt-2 box-border flex h-1/3 w-full flex-col justify-between">
+                  <h3 className="mx-1 line-clamp-1 text-ellipsis whitespace-normal text-lg font-semibold">
+                    {note.title}
+                  </h3>
                   <p className="box-border line-clamp-2 text-ellipsis whitespace-normal pl-1 text-sm">
                     {note.content}
                   </p>
