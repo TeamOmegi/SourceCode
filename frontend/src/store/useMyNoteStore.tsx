@@ -6,8 +6,10 @@ export interface MyNote {
   title: string;
   content: string;
   tags: string[];
+  type: string;
   visibility: string;
   createdAt: string;
+  imageUrl: string;
 }
 
 interface Store {

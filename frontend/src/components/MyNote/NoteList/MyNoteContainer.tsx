@@ -118,7 +118,7 @@ const MyNoteContainer = ({ selectedTag, showErrorOnly, type }: Props) => {
                       handleNoteLink(note.noteId);
                     }
                   : () => {
-                      handleNoteClick(음표);
+                      handleNoteClick(note);
                     }
               }
             >
