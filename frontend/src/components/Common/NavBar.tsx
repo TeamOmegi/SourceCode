@@ -80,6 +80,7 @@ const NavBar = () => {
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
         // 에러 발생 시 프로필 정보를 초기화하거나 기본값으로 설정할 수 있습니다.
+        navigate("/login");
         setProfileName("");
         setProfileImage("");
       }
@@ -109,7 +110,7 @@ const NavBar = () => {
     <div className="flex h-full w-full">
       <div className="flex h-full w-full select-none flex-col bg-main-100">
         <div className="h-1/6 w-full ">
-          <div className="font-PyeongChang mt-10 flex h-full w-full items-end justify-center bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text text-[40px] font-extrabold text-transparent">
+          <div className="mt-10 flex h-full w-full items-end justify-center bg-gradient-to-r from-primary-600 via-secondary-500 to-primary-400 bg-clip-text font-PyeongChang text-[40px] font-extrabold text-transparent">
             <div>OMEGI</div>
           </div>
         </div>

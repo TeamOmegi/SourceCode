@@ -16,7 +16,8 @@ interface Error {
 }
 const MainPage = () => {
   const { showNote, noteType, setShowNote } = useEditorStore();
-  const { setErrorCreate, setIsNewError, setErrorMap } = useErrorStore();
+  const { isNewError, setErrorCreate, setIsNewError, setErrorMap } =
+    useErrorStore();
   const location = useLocation();
 
   useEffect(() => {
@@ -54,10 +55,17 @@ const MainPage = () => {
     ) {
       if (showNote) setShowNote();
     }
+
     if (location.pathname === "/omegi/" || location.pathname === "/omegi") {
       setIsNewError(false);
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname !== "/omegi/" && location.pathname !== "/omegi") {
+      if (!isNewError) setIsNewError(true);
+    }
+  }, [isNewError]);
 
   return (
     <div className="flex h-svh w-screen overflow-hidden bg-main-100">
