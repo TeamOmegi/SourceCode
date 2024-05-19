@@ -11,6 +11,7 @@ export interface Note {
   visibility: string;
   links?: number[];
   createdAt?: string;
+  imageUrl: string;
 }
 
 // 노트 전체조회 ("")

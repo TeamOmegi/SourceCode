@@ -14,6 +14,7 @@ interface AllNote {
     profileImageUrl: string;
     username: string;
   };
+  imageUrl: string;
 }
 
 const AllNoteContainer = () => {
@@ -48,12 +49,12 @@ const AllNoteContainer = () => {
             onClick={() => handleNoteClick(note)}
             style={{ cursor: "pointer" }}
           >
-            <div className="box-border flex h-full w-full justify-start">
-              <div>
+            <div className="box-border flex h-full w-full justify-start ">
+              <div className="h-fit w-fit">
                 <img
-                  src="/mingi.jpg"
+                  src={note.imageUrl}
                   alt="민기 이미지"
-                  className="h-28 w-28 rounded-lg"
+                  className="h-28 w-40 rounded-lg"
                 />
               </div>
               <div className="ml-5 box-border flex w-full flex-col justify-between">
