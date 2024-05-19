@@ -15,12 +15,12 @@ import io.omegi.core.common.exception.response.RuntimeExceptionResponse;
 @RestControllerAdvice
 public class CommonExceptionHandlerAdvice {
 
-	@ExceptionHandler(RuntimeException.class)
-	@ResponseStatus(BAD_REQUEST)
-	@ResponseWrapping(status = CLIENT_ERROR)
-	public RuntimeExceptionResponse handleRuntimeException(RuntimeException e) {
-		return new RuntimeExceptionResponse(e.getMessage());
-	}
+	// @ExceptionHandler(RuntimeException.class)
+	// @ResponseStatus(BAD_REQUEST)
+	// @ResponseWrapping(status = CLIENT_ERROR)
+	// public RuntimeExceptionResponse handleRuntimeException(RuntimeException e) {
+	// 	return new RuntimeExceptionResponse(e.getMessage());
+	// }
 
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(FORBIDDEN)
