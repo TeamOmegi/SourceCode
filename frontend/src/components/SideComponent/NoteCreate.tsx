@@ -26,7 +26,7 @@ import useMyNoteStore from "../../store/useMyNoteStore";
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);
   const { setShowNote, setIsWriting } = useEditorStore();
-  const { noteList, setNoteCreate } = useMyNoteStore();
+  const { noteList, setNoteList } = useMyNoteStore();
   const [noteCategory, setNoteCategory] = useState<string>("NORMAL"); //ERROR
   const [noteVisibility, setNoteVisibility] = useState<string>("PRIVATE"); //PUBLIC
   const [noteData, setNoteData] = useState<Note>({
@@ -139,7 +139,8 @@ const NoteCreate = () => {
         imageUrl: "",
       };
 
-      setNoteCreate(notes);
+      console.log(notes);
+      setNoteList([notes, ...noteList]);
       handleNoteReset();
       setShowNote();
     }
@@ -158,6 +159,7 @@ const NoteCreate = () => {
   };
 
   const handleNoteReset = () => {
+    console.log("들어옴");
     setResetToggle(!resetToggle);
     editor?.commands.setContent("");
   };
