@@ -87,9 +87,12 @@ public class Note {
 	public void edit(String title, String content, String imageUrl, NoteType noteType, NoteVisibility noteVisibility) {
 		this.title = title;
 		this.content = content;
-		this.imageUrl = imageUrl;
 		this.noteType = noteType;
 		this.noteVisibility = noteVisibility;
+
+		if (imageUrl != null) {
+			this.imageUrl = imageUrl;
+		}
 	}
 
 	public void linkNote() {
