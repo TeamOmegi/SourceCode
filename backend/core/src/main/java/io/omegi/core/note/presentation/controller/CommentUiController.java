@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.omegi.core.common.annotation.Login;
 import io.omegi.core.common.annotation.ResponseWrapping;
 import io.omegi.core.note.application.CommentQueryService;
 import io.omegi.core.note.presentation.model.response.DrawCommentsViewResponse;
@@ -24,7 +25,7 @@ public class CommentUiController {
 	@GetMapping
 	@ResponseStatus(OK)
 	@ResponseWrapping(status = DRAW_COMMENTS_VIEW_SUCCESS)
-	public DrawCommentsViewResponse drawCommentsView(@PathVariable Integer noteId) {
-		return commentQueryService.drawCommentsView(noteId);
+	public DrawCommentsViewResponse drawCommentsView(@Login Integer userId, @PathVariable Integer noteId) {
+		return commentQueryService.drawCommentsView(userId, noteId);
 	}
 }

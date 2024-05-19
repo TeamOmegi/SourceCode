@@ -21,11 +21,13 @@ public class CommentQueryService {
 	private final CommentRepository commentRepository;
 	private final NoteRepository noteRepository;
 
-	public DrawCommentsViewResponse drawCommentsView(Integer noteId) {
+	public DrawCommentsViewResponse drawCommentsView(Integer userId, Integer noteId) {
 		Note note = noteRepository.findById(noteId)
 			.orElseThrow(RuntimeException::new);
 
-		if (!note.isPublic()) {
+		User writer = note.getUser();
+
+		if (!writer.getUserId().equals(userId) && !note.isPublic()) {
 			throw new RuntimeException();
 		}
 
