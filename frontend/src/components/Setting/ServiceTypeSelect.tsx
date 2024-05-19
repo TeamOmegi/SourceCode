@@ -43,7 +43,7 @@ const ServiceTypeSelect = ({ index, options, handleSelectType }: Props) => {
             type="button"
             onClick={toggleDropdown}
             onBlur={closeDropdown}
-            className="inline-flex h-10  w-32 justify-between rounded-lg border-2 border-gray-300 bg-white px-5 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
+            className="inline-flex h-10  w-32 justify-between rounded-lg border-[3px] border-gray-200 bg-white px-5 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
             aria-haspopup="listbox"
             aria-expanded="true"
             aria-labelledby="listbox-label"

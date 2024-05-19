@@ -19,7 +19,7 @@ const DashBoardPage = () => {
           </div>
         </div>
         <div className="box-border h-[40%] w-full flex-col rounded-xl px-3 pb-3">
-          <div className="box-border flex h-full w-full flex-col rounded-xl bg-white p-3 shadow-md">
+          <div className="box-border flex h-full w-full flex-col rounded-xl bg-white shadow-md">
             <div className="h-1/6 w-full text-base font-bold">에러 리스트</div>
             <div className="h-5/6 w-full">
               <ErrorList />

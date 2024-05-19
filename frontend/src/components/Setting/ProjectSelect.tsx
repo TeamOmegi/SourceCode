@@ -42,7 +42,7 @@ const ProjectSelect = ({ options, handleSelectProject }: Props) => {
             type="button"
             onClick={toggleDropdown}
             onBlur={closeDropdown}
-            className="inline-flex w-52 justify-between rounded-2xl border-[1px] border-gray-400 bg-white px-5 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
+            className="inline-flex w-60 justify-between rounded-lg border-[3px] border-gray-200 bg-white px-5 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 focus:border-secondary-400 focus:outline-none focus:ring focus:ring-secondary-200"
             aria-haspopup="listbox"
             aria-expanded="true"
             aria-labelledby="listbox-label"
