@@ -13,6 +13,7 @@ public record EditNoteRequestDto(
 	List<String> tagNames,
 	String noteType,
 	String noteVisibility,
-	List<Integer> linkedNoteIds
+	List<Integer> linkedNoteIds,
+	String imageUrl
 ) {
 }

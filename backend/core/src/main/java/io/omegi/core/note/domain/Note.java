@@ -46,6 +46,8 @@ public class Note {
 
 	private String content;
 
+	private String imageUrl;
+
 	@OneToMany(mappedBy = "note")
 	List<NoteTag> noteTags = new ArrayList<>();
 
@@ -72,18 +74,20 @@ public class Note {
 	private Error error;
 
 	@Builder
-	private Note(User user, String title, String content, NoteType noteType, NoteVisibility noteVisibility) {
+	private Note(User user, String title, String content, String imageUrl, NoteType noteType, NoteVisibility noteVisibility) {
 		this.user = user;
 		this.title = title;
 		this.content = content;
+		this.imageUrl = imageUrl;
 		this.noteType = noteType;
 		this.noteVisibility = noteVisibility;
 		this.backlinkCount = 0;
 	}
 
-	public void edit(String title, String content, NoteType noteType, NoteVisibility noteVisibility) {
+	public void edit(String title, String content, String imageUrl, NoteType noteType, NoteVisibility noteVisibility) {
 		this.title = title;
 		this.content = content;
+		this.imageUrl = imageUrl;
 		this.noteType = noteType;
 		this.noteVisibility = noteVisibility;
 	}

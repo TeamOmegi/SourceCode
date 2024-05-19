@@ -13,6 +13,7 @@ public record DrawAllNoteListViewResponse(
 		Integer noteId,
 		String title,
 		String content,
+		String imageUrl,
 		LocalDateTime createdAt,
 		boolean isMine,
 		UserResponse user

@@ -52,6 +52,7 @@ public class NoteCommandService {
 			.user(user)
 			.title(requestDto.title())
 			.content(requestDto.content())
+			.imageUrl(requestDto.imageUrl())
 			.noteType(noteType)
 			.noteVisibility(noteVisibility)
 			.build();
@@ -77,7 +78,7 @@ public class NoteCommandService {
 		NoteVisibility noteVisibility = noteVisibilityRepository.findByVisibility(Visibility.valueOf(requestDto.noteVisibility()))
 			.orElseThrow(RuntimeException::new);
 
-		note.edit(requestDto.title(), requestDto.content(), noteType, noteVisibility);
+		note.edit(requestDto.title(), requestDto.content(), requestDto.imageUrl(), noteType, noteVisibility);
 
 
 		eventPublisher.publishEvent(new NoteEditedEvent(requestDto.userId(), requestDto.noteId(), requestDto.tagNames(), requestDto.linkedNoteIds()));

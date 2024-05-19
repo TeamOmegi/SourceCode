@@ -12,6 +12,7 @@ public record SaveNoteRequestDto(
 	List<String> tagNames,
 	String type,
 	String visibility,
-	List<Integer> targetNoteIds
+	List<Integer> targetNoteIds,
+	String imageUrl
 ) {
 }

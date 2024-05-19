@@ -46,7 +46,10 @@ public class SseEmitterManager {
 
 	public void complete(Integer sseEmitterId) {
 		SseEmitter sseEmitter = remove(sseEmitterId);
-		sseEmitter.complete();
+
+		if (sseEmitter != null) {
+			sseEmitter.complete();
+		}
 	}
 
 	public void sendEvent(Integer sseEmitterId, String id, String name, Object data) {

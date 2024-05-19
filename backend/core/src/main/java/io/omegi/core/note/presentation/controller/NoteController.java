@@ -47,6 +47,7 @@ public class NoteController {
 			.type(request.type())
 			.visibility(request.visibility())
 			.targetNoteIds(request.links())
+			.imageUrl(request.imageUrl())
 			.build();
 		SaveNoteResponseDto responseDto = noteCommandService.saveNote(requestDto);
 		return new SaveNoteResponse(responseDto.noteId());
@@ -65,6 +66,7 @@ public class NoteController {
 			.noteType(request.type())
 			.noteVisibility(request.visibility())
 			.linkedNoteIds(request.links())
+			.imageUrl(request.imageUrl())
 			.build();
 		EditNoteResponseDto responseDto = noteCommandService.editNote(requestDto);
 		return new EditNoteResponse(responseDto.noteId());

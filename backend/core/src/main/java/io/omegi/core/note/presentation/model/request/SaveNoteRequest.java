@@ -11,6 +11,7 @@ public record SaveNoteRequest(
 	@NotNull List<String> tags,
 	@NotBlank String type, // todo
 	@NotBlank String visibility,
-	@NotNull List<Integer> links // todo
+	@NotNull List<Integer> links, // todo
+	String imageUrl
 ) {
 }

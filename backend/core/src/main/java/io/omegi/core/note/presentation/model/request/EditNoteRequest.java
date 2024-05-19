@@ -12,6 +12,7 @@ public record EditNoteRequest(
 	@NotNull List<String> tags,
 	@NotBlank String type,
 	@NotBlank String visibility,
-	@NotNull List<Integer> links
+	@NotNull List<Integer> links,
+	String imageUrl
 	) {
 }

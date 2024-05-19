@@ -13,6 +13,7 @@ public record DrawMyNoteListViewResponse(
 		Integer noteId,
 		String title,
 		String content,
+		String imageUrl,
 		List<String> tags,
 		String type,
 		String visibility,
