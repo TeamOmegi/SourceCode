@@ -26,7 +26,7 @@ import useMyNoteStore from "../../store/useMyNoteStore";
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);
   const { setShowNote, setIsWriting } = useEditorStore();
-  const { noteList, setNoteList } = useMyNoteStore();
+  const { noteList, setNoteCreate } = useMyNoteStore();
   const [noteCategory, setNoteCategory] = useState<string>("NORMAL"); //ERROR
   const [noteVisibility, setNoteVisibility] = useState<string>("PRIVATE"); //PUBLIC
   const [noteData, setNoteData] = useState<Note>({
@@ -139,7 +139,7 @@ const NoteCreate = () => {
         imageUrl: "",
       };
 
-      setNoteList([notes, ...noteList]);
+      setNoteCreate(notes);
       handleNoteReset();
       setShowNote();
     }
