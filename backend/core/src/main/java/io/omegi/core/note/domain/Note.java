@@ -11,7 +11,6 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.util.StringUtils;
 
 import io.omegi.core.project.domain.Error;
 import io.omegi.core.user.domain.User;
@@ -85,15 +84,11 @@ public class Note {
 		this.backlinkCount = 0;
 	}
 
-	public void edit(String title, String content, String imageUrl, NoteType noteType, NoteVisibility noteVisibility) {
+	public void edit(String title, String content, NoteType noteType, NoteVisibility noteVisibility) {
 		this.title = title;
 		this.content = content;
 		this.noteType = noteType;
 		this.noteVisibility = noteVisibility;
-
-		if (StringUtils.hasText(imageUrl)) {
-			this.imageUrl = imageUrl;
-		}
 	}
 
 	public void linkNote() {
