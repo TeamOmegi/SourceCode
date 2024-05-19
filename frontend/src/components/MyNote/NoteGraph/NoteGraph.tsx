@@ -216,8 +216,8 @@ const NoteGraph = () => {
   };
 
   useEffect(() => {
-    const width = 1200;
-    const height = 600;
+    const width = 1100;
+    const height = 550;
     const margin = 100;
 
     const graph = { nodes, links };
