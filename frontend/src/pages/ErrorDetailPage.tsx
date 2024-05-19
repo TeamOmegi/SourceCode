@@ -117,7 +117,7 @@ const ErrorDetailPage = () => {
             Summary
           </div>
           <div className="w-full rounded-md border-[1px] border-gray-200 bg-gray-100 p-4 shadow-md">
-            <pre>{errorLog?.summary}</pre>
+            <pre>{errorLog?.summary.replace(/step\./g, "\nstep.")}</pre>
           </div>
         </div>
 

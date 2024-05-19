@@ -167,7 +167,7 @@ const AllNoteDetailPage = () => {
             />
             <br />
 
-            <div className="box-border">
+            {/* <div className="box-border">
               {note && note.type === "ERROR" ? (
                 <>
                   <hr />
@@ -180,7 +180,7 @@ const AllNoteDetailPage = () => {
               ) : (
                 <p></p>
               )}
-            </div>
+            </div> */}
           </div>
           <hr />
           <div className="box-border flex h-auto w-full p-3">
