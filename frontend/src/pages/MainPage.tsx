@@ -16,8 +16,7 @@ interface Error {
 }
 const MainPage = () => {
   const { showNote, noteType, setShowNote } = useEditorStore();
-  const { isNewError, setErrorCreate, setIsNewError, setErrorMap } =
-    useErrorStore();
+  const { setErrorCreate, setIsNewError, setErrorMap } = useErrorStore();
   const location = useLocation();
 
   useEffect(() => {
@@ -30,9 +29,11 @@ const MainPage = () => {
       const errorData: Error = JSON.parse(event.data); // 서버에서 받은 데이터 파싱
       setErrorCreate(errorData);
       setErrorMap(errorData.serviceId, "up");
-      if (location.pathname == "/omegi/" || location.pathname == "/omegi") {
+      console.log("sse 발생", location.pathname);
+      if (location.pathname === "/omegi/" || location.pathname === "/omegi") {
         setIsNewError(false);
       } else {
+        console.log("sse 다른 페이지에서 발생", location.pathname);
         setIsNewError(true);
       }
     });
