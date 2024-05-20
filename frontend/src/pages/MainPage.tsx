@@ -29,13 +29,7 @@ const MainPage = () => {
       const errorData: Error = JSON.parse(event.data); // 서버에서 받은 데이터 파싱
       setErrorCreate(errorData);
       setErrorMap(errorData.serviceId, "up");
-      console.log("sse 발생", location.pathname);
-      if (location.pathname === "/omegi/" || location.pathname === "/omegi") {
-        setIsNewError(false);
-      } else {
-        console.log("sse 다른 페이지에서 발생", location.pathname);
-        setIsNewError(true);
-      }
+      handleNewError();
     });
 
     eventSource.onerror = () => {
@@ -61,6 +55,15 @@ const MainPage = () => {
       setIsNewError(false);
     }
   }, [location.pathname]);
+
+  const handleNewError = () => {
+    console.log("비상!! 비상!!", location.pathname);
+    if (location.pathname === "/omegi/" || location.pathname === "/omegi") {
+      setIsNewError(false);
+    } else {
+      setIsNewError(true);
+    }
+  };
 
   return (
     <div className="flex h-svh w-screen overflow-hidden bg-main-100">
