@@ -19,12 +19,7 @@ import html from "highlight.js/lib/languages/xml";
 
 import { useQuestion, useWarnning } from "../../hooks/useComfirm";
 import { useError } from "../../hooks/useAlert";
-import {
-  Note,
-  getAllMyNoteData,
-  getAllTags,
-  noteCreate,
-} from "../../api/myNoteAxios";
+import { Note, getAllMyNoteData, noteCreate } from "../../api/myNoteAxios";
 import useEditorStore from "../../store/useEditorStore";
 import useMyNoteStore from "../../store/useMyNoteStore";
 import useALLNoteStore from "../../store/useAllNoteStore";
@@ -33,8 +28,8 @@ import { getAllNoteList } from "../../api/allNoteAxios";
 const NoteCreate = () => {
   const [resetToggle, setResetToggle] = useState<boolean>(false);
   const { setShowNote, setIsWriting } = useEditorStore();
-  const { allNoteList, setAllNoteList } = useALLNoteStore();
-  const { noteList, setNoteList } = useMyNoteStore();
+  const { setAllNoteList } = useALLNoteStore();
+  const { setNoteList } = useMyNoteStore();
   const [noteCategory, setNoteCategory] = useState<string>("NORMAL"); //ERROR
   const [noteVisibility, setNoteVisibility] = useState<string>("PRIVATE"); //PUBLIC
   const [noteData, setNoteData] = useState<Note>({
