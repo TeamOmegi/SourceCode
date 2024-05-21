@@ -40,7 +40,7 @@ const CustomPjtSelect = ({
 
   return (
     <div className="flex h-full w-full ">
-      <span className="flex h-full w-full items-center">
+      <span className="flex h-full w-full items-center justify-end">
         <button
           type="button"
           onClick={toggleDropdown}
