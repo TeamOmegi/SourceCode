@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import ErrorList from "../components/Error/ErrorList";
-import { getErrorList } from "../api/errorAxios";
+import { getProjectList, getErrorList } from "../api/errorAxios";
 import CustomPjtSelect from "../components/Error/CustomPjtSelect";
+import ErrorSwitch from "../components/Error/ErrorSwitch";
+import Header from "../components/Common/Header";
+
+interface Project {
+  projectId: number;
+  name: string;
+}
 
 interface Error {
   errorId: number;
@@ -14,73 +21,67 @@ interface Error {
 }
 
 const ErrorListPage = () => {
+  const [selectedProject, setSelectedProject] = useState<string>("");
   const [errorList, setErrorList] = useState<Error[]>([]);
   const [allProject, setAllProject] = useState<string[]>([]);
-  const [searchProject, setsearchProject] = useState<string>("");
-  const [searchService, setSearchService] = useState<string>("");
-  const [selectedProject, setSelectedProject] = useState<string>("");
+  const [showUnsolved, setShowUnsolved] = useState<boolean>(false);
 
   useEffect(() => {
-    const getErrors = async () => {
-      const allErrorData = await getErrorList("", "");
-      console.log("성공", allErrorData);
-      setErrorList(allErrorData.errors);
-      setAllProject([...allErrorData.projects]);
+    const getProjects = async () => {
+      try {
+        const projectData = await getProjectList();
+        setAllProject(projectData.map((project: Project) => project.name));
+        if (projectData.length > 0) {
+          const firstProjectName = projectData[0].name;
+          setSelectedProject(firstProjectName);
+          fetchErrorList(firstProjectName, false);
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     };
-
-    getErrors();
+    getProjects();
   }, []);
 
-  const handleSearch = async () => {
-    const allErrorData = await getErrorList(searchProject, searchService);
-    setErrorList([...allErrorData.errors]);
+  const fetchErrorList = async (project: string, solved: boolean | null) => {
+    try {
+      const errors = await getErrorList(project, "", solved);
+      setErrorList(errors);
+    } catch (error) {
+      console.error("Failed to fetch errors:", error);
+    }
   };
 
-  const handleSelectProject = (project: string) => {
+  const handleSelectProject = async (project: string) => {
     setSelectedProject(project);
+    fetchErrorList(project, showUnsolved ? false : null);
+  };
+
+  const handleErrorClick = (newShowUnsolved: boolean) => {
+    setShowUnsolved(newShowUnsolved);
+    fetchErrorList(selectedProject, newShowUnsolved ? false : null);
   };
 
   return (
-    <div className="bg-default">
-      <div className="flex h-1/6 w-full rounded-xl bg-blue-300 ">
-        <div className="m-5 flex items-center justify-center text-2xl font-bold">
-          에러 리스트
-        </div>
-      </div>
-      <div className="flex h-5/6 w-full flex-col items-center justify-center rounded-xl">
-        <div className="box-border flex h-[10%] w-full justify-between px-8 py-1">
-          <div className=" flex h-[80%]">
-            {/* 프로젝트 선택 dropdown */}
+    <div className="bg-default box-border flex h-full w-full flex-col justify-between px-8 pb-8 pt-12">
+      <div className="flex h-[20%] w-full flex-col justify-start">
+        <Header title="🐛 에러 리스트"></Header>
+        <div className="mx-2 flex h-full w-full items-center justify-between">
+          <div className="flex h-full w-full items-center">
+            <div className="mx-2 flex text-base font-medium text-main-100 text-opacity-40">
+              PROJECT
+            </div>
             <CustomPjtSelect
               options={allProject}
+              selectedOption={selectedProject}
               handleSelectProject={handleSelectProject}
             />
-          </div>
-          <div className="mt-1 flex h-full w-72">
-            {/* 검색창 */}
-            <div className="flex h-[80%] w-full rounded-2xl border-[1px] border-gray-400 bg-white pl-2 text-sm focus-within:border-secondary-400 focus-within:ring focus-within:ring-secondary-200">
-              <input
-                type="text"
-                placeholder="에러를 검색하세요!"
-                value={searchProject}
-                onChange={(e) => setsearchProject(e.target.value)}
-                onKeyUp={(e) => {
-                  if (e.key == "Enter") handleSearch();
-                }}
-                className="ml-2 h-full w-full bg-transparent text-sm text-gray-700 outline-none"
-              />
-              <img
-                src="/icons/SearchIcon.png"
-                alt="검색"
-                className="mr-3 mt-[0.5rem] h-5 w-5 hover:cursor-pointer"
-                onClick={handleSearch}
-              />
-            </div>
+            {/* <ErrorSwitch onClick={handleErrorClick} /> */}
           </div>
         </div>
-        <div className="border-1 mt-1 flex h-[90%] w-11/12 items-center justify-center rounded-lg border-primary-100 text-black">
-          <ErrorList />
-        </div>
+      </div>
+      <div className=" flex h-[80%] w-full items-start justify-center rounded-2xl bg-white p-3 shadow-md">
+        <ErrorList selectedProject={selectedProject} errorList={errorList} />
       </div>
     </div>
   );

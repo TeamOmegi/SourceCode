@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CommentList from "./CommentList";
 import { createComment, getCommentList } from "../../api/commentAxios";
 import CommentForm from "./CommentForm";
@@ -24,8 +24,6 @@ const CommentContainer = ({ noteId, currentUserId }: Props) => {
     try {
       await createComment(noteId, content);
       getComments();
-      // setCommentList([...commentList]); // 로그인 연결할 때 최적화하기~! 🚨
-      console.log("댓글 작성:", content);
     } catch (error) {
       console.error("댓글 작성 중 오류가 발생했습니다:", error);
     }

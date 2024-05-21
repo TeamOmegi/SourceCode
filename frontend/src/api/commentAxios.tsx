@@ -1,12 +1,10 @@
-import axios from "axios";
-
-const BASE_URL = "http://k10a308.p.ssafy.io:8081";
+import axiosInstance from "./axiosInstance";
 
 export const getCommentList = async (noteId: number): Promise<any> => {
   try {
-    const response = await axios.get(`${BASE_URL}/notes/${noteId}/comments`);
+    const response = await axiosInstance.get(`/notes/${noteId}/comments`);
     const data = response.data.response;
-    console.log("data", data);
+    //console.log("data", data);
     return data.comments;
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -16,7 +14,7 @@ export const getCommentList = async (noteId: number): Promise<any> => {
 // 댓글 작성
 export const createComment = async (noteId: number, content: string) => {
   try {
-    const response = await axios.post(`${BASE_URL}/notes/${noteId}/comments`, {
+    const response = await axiosInstance.post(`/notes/${noteId}/comments`, {
       content,
     });
     return response.data;
@@ -32,8 +30,8 @@ export const updateComment = async (
   content: string,
 ) => {
   try {
-    const response = await axios.put(
-      `${BASE_URL}/notes/${noteId}/comments/${commentId}`,
+    const response = await axiosInstance.put(
+      `/notes/${noteId}/comments/${commentId}`,
       {
         content,
       },
@@ -47,8 +45,8 @@ export const updateComment = async (
 // 댓글 삭제
 export const deleteComment = async (noteId: number, commentId: number) => {
   try {
-    const response = await axios.delete(
-      `${BASE_URL}/notes/${noteId}/comments/${commentId}`,
+    const response = await axiosInstance.delete(
+      `/notes/${noteId}/comments/${commentId}`,
     );
     return response.data;
   } catch (error) {
