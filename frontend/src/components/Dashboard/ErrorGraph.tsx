@@ -223,11 +223,13 @@ const ErrorGraph = ({ projectId }: Props) => {
         .attr("cy", (d: any) => d.y)
         .attr(
           "cx",
-          (d: any) => (d.x = Math.max(radius, Math.min(width - radius, d.x!))),
+          (d: any) =>
+            (d.x = Math.max(radius + 20, Math.min(width - radius, d.x!))),
         )
         .attr(
           "cy",
-          (d: any) => (d.y = Math.max(radius, Math.min(height - radius, d.y!))),
+          (d: any) =>
+            (d.y = Math.max(radius + 20, Math.min(height - radius, d.y!))),
         );
     };
 
