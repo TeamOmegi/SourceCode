@@ -71,11 +71,13 @@ const ErrorListPage = () => {
             <div className="mx-2 flex text-base font-medium text-main-100 text-opacity-40">
               PROJECT
             </div>
-            <CustomPjtSelect
-              options={allProject}
-              selectedOption={selectedProject}
-              handleSelectProject={handleSelectProject}
-            />
+            <div className="flex h-full w-full items-center">
+              <CustomPjtSelect
+                options={allProject}
+                selectedOption={selectedProject}
+                handleSelectProject={handleSelectProject}
+              />
+            </div>
             {/* <ErrorSwitch onClick={handleErrorClick} /> */}
           </div>
         </div>
