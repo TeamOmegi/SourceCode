@@ -33,12 +33,9 @@ const ErrorGraph = ({ projectId }: Props) => {
   }, [projectId]);
 
   useEffect(() => {
-    if (nodes.length != 0 && links.length != 0) {
+    if (nodes.length != 0) {
       draw();
       errorCheck();
-    } else {
-      const svg = d3.select(svgRef.current);
-      svg.selectAll("*").remove();
     }
   }, [nodes, errorMap]);
 
